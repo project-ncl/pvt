@@ -29,12 +29,14 @@ public class EAPCheckJarDigestUnSigned {
         Collection<File> jarFiles = FileUtils.listFilesAndDirs(eapDir, new AbstractFileFilter() {
             @Override
             public boolean accept(File file) {
-                return file.getName().endsWith(".jar");
+                logger.info(file.toString());
+                return file.isFile() && file.getName().endsWith(".jar");
             }
 
         }, new AbstractFileFilter() {
             @Override
             public boolean accept(File file) {
+                logger.info(file.toString());
                 return file.isDirectory();
             }
         });
