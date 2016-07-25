@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
@@ -41,6 +42,8 @@ public class EAPCheckJarDigestUnSigned {
             }
         });
 
+
+        logger.info(Arrays.toString(jarFiles.toArray()));
 
         boolean unsigned = true;
 
