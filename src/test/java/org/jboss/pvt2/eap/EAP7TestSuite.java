@@ -28,53 +28,53 @@ public class EAP7TestSuite {
     }
 
 
-        /**
-         * Created by yyang on 7/18/16.
-         */
-        public static class EAPTestConfig {
+    /**
+     * Created by yyang on 7/18/16.
+     */
+    public static class EAPTestConfig {
 
-            public static final String EAP_VERSION_KEY = "EAP_VERSION";
-            public static final String EAP_VERSION_LAST_KEY = "EAP_VERSION_LAST";
-            public static final String EAP_TARGET_RELEASE_VERSION = "EAP_TARGET_RELEASE_VERSION";
-            public static final String EAP_ZIP_URL_KEY = "EAP_ZIP_URL";
-            public static final String EAP_ZIP_NAME_KEY = "EAP_ZIP_NAME";
-            public static final String EAP_DIR_KEY = "EAP_DIR";
-            public static final String EAP_SRC_ZIP_URL_KEY = "EAP_SRC_ZIP_URL";
-            public static final String EAP_SRC_ZIP_NAME_KEY = "EAP_SRC_ZIP_NAME";
-            public static final String EAP_SRC_DIR_KEY ="EAP_SRC_DIR";
-            public static final String MEAD_REPO_URL_KEY = "MEAD_REPO_URL";
-            public static final String REPO_ZIP_URL_KEY = "REPO_ZIP_URL";
-            public static final String REPO_ZIP_NAME_KEY = "REPO_ZIP_NAME";
-            public static final String REPO_DIR_KEY = "REPO_DIR";
-            public static final String QUICKSTARTS_ZIP_URL_KEY = "QUICKSTARTS_ZIP_URL";
-            public static final String QUICKSTARTS_ZIP_NAME_KEY = "QUICKSTARTS_ZIP_NAME";
-            public static final String QUICKSTARTS_DIR_KEY = "QUICKSTARTS_DIR";
+        public static final String EAP_VERSION_KEY = "EAP_VERSION";
+        public static final String EAP_VERSION_LAST_KEY = "EAP_VERSION_LAST";
+        public static final String EAP_TARGET_RELEASE_VERSION = "EAP_TARGET_RELEASE_VERSION";
+        public static final String EAP_ZIP_URL_KEY = "EAP_ZIP_URL";
+        public static final String EAP_ZIP_NAME_KEY = "EAP_ZIP_NAME";
+        public static final String EAP_DIR_KEY = "EAP_DIR";
+        public static final String EAP_SRC_ZIP_URL_KEY = "EAP_SRC_ZIP_URL";
+        public static final String EAP_SRC_ZIP_NAME_KEY = "EAP_SRC_ZIP_NAME";
+        public static final String EAP_SRC_DIR_KEY ="EAP_SRC_DIR";
+        public static final String MEAD_REPO_URL_KEY = "MEAD_REPO_URL";
+        public static final String REPO_ZIP_URL_KEY = "REPO_ZIP_URL";
+        public static final String REPO_ZIP_NAME_KEY = "REPO_ZIP_NAME";
+        public static final String REPO_DIR_KEY = "REPO_DIR";
+        public static final String QUICKSTARTS_ZIP_URL_KEY = "QUICKSTARTS_ZIP_URL";
+        public static final String QUICKSTARTS_ZIP_NAME_KEY = "QUICKSTARTS_ZIP_NAME";
+        public static final String QUICKSTARTS_DIR_KEY = "QUICKSTARTS_DIR";
 
-            private static EAPTestConfig INSTANCE = new EAPTestConfig();
+        private static EAPTestConfig INSTANCE = new EAPTestConfig();
 
-            private EAPTestConfig() {
-
-            }
-
-            public static EAPTestConfig getInstance() {
-                return INSTANCE;
-            }
-
-            public String getEapDir(){
-                return System.getProperty(EAP_DIR_KEY);
-            }
-
-            public String getEapZipUrl() {
-                return String.format(System.getProperty(EAP_ZIP_URL_KEY), getEapVersion());
-            }
-
-            public String getEapZipName(){
-                return System.getProperty(EAP_ZIP_NAME_KEY, getEapZipUrl().substring(getEapZipUrl().lastIndexOf("/") + 1));
-            }
-
-            public String getEapVersion(){
-                return System.getProperty(EAP_VERSION_KEY);
-            }
+        private EAPTestConfig() {
 
         }
+
+        public static EAPTestConfig getInstance() {
+            return INSTANCE;
+        }
+
+        public String getEapDir(){
+            return System.getProperty(EAP_DIR_KEY);
+        }
+
+        public String getEapZipUrl() {
+            return String.format(System.getProperty(EAP_ZIP_URL_KEY), getEapVersion());
+        }
+
+        public String getEapZipName(){
+            return System.getProperty(EAP_ZIP_NAME_KEY, getEapZipUrl().substring(getEapZipUrl().lastIndexOf("/") + 1));
+        }
+
+        public String getEapVersion(){
+            return System.getProperty(EAP_VERSION_KEY);
+        }
+
+    }
 }
