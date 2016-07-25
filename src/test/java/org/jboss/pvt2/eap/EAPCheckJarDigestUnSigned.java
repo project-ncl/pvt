@@ -37,8 +37,7 @@ public class EAPCheckJarDigestUnSigned {
         }, new AbstractFileFilter() {
             @Override
             public boolean accept(File file) {
-                logger.info(file.toString());
-                return file.isDirectory();
+                return false;
             }
         });
 
