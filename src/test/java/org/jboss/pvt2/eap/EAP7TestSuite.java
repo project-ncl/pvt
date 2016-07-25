@@ -23,6 +23,11 @@ import java.util.Locale;
 })
 public class EAP7TestSuite {
 
+    public static EAPTestConfig getTestConfig() {
+        return EAPTestConfig.getInstance();
+    }
+
+
         /**
          * Created by yyang on 7/18/16.
          */
@@ -55,19 +60,19 @@ public class EAP7TestSuite {
                 return INSTANCE;
             }
 
-            public static String getEapDir(){
+            public String getEapDir(){
                 return System.getProperty(EAP_DIR_KEY);
             }
 
-            public static String getEapZipUrl() {
+            public String getEapZipUrl() {
                 return String.format(System.getProperty(EAP_ZIP_URL_KEY), getEapVersion());
             }
 
-            public static String getEapZipName(){
+            public String getEapZipName(){
                 return System.getProperty(EAP_ZIP_NAME_KEY, getEapZipUrl().substring(getEapZipUrl().lastIndexOf("/") + 1));
             }
 
-            public static String getEapVersion(){
+            public String getEapVersion(){
                 return System.getProperty(EAP_VERSION_KEY);
             }
 

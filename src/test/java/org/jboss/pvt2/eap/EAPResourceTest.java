@@ -45,22 +45,22 @@ public class EAPResourceTest {
 
     @Test
     public void testConfiguration(){
-        logger.info(EAP7TestSuite.EAPTestConfig.EAP_DIR_KEY + ": " + EAP7TestSuite.EAPTestConfig.getEapDir());
-        Assert.assertNotNull(EAP7TestSuite.EAPTestConfig.getEapDir());
+        logger.info(EAP7TestSuite.EAPTestConfig.EAP_DIR_KEY + ": " + EAP7TestSuite.EAPTestConfig.getInstance().getEapDir());
+        Assert.assertNotNull(EAP7TestSuite.EAPTestConfig.getInstance().getEapDir());
 
     }
 
     @Test
     public void testDownload() throws Exception{
-        logger.info("Download EAP ZIP: " + EAP7TestSuite.EAPTestConfig.getEapZipUrl());
-        HttpUtils.httpDownload(EAP7TestSuite.EAPTestConfig.getEapZipUrl());
+        logger.info("Download EAP ZIP: " + EAP7TestSuite.EAPTestConfig.getInstance().getEapZipUrl());
+        HttpUtils.httpDownload(EAP7TestSuite.EAPTestConfig.getInstance().getEapZipUrl());
 
     }
 
     @Test
     public void testExtract() throws Exception{
-        logger.info("Extract: " + EAP7TestSuite.EAPTestConfig.getEapZipName());
-        File zipFile = new File( EAP7TestSuite.EAPTestConfig.getEapZipName());
+        logger.info("Extract: " + EAP7TestSuite.EAPTestConfig.getInstance().getEapZipName());
+        File zipFile = new File( EAP7TestSuite.EAPTestConfig.getInstance().getEapZipName());
         Assert.assertTrue(zipFile.exists());
         ZipUtils.unzip(zipFile);
     }
