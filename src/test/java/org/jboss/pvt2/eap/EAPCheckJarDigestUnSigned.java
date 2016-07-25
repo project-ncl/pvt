@@ -1,12 +1,16 @@
 package org.jboss.pvt2.eap;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.filefilter.AbstractFileFilter;
 import org.jboss.pvt2.log.PVTLogger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import java.io.*;
+import java.util.Collection;
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -22,11 +26,18 @@ public class EAPCheckJarDigestUnSigned {
     @Test
     public void testUnsigned() throws Exception {
         File eapDir = new File(EAP7TestSuite.getTestConfig().getEapDir());
-        File[] jarFiles = eapDir.listFiles(new FilenameFilter() {
+        Collection<File> jarFiles = FileUtils.listFilesAndDirs(eapDir, new AbstractFileFilter() {
+            @Override
+            public boolean accept(File file) {
+                return file.getName().endsWith(".jar");
+            }
+        }, new AbstractFileFilter() {
+            @Override
             public boolean accept(File dir, String name) {
-                return name.endsWith(".jar");
+                return true;
             }
         });
+
 
         boolean unsigned = true;
 
