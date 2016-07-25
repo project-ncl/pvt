@@ -5,7 +5,7 @@
   <groupId>org.jboss.pvt</groupId>
   <artifactId>pvt2</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
 
   <name>The revolution of Productization Verification Tool(PVT)</name>
   <description>Productization Verification Tool - Handle package level verification for all JBoss MW products.</description>

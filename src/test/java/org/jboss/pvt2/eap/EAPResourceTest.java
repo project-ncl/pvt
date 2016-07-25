@@ -60,6 +60,7 @@ public class EAPResourceTest {
 
     @Test
     public void testExtract() throws Exception{
+        logger.info("Extract: " + EAP7TestSuite.EAPTestConfig.getEapZipName());
         File zipFile = new File( EAP7TestSuite.EAPTestConfig.getEapZipName());
         Assert.assertTrue(zipFile.exists());
         ZipUtils.unzip(zipFile);
