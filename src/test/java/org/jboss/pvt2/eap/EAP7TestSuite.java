@@ -1,12 +1,8 @@
 package org.jboss.pvt2.eap;
 
 import org.junit.experimental.categories.Categories;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-
-import java.io.File;
-import java.util.Locale;
 
 /**
  * EAP PVT Test suite
@@ -18,7 +14,7 @@ import java.util.Locale;
 @Categories.IncludeCategory(EAP7.class)
 @Suite.SuiteClasses({
         EAPResourceTest.class,
-        EAPTestCase1.class,
+        EAPCheckJarDigestUnSigned.class,
         EAPTestCase2.class
 })
 public class EAP7TestSuite {
