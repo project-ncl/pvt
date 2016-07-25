@@ -15,10 +15,11 @@ public class PVTLogger {
     public static Logger getLogger(String name) {
         Logger log = Logger.getLogger(name);
         log.setLevel(Level.ALL);
+/*
         ConsoleHandler consoleHandler = new ConsoleHandler();
         consoleHandler.setLevel(Level.ALL);
         log.addHandler(consoleHandler);
-
+*/
         try {
             FileHandler fileHandler = new FileHandler("pvt2.log");
             fileHandler.setLevel(Level.ALL);

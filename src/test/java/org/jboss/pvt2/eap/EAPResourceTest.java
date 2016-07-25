@@ -19,7 +19,6 @@ public class EAPResourceTest {
 
     private static Logger logger = PVTLogger.getLogger(EAPResourceTest.class.getName());
 
-
     public EAPResourceTest(){
 
     }
