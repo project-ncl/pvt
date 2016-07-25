@@ -30,6 +30,10 @@ public class EAPCheckJarDigestUnSigned {
 
         for(File jarFile : jarFiles){
             logger.info("Check Jar: " + jarFile.toString());
+            if(jarFile.getPath().contains("bouncycastle")){
+                logger.info("Skip bouncycastle Jar!");
+                continue;
+            }
             ZipFile zipFile = new ZipFile(jarFile);
             StringWriter sw = new StringWriter();
             IOUtils.copy(new InputStreamReader(zipFile.getInputStream(zipFile.getEntry("META-INF/MANIFEST.MF"))), sw);
