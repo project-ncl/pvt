@@ -32,19 +32,10 @@ public class EAPCheckJarDigestUnSigned {
                 return file.getName().endsWith(".jar");
             }
 
-            @Override
-            public boolean accept(File dir, String name) {
-                return false;
-            }
         }, new AbstractFileFilter() {
             @Override
-            public boolean accept(File dir, String name) {
-                return true;
-            }
-
-            @Override
             public boolean accept(File file) {
-                return false;
+                return file.isDirectory();
             }
         });
 
