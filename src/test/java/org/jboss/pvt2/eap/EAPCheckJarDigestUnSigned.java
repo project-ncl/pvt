@@ -51,10 +51,12 @@ public class EAPCheckJarDigestUnSigned {
         for(File jarFile : jarFiles){
             if(jarFile.isFile()) {
                 // bouncycastle jars always are signed
+/*
                 if (jarFile.getPath().contains("bouncycastle")) {
                     logger.warning("Skip bouncycastle Jar!");
                     continue;
                 }
+*/
                 ZipFile zipFile = new ZipFile(jarFile);
                 StringWriter sw = new StringWriter();
                 IOUtils.copy(new InputStreamReader(zipFile.getInputStream(zipFile.getEntry("META-INF/MANIFEST.MF"))), sw);
