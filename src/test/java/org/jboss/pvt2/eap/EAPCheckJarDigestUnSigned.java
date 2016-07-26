@@ -12,6 +12,7 @@ import org.junit.experimental.categories.Category;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -31,28 +32,36 @@ public class EAPCheckJarDigestUnSigned {
         Collection<File> jarFiles = FileUtils.listFilesAndDirs(eapDir, new AbstractFileFilter() {
             @Override
             public boolean accept(File file) {
-                logger.info(file.toString());
                 return file.isFile() && file.getName().endsWith(".jar");
             }
 
         }, TrueFileFilter.INSTANCE);
 
+        // remove dirs
+        for(Iterator<File> it= jarFiles.iterator(); it.hasNext(); ) {
+            File file = it.next();
+            if(file.isDirectory()) {
+                it.remove();
+            }
+        }
 
-        logger.info(Arrays.toString(jarFiles.toArray()));
+        logger.info("Jars: " + Arrays.toString(jarFiles.toArray()));
 
         boolean unsigned = true;
-
         for(File jarFile : jarFiles){
             if(jarFile.isFile()) {
-                logger.info("Check Jar: " + jarFile.toString());
+                // bouncycastle jars always are signed
                 if (jarFile.getPath().contains("bouncycastle")) {
-                    logger.info("Skip bouncycastle Jar!");
+                    logger.warning("Skip bouncycastle Jar!");
                     continue;
                 }
                 ZipFile zipFile = new ZipFile(jarFile);
                 StringWriter sw = new StringWriter();
                 IOUtils.copy(new InputStreamReader(zipFile.getInputStream(zipFile.getEntry("META-INF/MANIFEST.MF"))), sw);
                 unsigned = !sw.getBuffer().toString().contains("Digest:");
+                if(!unsigned) {
+                    break;
+                }
             }
         }
 
