@@ -52,7 +52,7 @@ public class EAPCheckJarDigestUnSigned {
             if(jarFile.isFile()) {
                 // bouncycastle jars always are signed
                 if (jarFile.getPath().contains("bouncycastle")) {
-                    logger.warning("Skip bouncycastle Jar!");
+                    logger.warning("Skip bouncycastle Jar, " + jarFile);
                     continue;
                 }
                 ZipFile zipFile = new ZipFile(jarFile);
