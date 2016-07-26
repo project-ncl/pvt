@@ -3,6 +3,7 @@ package org.jboss.pvt2.eap;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.AbstractFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.jboss.pvt2.log.PVTLogger;
 import org.junit.Assert;
 import org.junit.Test;
@@ -34,12 +35,7 @@ public class EAPCheckJarDigestUnSigned {
                 return file.isFile() && file.getName().endsWith(".jar");
             }
 
-        }, new AbstractFileFilter() {
-            @Override
-            public boolean accept(File file) {
-                return false;
-            }
-        });
+        }, TrueFileFilter.INSTANCE);
 
 
         logger.info(Arrays.toString(jarFiles.toArray()));
@@ -47,15 +43,17 @@ public class EAPCheckJarDigestUnSigned {
         boolean unsigned = true;
 
         for(File jarFile : jarFiles){
-            logger.info("Check Jar: " + jarFile.toString());
-            if(jarFile.getPath().contains("bouncycastle")){
-                logger.info("Skip bouncycastle Jar!");
-                continue;
+            if(jarFile.isFile()) {
+                logger.info("Check Jar: " + jarFile.toString());
+                if (jarFile.getPath().contains("bouncycastle")) {
+                    logger.info("Skip bouncycastle Jar!");
+                    continue;
+                }
+                ZipFile zipFile = new ZipFile(jarFile);
+                StringWriter sw = new StringWriter();
+                IOUtils.copy(new InputStreamReader(zipFile.getInputStream(zipFile.getEntry("META-INF/MANIFEST.MF"))), sw);
+                unsigned = !sw.getBuffer().toString().contains("Digest:");
             }
-            ZipFile zipFile = new ZipFile(jarFile);
-            StringWriter sw = new StringWriter();
-            IOUtils.copy(new InputStreamReader(zipFile.getInputStream(zipFile.getEntry("META-INF/MANIFEST.MF"))), sw);
-            unsigned = !sw.getBuffer().toString().contains("Digest:");
         }
 
         Assert.assertTrue(unsigned);
