@@ -2,17 +2,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.jboss.pvt</groupId>
-  <artifactId>pvt2</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <groupId>org.jboss</groupId>
+  <artifactId>pvt</artifactId>
+  <version>2.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>PVT - Productisation Validation Testing project</name>
 
   <scm>
-    <connection>scm:git:https://github.com/yongyang/pvt2.git</connection>
-    <url>https://github.com/yongyang/pvt2</url>
-    <tag>pvt2-0.0.1</tag>
+    <connection>scm:git:https://github.com/project-ncl/pvt.git</connection>
+    <url>https://github.com/project-ncl/pvt</url>
+    <tag>pvt-2.0.0</tag>
   </scm>
 
   <properties>
