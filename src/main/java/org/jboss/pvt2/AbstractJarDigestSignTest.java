@@ -21,9 +21,9 @@ import java.util.zip.ZipFile;
  * Created by yyang on 7/11/16.
  */
 
-public abstract class AbstractJarDigestUnSignTest extends SuperTestCase {
+public abstract class AbstractJarDigestSignTest extends SuperTestCase {
 
-    private static Logger logger = PVTLogger.getLogger(AbstractJarDigestUnSignTest.class);
+    private static Logger logger = PVTLogger.getLogger(AbstractJarDigestSignTest.class);
 
     @Test
     public void testSigned() throws Exception {
@@ -68,13 +68,24 @@ public abstract class AbstractJarDigestUnSignTest extends SuperTestCase {
         Assert.assertTrue(signed == mustSigned());
     }
 
+    /**
+     * which class need to be excluded
+     */
     protected String[] getExcludesFilter(){
-        // bouncycastle jars always are signed
-        return new String[]{"bouncycastle"};
+        if(!mustSigned()) {
+            // bouncycastle jars always are signed
+            return new String[]{"bouncycastle"};
+        }
+        else {
+            return new String[]{};
+        }
     }
 
+    /**
+     * If the jars must signed or not
+     */
     protected boolean mustSigned(){
-        return false;
+        return true;
     }
 
     private boolean shouldExclude(File file){
