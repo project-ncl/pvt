@@ -103,4 +103,5 @@ public abstract class AbstractJarDigestSignTest extends SuperTestCase {
      * The root dir to scan jars
      */
     protected abstract File getRootDir();
+
 }
