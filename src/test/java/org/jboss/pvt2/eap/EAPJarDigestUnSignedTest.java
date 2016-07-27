@@ -21,8 +21,4 @@ public class EAPJarDigestUnSignedTest extends AbstractJarDigestSignTest {
         return false;
     }
 
-    @Test
-    public void testSigned() throws Exception {
-        super.testSigned();
-    }
 }
