@@ -23,7 +23,7 @@ import java.util.zip.ZipFile;
 
 public abstract class AbstractJarDigestSignTest extends SuperTestCase {
 
-    private static Logger logger = PVTLogger.getLogger(AbstractJarDigestSignTest.class);
+    public static final Logger logger = PVTLogger.getLogger(AbstractJarDigestSignTest.class);
 
     @Test
     public void testSigned() throws Exception {
@@ -71,10 +71,10 @@ public abstract class AbstractJarDigestSignTest extends SuperTestCase {
     /**
      * which class need to be excluded
      */
-    protected String[] getExcludesFilter(){
+    protected String[] getExcludesJarFilter(){
         if(!mustSigned()) {
             // bouncycastle jars always are signed
-            return new String[]{"bouncycastle"};
+            return new String[]{"bouncycastle/"};
         }
         else {
             return new String[]{};
@@ -90,8 +90,8 @@ public abstract class AbstractJarDigestSignTest extends SuperTestCase {
 
     private boolean shouldExclude(File file){
         boolean exclude = false;
-        for(String filter : getExcludesFilter()){
-            if(file.getName().contains(filter)) {
+        for(String filter : getExcludesJarFilter()){
+            if(file.getPath().contains(filter)) {
                 exclude = true;
                 break;
             }
@@ -99,5 +99,8 @@ public abstract class AbstractJarDigestSignTest extends SuperTestCase {
         return exclude;
     }
 
+    /**
+     * The root dir to scan jars
+     */
     protected abstract File getRootDir();
 }
