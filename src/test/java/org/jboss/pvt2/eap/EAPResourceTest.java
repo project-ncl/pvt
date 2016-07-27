@@ -19,30 +19,10 @@ import java.util.logging.Logger;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class EAPResourceTest {
 
-    private static Logger logger = PVTLogger.getLogger(EAPResourceTest.class.getName());
+    private static Logger logger = PVTLogger.getLogger(EAPResourceTest.class);
 
     public EAPResourceTest(){
 
-    }
-
-    @BeforeClass
-    public static void _setupClass(){
-        logger.info("@BeforeClass _setupClass");
-    }
-
-    @AfterClass
-    public static void _afterClass() {
-        logger.info("@AfterClass _afterClass");
-    }
-
-    @Before
-    public void _setUp() {
-        logger.info("@Before _setup");
-    }
-
-    @After
-    public void _teardown() {
-        logger.info("@After _teardown");
     }
 
     @Test

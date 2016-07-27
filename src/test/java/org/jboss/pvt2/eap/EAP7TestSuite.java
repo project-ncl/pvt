@@ -14,7 +14,7 @@ import org.junit.runners.Suite;
 @Categories.IncludeCategory(EAP7.class)
 @Suite.SuiteClasses({
         EAPResourceTest.class,
-        EAPCheckJarDigestUnSigned.class,
+        EAPJarDigestUnSignedTest.class,
         EAPTestCase2.class
 })
 public class EAP7TestSuite {
