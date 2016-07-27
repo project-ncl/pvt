@@ -13,16 +13,18 @@ import java.util.logging.Logger;
  * Created by yyang on 7/27/16.
  */
 public abstract class SuperTestCase {
-    private static Logger logger = PVTLogger.getLogger(SuperTestCase.class);
+    public final static Logger staticLogger = PVTLogger.getLogger(SuperTestCase.class);
+    public final Logger logger = PVTLogger.getLogger(this.getClass());
+
 
     @BeforeClass
     public static void _setupClass(){
-        logger.info("@BeforeClass _setupClass");
+        staticLogger.info("@BeforeClass _setupClass");
     }
 
     @AfterClass
     public static void _afterClass() {
-        logger.info("@AfterClass _afterClass");
+        staticLogger.info("@AfterClass _afterClass");
     }
 
     @Before

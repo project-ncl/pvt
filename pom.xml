@@ -7,8 +7,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>The revolution of Productization Verification Tool(PVT)</name>
-  <description>Productization Verification Tool - Handle package level verification for all JBoss MW products.</description>
+  <name>PVT - Productisation Validation Testing project</name>
 
   <scm>
     <connection>scm:git:https://github.com/yongyang/pvt2.git</connection>

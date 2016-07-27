@@ -1,5 +1,6 @@
 package org.jboss.pvt2.eap;
 
+import org.jboss.pvt2.SuperTestCase;
 import org.jboss.pvt2.log.PVTLogger;
 import org.jboss.pvt2.utils.HttpUtils;
 import org.jboss.pvt2.utils.ZipUtils;
@@ -17,9 +18,7 @@ import java.util.logging.Logger;
  */
 @Category({EAP7.class, EAP6.class})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class EAPResourceTest {
-
-    private static Logger logger = PVTLogger.getLogger(EAPResourceTest.class);
+public class EAPResourceTest extends SuperTestCase{
 
     public EAPResourceTest(){
 

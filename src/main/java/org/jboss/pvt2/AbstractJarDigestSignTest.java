@@ -23,8 +23,6 @@ import java.util.zip.ZipFile;
 
 public abstract class AbstractJarDigestSignTest extends SuperTestCase {
 
-    public static final Logger logger = PVTLogger.getLogger(AbstractJarDigestSignTest.class);
-
     @Test
     public void testSigned() throws Exception {
         File eapDir = getRootDir();
