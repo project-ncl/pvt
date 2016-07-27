@@ -34,7 +34,7 @@ public class EAPResourceTest {
 
     @Test
     public void test2Download() throws Exception{
-        logger.info("Download EAP ZIP: " + EAP7TestSuite.EAPTestConfig.getInstance().getEapZipUrl());
+        logger.info("Download EAP zip: " + EAP7TestSuite.EAPTestConfig.getInstance().getEapZipUrl());
         HttpUtils.httpDownload(EAP7TestSuite.EAPTestConfig.getInstance().getEapZipUrl(), EAP7TestSuite.getTestConfig().getEapZipName());
         Assert.assertTrue(new File( EAP7TestSuite.EAPTestConfig.getInstance().getEapZipName()).exists());
 
