@@ -1,7 +1,6 @@
-package org.jboss.pvt2.eap;
+package org.jboss.pvt.eap;
 
-import org.jboss.pvt2.AbstractJarDigestSignTest;
-import org.junit.Test;
+import org.jboss.pvt.AbstractJarDigestSignTest;
 import org.junit.experimental.categories.Category;
 
 import java.io.*;

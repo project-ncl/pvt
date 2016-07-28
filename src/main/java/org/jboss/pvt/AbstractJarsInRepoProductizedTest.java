@@ -1,4 +1,4 @@
-package org.jboss.pvt2;
+package org.jboss.pvt;
 
 import java.io.File;
 

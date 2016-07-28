@@ -1,4 +1,4 @@
-package org.jboss.pvt2.utils;
+package org.jboss.pvt.utils;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.AbstractFileFilter;

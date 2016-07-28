@@ -1,6 +1,6 @@
-package org.jboss.pvt2;
+package org.jboss.pvt;
 
-import org.jboss.pvt2.log.PVTLogger;
+import org.jboss.pvt.log.PVTLogger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

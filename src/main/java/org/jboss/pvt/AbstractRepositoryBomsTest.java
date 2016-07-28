@@ -1,4 +1,4 @@
-package org.jboss.pvt2;
+package org.jboss.pvt;
 
 /**
  * Created by yyang on 7/27/16.

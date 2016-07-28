@@ -1,6 +1,6 @@
-package org.jboss.pvt2;
+package org.jboss.pvt;
 
-import org.jboss.pvt2.utils.DirUtils;
+import org.jboss.pvt.utils.DirUtils;
 import org.junit.Assert;
 import org.junit.Test;
 

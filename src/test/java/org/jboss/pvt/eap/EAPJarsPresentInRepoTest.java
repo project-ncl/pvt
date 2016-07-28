@@ -1,13 +1,9 @@
-package org.jboss.pvt2.eap;
+package org.jboss.pvt.eap;
 
-import org.jboss.pvt2.AbstractProductJarsPresentInRepo;
-import org.jboss.pvt2.SuperTestCase;
-import org.jboss.pvt2.log.PVTLogger;
-import org.junit.Test;
+import org.jboss.pvt.AbstractProductJarsPresentInRepo;
 import org.junit.experimental.categories.Category;
 
 import java.io.File;
-import java.util.logging.Logger;
 
 /**
  * Created by yyang on 7/11/16.

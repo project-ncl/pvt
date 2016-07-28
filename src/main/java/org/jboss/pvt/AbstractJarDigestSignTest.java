@@ -1,11 +1,7 @@
-package org.jboss.pvt2;
+package org.jboss.pvt;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.filefilter.AbstractFileFilter;
-import org.apache.commons.io.filefilter.TrueFileFilter;
-import org.jboss.pvt2.log.PVTLogger;
-import org.jboss.pvt2.utils.DirUtils;
+import org.jboss.pvt.utils.DirUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -15,8 +11,6 @@ import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.logging.Logger;
 import java.util.zip.ZipFile;
 
 /**

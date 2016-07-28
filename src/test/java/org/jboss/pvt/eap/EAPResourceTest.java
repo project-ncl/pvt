@@ -1,15 +1,13 @@
-package org.jboss.pvt2.eap;
+package org.jboss.pvt.eap;
 
-import org.jboss.pvt2.SuperTestCase;
-import org.jboss.pvt2.log.PVTLogger;
-import org.jboss.pvt2.utils.HttpUtils;
-import org.jboss.pvt2.utils.ZipUtils;
+import org.jboss.pvt.SuperTestCase;
+import org.jboss.pvt.utils.HttpUtils;
+import org.jboss.pvt.utils.ZipUtils;
 import org.junit.*;
 import org.junit.experimental.categories.Category;
 import org.junit.runners.MethodSorters;
 
 import java.io.File;
-import java.util.logging.Logger;
 
 /**
  * EAPResourceTest should be on the first one of the test suite, to test the sources of EAP are accessable

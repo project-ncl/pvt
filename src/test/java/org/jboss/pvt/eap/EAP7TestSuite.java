@@ -1,4 +1,4 @@
-package org.jboss.pvt2.eap;
+package org.jboss.pvt.eap;
 
 import org.junit.experimental.categories.Categories;
 import org.junit.runner.RunWith;

@@ -1,14 +1,10 @@
-package org.jboss.pvt2.utils;
+package org.jboss.pvt.utils;
 
 import org.apache.commons.io.IOUtils;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 
 /**
  * Created by yyang on 7/18/16.

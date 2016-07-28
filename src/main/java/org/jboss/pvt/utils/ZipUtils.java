@@ -1,4 +1,4 @@
-package org.jboss.pvt2.utils;
+package org.jboss.pvt.utils;
 
 import net.lingala.zip4j.core.ZipFile;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
