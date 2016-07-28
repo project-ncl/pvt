@@ -15,7 +15,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         EAPResourceTest.class,
         EAPJarDigestUnSignedTest.class,
-        EAPTestCase2.class
+        EAPJarsPresentInRepoTest.class
 })
 public class EAP7TestSuite {
 
@@ -61,7 +61,7 @@ public class EAP7TestSuite {
         }
 
         public String getEapZipUrl() {
-            return String.format(System.getProperty(EAP_ZIP_URL_KEY), getEapVersion());
+            return System.getProperty(EAP_ZIP_URL_KEY).replace("${EAP_VERSION}", getEapVersion());
         }
 
         public String getEapZipName(){
@@ -71,6 +71,19 @@ public class EAP7TestSuite {
         public String getEapVersion(){
             return System.getProperty(EAP_VERSION_KEY);
         }
+
+        public String getRepoDir(){
+            return System.getProperty(REPO_DIR_KEY);
+        }
+
+        public String getRepoZipUrl() {
+            return System.getProperty(REPO_ZIP_URL_KEY).replace("${EAP_VERSION}", getEapVersion());
+        }
+
+        public String getRepoZipName(){
+            return System.getProperty(REPO_ZIP_NAME_KEY, getRepoZipUrl().substring(getEapZipUrl().lastIndexOf("/") + 1));
+        }
+
 
     }
 }

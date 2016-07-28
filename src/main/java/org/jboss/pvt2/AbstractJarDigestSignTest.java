@@ -5,10 +5,12 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.AbstractFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.jboss.pvt2.log.PVTLogger;
+import org.jboss.pvt2.utils.DirUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.Arrays;
@@ -26,21 +28,12 @@ public abstract class AbstractJarDigestSignTest extends SuperTestCase {
     @Test
     public void testSigned() throws Exception {
         File eapDir = getRootDir();
-        Collection<File> jarFiles = FileUtils.listFilesAndDirs(eapDir, new AbstractFileFilter() {
-            @Override
-            public boolean accept(File file) {
-                return file.isFile() && file.getName().endsWith(".jar");
-            }
 
-        }, TrueFileFilter.INSTANCE);
-
-        // remove dirs
-        for(Iterator<File> it= jarFiles.iterator(); it.hasNext(); ) {
-            File file = it.next();
-            if(file.isDirectory()) {
-                it.remove();
+        Collection<File> jarFiles = DirUtils.listFilesRecursively(eapDir, new FileFilter() {
+            public boolean accept(File pathname) {
+                return  pathname.isFile() && pathname.getName().endsWith(".jar");
             }
-        }
+        });
 
         logger.info("Jars: " + Arrays.toString(jarFiles.toArray()));
 

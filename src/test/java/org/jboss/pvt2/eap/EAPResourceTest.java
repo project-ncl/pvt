@@ -34,9 +34,12 @@ public class EAPResourceTest extends SuperTestCase{
     @Test
     public void test2Download() throws Exception{
         logger.info("Download EAP zip: " + EAP7TestSuite.EAPTestConfig.getInstance().getEapZipUrl());
-        HttpUtils.httpDownload(EAP7TestSuite.EAPTestConfig.getInstance().getEapZipUrl(), EAP7TestSuite.getTestConfig().getEapZipName());
-        Assert.assertTrue(new File( EAP7TestSuite.EAPTestConfig.getInstance().getEapZipName()).exists());
+        HttpUtils.httpDownload(EAP7TestSuite.EAPTestConfig.getInstance().getEapZipUrl());
+        Assert.assertTrue(new File(EAP7TestSuite.EAPTestConfig.getInstance().getEapZipName()).exists());
 
+        logger.info("Download Repo zip: " + EAP7TestSuite.EAPTestConfig.getInstance().getRepoZipUrl());
+        HttpUtils.httpDownload(EAP7TestSuite.EAPTestConfig.getInstance().getRepoZipUrl());
+        Assert.assertTrue(new File(EAP7TestSuite.EAPTestConfig.getInstance().getRepoZipName()).exists());
     }
 
     @Test
@@ -45,6 +48,12 @@ public class EAPResourceTest extends SuperTestCase{
         File zipFile = new File( EAP7TestSuite.EAPTestConfig.getInstance().getEapZipName());
         Assert.assertTrue(zipFile.exists());
         ZipUtils.unzip(zipFile);
+
+        logger.info("Extract: " + EAP7TestSuite.EAPTestConfig.getInstance().getRepoZipName());
+        File repoFile = new File( EAP7TestSuite.EAPTestConfig.getInstance().getRepoZipName());
+        Assert.assertTrue(repoFile.exists());
+        ZipUtils.unzip(repoFile);
+
     }
 
 }
