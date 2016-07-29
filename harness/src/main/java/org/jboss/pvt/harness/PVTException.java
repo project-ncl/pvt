@@ -16,6 +16,8 @@
 
 package org.jboss.pvt.harness;
 
+import java.io.FileNotFoundException;
+
 /**
  * Created by rnc on 29/07/16.
  */
@@ -24,5 +26,10 @@ public class PVTException extends RuntimeException
     public PVTException( String s )
     {
         super (s);
+    }
+
+    public PVTException( String s, Exception e )
+    {
+        super (s, e);
     }
 }
