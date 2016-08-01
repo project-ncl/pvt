@@ -7,6 +7,8 @@ import org.junit.experimental.categories.Category;
 import java.io.*;
 
 /**
+ * This job checks for absence of sha1 digests in manifest, that cause performance degradation in certain JVMs
+ * From version 7.0.0.ER7 job fails because of org/bouncycastle artifacts are digitally signed - this is correct. Other fails are real failures
  * Created by yyang on 7/11/16.
  */
 @Category({EAP7.class, EAP6.class})
