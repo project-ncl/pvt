@@ -14,15 +14,20 @@
  * limitations under the License.
  */
 
-package org.jboss.pvt.harness;
+package org.jboss.pvt.harness.exception;
 
 /**
- * Created by rnc on 28/07/16.
+ * Created by rnc on 29/07/16.
  */
-public enum ProductSupport
+public class PVTException extends Exception
 {
-    AMQ,
-    EAP,
-    BRMS,
-    ALL
+    public PVTException( String s )
+    {
+        super (s);
+    }
+
+    public PVTException( String s, Exception e )
+    {
+        super (s, e);
+    }
 }

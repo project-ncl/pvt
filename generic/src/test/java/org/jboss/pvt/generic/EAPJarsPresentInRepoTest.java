@@ -16,31 +16,37 @@
 
 package org.jboss.pvt.generic;
 
-import org.jboss.pvt.harness.AbstractProductJarsPresentInRepo;
-import org.junit.Ignore;
+import org.jboss.pvt.harness.ProductJarsPresentInRepo;
+import org.jboss.pvt.harness.exception.PVTException;
+import org.jboss.pvt.harness.rules.ParameterHandler;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import java.io.File;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by yyang on 7/11/16.
  */
-@Ignore //TODO : Remove Junit categories and make test generic.
 @Category({EAP7.class, EAP6.class})
-public class EAPJarsPresentInRepoTest extends AbstractProductJarsPresentInRepo{
+public class EAPJarsPresentInRepoTest
+{
+    @ClassRule
+    public static final ParameterHandler parameterHandler = new ParameterHandler();
 
-    @Override
-    protected File getRepoDir() {
-        return new File(EAP7TestSuite.getTestConfig().getRepoDir());
+    private ProductJarsPresentInRepo pjp = new ProductJarsPresentInRepo( parameterHandler );
+
+    @Before
+    public void setupBefore()
+    {
+        // TODO: Should possibly come from a config file?
+        pjp.initialiseFilter(new String[]{"jboss-modules.jar", "jboss-cli-client.jar", "launcher.jar", "jboss-client.jar", "jboss-seam-int.jar", "-jandex.jar"} );
     }
 
-    @Override
-    protected File getProductDir() {
-        return new File(EAP7TestSuite.getTestConfig().getEapDir());
-    }
-
-    @Override
-    protected String[] getJarIgnoreFilter() {
-        return new String[]{"jboss-modules.jar", "jboss-cli-client.jar", "launcher.jar", "jboss-client.jar", "jboss-seam-int.jar", "-jandex.jar"};
+    @Test
+    public void test1() throws PVTException
+    {
+        assertTrue ( pjp.validate() );
     }
 }

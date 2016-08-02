@@ -1,5 +1,6 @@
-package org.jboss.pvt.harness;
+package org.jboss.pvt.harness.utils;
 
+import org.jboss.pvt.harness.exception.PVTException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,8 +10,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -21,45 +20,12 @@ public class ClassVersionInspector
 {
     private static Logger logger = LoggerFactory.getLogger( ClassVersionInspector.class );
 
-    public enum ClassVersion
-    {
-        JAVA_12(46),
-        JAVA_13(47),
-        JAVA_14(48),
-        JAVA_15(49),
-        JAVA_16(50),
-        JAVA_17(51),
-        JAVA_18(52);
-
-        private static Map<Integer, ClassVersion> map = new HashMap<>();
-        static
-        {
-            for ( ClassVersion cv : ClassVersion.values() )
-            {
-                map.put( cv.byteValue, cv );
-            }
-        }
-
-        private int byteValue;
-
-        ClassVersion( int value )
-        {
-            this.byteValue = value;
-        }
-
-        public static ClassVersion parseInt (int value)
-        {
-            ClassVersion result = map.get( value );
-            if ( result == null )
-            {
-                throw new PVTException( "Class version type not found for " + value );
-            }
-            return result;
-        }
-    }
-
-
-    public static ClassVersion checkClassVersion (String filename)
+    /**
+     * Takes a Class filename and returns the ClassVersion.
+     * @param filename valid class filename to check
+     * @return ClassVersion of class.
+     */
+    public static ClassVersion checkClassVersion (String filename) throws PVTException
     {
         FileInputStream in;
         try
@@ -74,7 +40,7 @@ public class ClassVersionInspector
         return checkClassVersion( in );
     }
 
-    private static ClassVersion checkClassVersion (InputStream filename)
+    private static ClassVersion checkClassVersion (InputStream filename) throws PVTException
     {
         DataInputStream in = new DataInputStream( filename );
 
@@ -106,7 +72,7 @@ public class ClassVersionInspector
         }
     }
 
-    public static boolean checkJarVersion (String filename, ClassVersion version)
+    public static boolean checkJarVersion (String filename, ClassVersion version) throws PVTException
     {
         JarFile jar;
         try

@@ -17,8 +17,8 @@
 package org.jboss.pvt.harness.rules;
 
 import org.apache.commons.io.FileUtils;
-import org.jboss.pvt.harness.PVTException;
-import org.jboss.pvt.harness.ProductSupport;
+import org.jboss.pvt.harness.exception.PVTException;
+import org.jboss.pvt.harness.utils.ProductSupport;
 import org.junit.rules.ExternalResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,10 +41,10 @@ public class ParameterHandler extends ExternalResource
     private File distributionZip;
 
     @Override
-    protected void before ()
+    protected void before () throws Exception
     {
         distribution = System.getProperty( "DISTRIBUTION_ZIP" );
-        mavenRepo = System.getProperty( "MAVEN_REPO_ZIP" );
+        mavenRepo = System.getProperty( "MAVEN_REPO_ZIP", "" );
         product = ProductSupport.valueOf( System.getProperty( "PRODUCT", "ALL" ) );
 
         logger.debug( "Established distribution {}, maven repository {}, and product of {}", distribution, mavenRepo, product );
@@ -63,7 +63,17 @@ public class ParameterHandler extends ExternalResource
         return distributionZip;
     }
 
-    private void downloadZips()
+    public File getDistributionDirectory()
+    {
+        return distributionZip;
+    }
+
+    public File getRepositoryDirectory()
+    {
+        return new File (mavenRepo); // TODO: Implement repository and distribution zip handling and unzipped.
+    }
+
+    private void downloadZips() throws PVTException
     {
         if ( distributionZip != null && distributionZip.exists() )
         {

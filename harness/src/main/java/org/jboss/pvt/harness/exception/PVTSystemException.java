@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 
-package org.jboss.pvt.harness;
-
-import java.io.FileNotFoundException;
+package org.jboss.pvt.harness.exception;
 
 /**
  * Created by rnc on 29/07/16.
  */
-public class PVTException extends RuntimeException
+public class PVTSystemException
+                extends RuntimeException
 {
-    public PVTException( String s )
+    public PVTSystemException( String s )
     {
         super (s);
     }
 
-    public PVTException( String s, Exception e )
+    public PVTSystemException( String s, Exception e )
     {
         super (s, e);
     }

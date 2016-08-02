@@ -70,6 +70,7 @@ public abstract class AbstractJarDigestSignTest {
             }
         }
 
+
         Assert.assertTrue(signed == mustSigned());
     }
 
