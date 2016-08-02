@@ -10,6 +10,8 @@ import java.util.Collection;
  * This job verifies that all jars in the maven repo zip are built from source and in Mead
  * https://jenkins.mw.lab.eng.bos.redhat.com/hudson/view/EAP7/view/EAP7-Prod/job/jboss-eap-7.0.x-handoff-repository-maven-check-check-productized-files
  * Created by yyang on 7/29/16.
+ *
+ * https://jenkins.mw.lab.eng.bos.redhat.com/hudson/view/EAP7/view/EAP7-Prod/job/jboss-eap-7.0.x-handoff-repository-maven-check-check-productized-files/configure
  */
 public abstract class AbstractCheckRepoJarsProductized {
 
