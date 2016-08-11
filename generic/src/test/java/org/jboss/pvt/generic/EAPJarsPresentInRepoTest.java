@@ -16,11 +16,9 @@
 
 package org.jboss.pvt.generic;
 
-import org.jboss.pvt.harness.ProductJarsPresentInRepo;
 import org.jboss.pvt.harness.exception.PVTException;
-import org.jboss.pvt.harness.rules.ParameterHandler;
+import org.jboss.pvt.harness.validators.ProductJarsPresentInRepo;
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -32,10 +30,7 @@ import static org.junit.Assert.assertTrue;
 @Category({EAP7.class, EAP6.class})
 public class EAPJarsPresentInRepoTest
 {
-    @ClassRule
-    public static final ParameterHandler parameterHandler = new ParameterHandler();
-
-    private ProductJarsPresentInRepo pjp = new ProductJarsPresentInRepo( parameterHandler );
+    private ProductJarsPresentInRepo pjp = new ProductJarsPresentInRepo( );
 
     @Before
     public void setupBefore()

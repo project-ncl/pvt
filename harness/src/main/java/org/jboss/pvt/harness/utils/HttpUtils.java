@@ -17,7 +17,6 @@
 package org.jboss.pvt.harness.utils;
 
 import org.apache.commons.io.IOUtils;
-import org.jboss.pvt.harness.rules.ParameterHandler;
 
 import java.io.FileOutputStream;
 import java.io.InputStream;

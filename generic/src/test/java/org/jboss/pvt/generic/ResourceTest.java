@@ -16,15 +16,20 @@
 
 package org.jboss.pvt.generic;
 
-import org.jboss.pvt.harness.rules.ParameterHandler;
+import org.jboss.pvt.harness.configuration.ParameterHandler;
 import org.jboss.pvt.harness.utils.ZipUtils;
+import org.jboss.pvt.harness.validators.ProductJarsPresentInRepo;
+import org.jboss.pvt.harness.validators.Validator;
 import org.junit.Assert;
-import org.junit.ClassRule;
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import java.io.File;
+
+import static org.jboss.pvt.harness.validators.Validator.handler;
+import static org.junit.Assert.assertTrue;
 
 /**
  * ResourceTest should be on the first one of the test suite, to test the sources of EAP are accessable
@@ -34,8 +39,18 @@ import java.io.File;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ResourceTest
 {
-    @ClassRule
-    public static final ParameterHandler parameterHandler = new ParameterHandler();
+    private ParameterHandler parameterHandler;
+
+    @Before
+    public void setupBefore()
+    {
+        ParameterHandler h = new ProductJarsPresentInRepo().getParameterHandler();
+        if ( parameterHandler != null )
+        {
+            assertTrue ( h == parameterHandler);
+        }
+        parameterHandler = h;
+    }
 
     @Test
     public void testConfiguration()
@@ -45,7 +60,7 @@ public class ResourceTest
 
     @Test
     public void testDownload1() throws Exception{
-        Assert.assertTrue( parameterHandler.getDistribution().exists() );
+        assertTrue( parameterHandler.getDistribution().exists() );
 
 /*
         logger.info("Download EAP zip: " + EAP7TestSuite.EAPTestConfig.getInstance().getEapZipUrl());
@@ -61,7 +76,7 @@ public class ResourceTest
     @Test
     public void testDownload2() throws Exception{
         // We want to ensure it doesn't download again.
-        Assert.assertTrue( parameterHandler.getDistribution().exists() );
+        assertTrue( parameterHandler.getDistribution().exists() );
         /*
         logger.info("Download EAP zip: " + EAP7TestSuite.EAPTestConfig.getInstance().getEapZipUrl());
         HttpUtils.httpDownload(EAP7TestSuite.EAPTestConfig.getInstance().getEapZipUrl());
@@ -85,7 +100,7 @@ public class ResourceTest
         File repoFile = new File( EAP7TestSuite.EAPTestConfig.getInstance().getRepoZipName());
         */
         File repoFile = parameterHandler.getDistribution();
-        Assert.assertTrue(repoFile.exists());
+        assertTrue(repoFile.exists());
         ZipUtils.unzip(repoFile);
     }
 }

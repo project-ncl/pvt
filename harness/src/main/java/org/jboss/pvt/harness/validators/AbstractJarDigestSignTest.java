@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package org.jboss.pvt.harness;
+package org.jboss.pvt.harness.validators;
 
 import org.apache.commons.io.IOUtils;
+import org.jboss.pvt.harness.exception.PVTException;
 import org.jboss.pvt.harness.utils.DirUtils;
-import org.junit.Assert;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +38,6 @@ public abstract class AbstractJarDigestSignTest {
 
     private final Logger logger = LoggerFactory.getLogger( getClass() );
 
-    @Test
     public void testSigned() throws Exception {
         File eapDir = getRootDir();
 
@@ -70,8 +68,10 @@ public abstract class AbstractJarDigestSignTest {
             }
         }
 
-
-        Assert.assertTrue(signed == mustSigned());
+        if (signed != mustSigned() )
+        {
+            throw new PVTException( "" );
+        }
     }
 
     /**

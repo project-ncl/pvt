@@ -1,4 +1,4 @@
-package org.jboss.pvt.harness;
+package org.jboss.pvt.harness.validators;
 
 import org.jboss.pvt.harness.utils.DirUtils;
 

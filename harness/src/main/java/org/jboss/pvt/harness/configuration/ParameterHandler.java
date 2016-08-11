@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package org.jboss.pvt.harness.rules;
+package org.jboss.pvt.harness.configuration;
 
 import org.apache.commons.io.FileUtils;
-import org.jboss.pvt.harness.exception.PVTException;
+import org.jboss.pvt.harness.exception.PVTSystemException;
 import org.jboss.pvt.harness.utils.ProductSupport;
-import org.junit.rules.ExternalResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +29,7 @@ import java.net.URL;
 /**
  * Created by rnc on 28/07/16.
  */
-public class ParameterHandler extends ExternalResource
+public class ParameterHandler
 {
     private Logger logger = LoggerFactory.getLogger( getClass() );
 
@@ -40,23 +39,16 @@ public class ParameterHandler extends ExternalResource
 
     private File distributionZip;
 
-    @Override
-    protected void before () throws Exception
+    public ParameterHandler ()
     {
         distribution = System.getProperty( "DISTRIBUTION_ZIP" );
         mavenRepo = System.getProperty( "MAVEN_REPO_ZIP", "" );
         product = ProductSupport.valueOf( System.getProperty( "PRODUCT", "ALL" ) );
 
         logger.debug( "Established distribution {}, maven repository {}, and product of {}", distribution, mavenRepo, product );
-
         downloadZips();
     }
 
-    @Override
-    protected void after()
-    {
-
-    }
 
     public File getDistribution()
     {
@@ -73,32 +65,43 @@ public class ParameterHandler extends ExternalResource
         return new File (mavenRepo); // TODO: Implement repository and distribution zip handling and unzipped.
     }
 
-    private void downloadZips() throws PVTException
+    private void downloadZips()
     {
-        if ( distributionZip != null && distributionZip.exists() )
-        {
-            logger.warn ("Avoiding duplicate download of {} ", distribution);
-        }
         try
         {
             if ( distribution.startsWith( "http" ) )
             {
                 distributionZip = new File( System.getProperty( "basedir" ) + "/target/" + distribution.substring(
                                 distribution.lastIndexOf( "/" ) + 1 ) );
-                FileUtils.copyURLToFile( new URL( distribution ), distributionZip );
+                if ( distributionZip.exists() )
+                {
+                    logger.warn ("Avoiding duplicate download of {} ", distribution);
+                }
+                else
+                {
+                    logger.debug( "Copying URL {} to {}", distribution, distributionZip );
+                    FileUtils.copyURLToFile( new URL( distribution ), distributionZip );
+                }
             }
             else
             {
                 distributionZip = new File( System.getProperty( "basedir" ) + "/target/" + distribution.substring(
                                 distribution.lastIndexOf( "/" ) + 1 ) );
-                FileUtils.copyFile( new File( distribution ), distributionZip );
+                if ( distributionZip.exists() )
+                {
+                    logger.warn ("Avoiding duplicate download of {} ", distribution);
+                }
+                else
+                {
+                    FileUtils.copyFile( new File( distribution ), distributionZip );
+                }
             }
             logger.debug ( "Create distribution {} ", distributionZip );
         }
         catch ( IOException e )
         {
             logger.error( "Caught ", e );
-            throw new PVTException( "Caught exception processing downloads: " + e );
+            throw new PVTSystemException( "Caught exception processing downloads: " + e );
         }
     }
 }

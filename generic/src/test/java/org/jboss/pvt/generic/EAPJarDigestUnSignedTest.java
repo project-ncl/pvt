@@ -16,7 +16,7 @@
 
 package org.jboss.pvt.generic;
 
-import org.jboss.pvt.harness.AbstractJarDigestSignTest;
+import org.jboss.pvt.harness.validators.AbstractJarDigestSignTest;
 import org.junit.Ignore;
 import org.junit.experimental.categories.Category;
 

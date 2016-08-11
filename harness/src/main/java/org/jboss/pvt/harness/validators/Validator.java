@@ -1,37 +1,28 @@
 package org.jboss.pvt.harness.validators;
 
 import org.jboss.pvt.harness.exception.PVTException;
-import org.jboss.pvt.harness.exception.PVTSystemException;
-import org.jboss.pvt.harness.rules.ParameterHandler;
+import org.jboss.pvt.harness.configuration.ParameterHandler;
 
 /**
  * Created by rnc on 02/08/16.
  */
-public abstract class Validator<T>
+public interface Validator<T>
 {
-    private ParameterHandler handler;
-
-    public Validator (ParameterHandler handler)
-    {
-        this.handler = handler;
-    }
+    ParameterHandler handler = new ParameterHandler();
 
     /**
      * Validation logic that should be applied.
      * @return true if it validates successfully.
      * @throws PVTException if an error occurs.
      */
-    public abstract boolean validate() throws PVTException;
+    boolean validate() throws PVTException;
 
     /**
      * @return return the current ParameterHandler.
      */
-    public ParameterHandler getParameterHandler()
+    default ParameterHandler getParameterHandler()
     {
-        if ( handler == null)
-        {
-            throw new PVTSystemException( "Null parameter handler" );
-        }
+        System.out.println ("### Using instance " + System.identityHashCode( handler ));
         return handler;
     }
 
@@ -40,7 +31,7 @@ public abstract class Validator<T>
      * // TODO : Define api here.
      * @param filtering
      */
-    public abstract boolean filter (T... filtering);
+    boolean filter (T... filtering);
 
-    public abstract void initialiseFilter (String[] filters);
+    void initialiseFilter (String[] filters);
 }

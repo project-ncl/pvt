@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package org.jboss.pvt.harness;
+package org.jboss.pvt.harness.validators;
 
 import org.jboss.pvt.harness.exception.PVTException;
 import org.jboss.pvt.harness.exception.PVTSystemException;
-import org.jboss.pvt.harness.rules.ParameterHandler;
 import org.jboss.pvt.harness.utils.DirUtils;
-import org.jboss.pvt.harness.validators.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,18 +33,12 @@ import java.util.List;
  *
  * TODO: Add description of the test
  */
-public final class ProductJarsPresentInRepo extends Validator<File>
+public final class ProductJarsPresentInRepo implements Validator<File>
 {
     //Ref: https://jenkins.mw.lab.eng.bos.redhat.com/hudson/view/EAP7/view/EAP7-Prod/job/jboss-eap-7.0.x-handoff-repository-maven-check-EAP-jars-in-repo/
     private final Logger logger = LoggerFactory.getLogger( getClass() );
 
     private String[] filters = new String[]{};
-
-    public ProductJarsPresentInRepo( ParameterHandler handler)
-    {
-        super( handler );
-    }
-
 
     /**
      * Validation logic that should be applied.

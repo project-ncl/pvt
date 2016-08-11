@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -41,5 +42,14 @@ public class ClassVersionInspectorTest
         FileUtils.copyURLToFile( new URL( "http://central.maven.org/maven2/commons-test/commons/test-0.1/commons-test-0.1.jar"), target);
 
         assertTrue( ClassVersionInspector.checkJarVersion( target.toString(), ClassVersion.JAVA_14 ) );
+    }
+
+    @Test
+    public void checkWrongJarVersionTest() throws IOException, PVTException
+    {
+        File target = tf.newFile();
+        FileUtils.copyURLToFile( new URL( "http://central.maven.org/maven2/commons-test/commons/test-0.1/commons-test-0.1.jar"), target);
+
+        assertFalse( ClassVersionInspector.checkJarVersion( target.toString(), ClassVersion.JAVA_15 ) );
     }
 }
