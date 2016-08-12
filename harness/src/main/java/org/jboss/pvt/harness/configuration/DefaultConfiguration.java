@@ -25,11 +25,12 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 
 /**
  * Created by rnc on 28/07/16.
  */
-public class ParameterHandler
+public class DefaultConfiguration implements PVTConfiguration
 {
     private Logger logger = LoggerFactory.getLogger( getClass() );
 
@@ -39,7 +40,7 @@ public class ParameterHandler
 
     private File distributionZip;
 
-    public ParameterHandler ()
+    public DefaultConfiguration()
     {
         distribution = System.getProperty( "DISTRIBUTION_ZIP" );
         mavenRepo = System.getProperty( "MAVEN_REPO_ZIP", "" );
@@ -63,6 +64,19 @@ public class ParameterHandler
     public File getRepositoryDirectory()
     {
         return new File (mavenRepo); // TODO: Implement repository and distribution zip handling and unzipped.
+    }
+
+    @Override
+    public Properties getAllConfiguration()
+    {
+        throw new PVTSystemException( "NYI" );
+    }
+
+    @Override
+    public String[] getTestFilter( String testName )
+    {
+        throw new PVTSystemException( "NYI" );
+//        return new String[0];
     }
 
     private void downloadZips()

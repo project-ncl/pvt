@@ -48,9 +48,15 @@
       <artifactId>slf4j-api</artifactId>
       <scope>compile</scope>
     </dependency>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.cschoell</groupId>
+      <artifactId>junit-dynamicsuite</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -61,6 +67,9 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
+          <includes>
+            <include>**/GenericTestSuite.class</include>
+          </includes>
           <systemPropertyVariables>
             <DISTRIBUTION_ZIP>${DISTRIBUTION_ZIP}</DISTRIBUTION_ZIP>
           </systemPropertyVariables>

@@ -31,7 +31,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         ResourceTest.class,
         EAPJarDigestUnSignedTest.class,
-        EAPJarsPresentInRepoTest.class
+        JarsPresentInRepoTest.class
 })
 public class EAP7TestSuite {
 
