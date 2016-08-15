@@ -16,6 +16,7 @@
 
 package org.jboss.pvt.harness.validators;
 
+import org.jboss.pvt.harness.configuration.PVTConfiguration;
 import org.jboss.pvt.harness.exception.PVTException;
 import org.jboss.pvt.harness.exception.PVTSystemException;
 import org.jboss.pvt.harness.utils.DirUtils;
@@ -33,12 +34,19 @@ import java.util.List;
  *
  * TODO: Add description of the test
  */
-public final class ProductJarsPresentInRepo implements Validator<File>
+public final class ProductJarsPresentInRepo implements Validator
 {
     //Ref: https://jenkins.mw.lab.eng.bos.redhat.com/hudson/view/EAP7/view/EAP7-Prod/job/jboss-eap-7.0.x-handoff-repository-maven-check-EAP-jars-in-repo/
     private final Logger logger = LoggerFactory.getLogger( getClass() );
 
     private String[] filters = new String[]{};
+
+    private final PVTConfiguration configuration;
+
+    public ProductJarsPresentInRepo( PVTConfiguration configuration )
+    {
+        this.configuration = configuration;
+    }
 
     /**
      * Validation logic that should be applied.
@@ -52,13 +60,13 @@ public final class ProductJarsPresentInRepo implements Validator<File>
 
         List<File> notPresentJars = new ArrayList<File>();
 
-        Collection<File> productJars =  DirUtils.listFilesRecursively( getParameterHandler().getDistributionDirectory(), new FileFilter() {
+        Collection<File> productJars =  DirUtils.listFilesRecursively( getConfiguration().getDistributionDirectory(), new FileFilter() {
             public boolean accept(File pathname) {
                 return pathname.isFile() && pathname.getName().endsWith(".jar");
             }
         });
 
-        Collection<File> repoJars =  DirUtils.listFilesRecursively(getParameterHandler().getRepositoryDirectory(), new FileFilter() {
+        Collection<File> repoJars =  DirUtils.listFilesRecursively(getConfiguration().getRepositoryDirectory(), new FileFilter() {
             public boolean accept(File pathname) {
                 return pathname.isFile() && pathname.getName().endsWith(".jar");
             }
@@ -88,11 +96,16 @@ public final class ProductJarsPresentInRepo implements Validator<File>
         return success;
     }
 
+    @Override
+    public PVTConfiguration getConfiguration()
+    {
+        return configuration;
+    }
+
     /**
      * Apply a set of filters to a validator
      * // TODO : Define api here.
      */
-    @Override
     public boolean filter( File... file) {
         if ( file.length != 1 )
         {

@@ -19,29 +19,30 @@ package org.jboss.pvt.generic;
 import org.jboss.pvt.harness.exception.PVTException;
 import org.jboss.pvt.harness.validators.ProductJarsPresentInRepo;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.rules.TestName;
 
 import static org.junit.Assert.assertTrue;
 
 /**
  * Created by yyang on 7/11/16.
  */
-@Category({EAP7.class, EAP6.class})
-public class EAPJarsPresentInRepoTest
+public class JarsPresentInRepoTest
 {
-    private ProductJarsPresentInRepo pjp = new ProductJarsPresentInRepo( );
+    @Rule
+    public TestName testName = new TestName();
 
-    @Before
-    public void setupBefore()
-    {
-        // TODO: Should possibly come from a config file?
-        pjp.initialiseFilter(new String[]{"jboss-modules.jar", "jboss-cli-client.jar", "launcher.jar", "jboss-client.jar", "jboss-seam-int.jar", "-jandex.jar"} );
-    }
+    private ProductJarsPresentInRepo pjp = new ProductJarsPresentInRepo( GenericTestSuite.configuration );
 
     @Test
     public void test1() throws PVTException
     {
+        // TODO: Should possibly come from a config file?
+        // This should really be
+        // pjp.initialiseFilter( pjp.getConfiguration().getTestFilter( testName.getMethodName() ) );
+        pjp.initialiseFilter(new String[]{"jboss-modules.jar", "jboss-cli-client.jar", "launcher.jar", "jboss-client.jar", "jboss-seam-int.jar", "-jandex.jar"} );
+
         assertTrue ( pjp.validate() );
     }
 }
