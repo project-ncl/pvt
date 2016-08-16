@@ -30,7 +30,7 @@ import java.util.Properties;
 /**
  * Created by rnc on 28/07/16.
  */
-public class DefaultConfiguration implements PVTConfiguration
+public class DefaultConfiguration extends PVTConfiguration
 {
     private Logger logger = LoggerFactory.getLogger( getClass() );
 
@@ -70,13 +70,6 @@ public class DefaultConfiguration implements PVTConfiguration
     public Properties getAllConfiguration()
     {
         throw new PVTSystemException( "NYI" );
-    }
-
-    @Override
-    public String[] getTestFilter( String testName )
-    {
-        throw new PVTSystemException( "NYI" );
-//        return new String[0];
     }
 
     private void downloadZips()

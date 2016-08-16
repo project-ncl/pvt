@@ -16,11 +16,17 @@
 
 package org.jboss.pvt.generic;
 
-import org.jboss.pvt.harness.validators.AbstractJarDigestSignTest;
+import org.jboss.pvt.harness.configuration.PVTConfiguration;
+import org.jboss.pvt.harness.exception.PVTException;
+import org.jboss.pvt.harness.validators.JarDigestSignValidator;
+import org.jboss.pvt.harness.validators.Validator;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import java.io.File;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * This job checks for absence of sha1 digests in manifest, that cause performance degradation in certain JVMs
@@ -29,15 +35,12 @@ import java.io.File;
  */
 @Ignore //TODO : Remove Junit categories and make test generic.
 @Category({EAP7.class, EAP6.class})
-public class EAPJarDigestUnSignedTest extends AbstractJarDigestSignTest {
+public class JarDigestSignTest {
 
-    @Override
-    protected File getRootDir() {
-        return new File(EAP7TestSuite.getTestConfig().getEapDir());
+    private JarDigestSignValidator validator = new JarDigestSignValidator();
+
+    @Test
+    public void testSign() throws PVTException{
+        assertTrue ( validator.validate(GenericTestSuite.configuration).getBooleanResult());
     }
-
-    protected boolean mustSigned(){
-        return false;
-    }
-
 }

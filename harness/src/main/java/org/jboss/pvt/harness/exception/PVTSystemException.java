@@ -31,4 +31,8 @@ public class PVTSystemException
     {
         super (s, e);
     }
+
+    public PVTSystemException(Throwable cause) {
+        super(cause);
+    }
 }

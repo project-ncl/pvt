@@ -12,7 +12,7 @@ import java.util.Properties;
 /**
  * Created by rnc on 12/08/16.
  */
-public class TestConfiguration implements PVTConfiguration, TestRule
+public class TestConfiguration extends PVTConfiguration implements TestRule
 {
 
     // TODO: extend ExternalResource to make a JUnit Rule and setup e.g. nested temporary file structure
@@ -42,12 +42,6 @@ public class TestConfiguration implements PVTConfiguration, TestRule
     public Properties getAllConfiguration()
     {
         return null;
-    }
-
-    @Override
-    public String[] getTestFilter( String testName )
-    {
-        return new String[0];
     }
 
     /**

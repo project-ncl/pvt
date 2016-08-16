@@ -21,19 +21,18 @@ public class ProductJarsPresentInRepoTest
     @Rule
     public TestName testName = new TestName();
 
-    private ProductJarsPresentInRepo pjp;
+    private ProductJarsPresentInRepoValidator pjp;
 
     @Before
     public void setUp() throws Exception
     {
-        pjp = new ProductJarsPresentInRepo( tc );
+        pjp = new ProductJarsPresentInRepoValidator();
     }
 
     @Test
     public void validate() throws Exception
     {
-        pjp.initialiseFilter( ( tc.getTestFilter( testName.getMethodName() ) ) );
-        assertTrue( pjp.validate() );
+        assertTrue( pjp.validate(tc).getBooleanResult() );
     }
 
     @Test

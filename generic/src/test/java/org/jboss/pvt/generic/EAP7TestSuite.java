@@ -30,7 +30,7 @@ import org.junit.runners.Suite;
 @Categories.IncludeCategory(EAP7.class)
 @Suite.SuiteClasses({
         ResourceTest.class,
-        EAPJarDigestUnSignedTest.class,
+        JarDigestSignTest.class,
         JarsPresentInRepoTest.class
 })
 public class EAP7TestSuite {
