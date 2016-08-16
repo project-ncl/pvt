@@ -34,19 +34,11 @@ import java.util.List;
  *
  * TODO: Add description of the test
  */
-public final class ProductJarsPresentInRepo implements Validator
+public final class ProductJarsPresentInRepoValidator implements Validator
 {
     //Ref: https://jenkins.mw.lab.eng.bos.redhat.com/hudson/view/EAP7/view/EAP7-Prod/job/jboss-eap-7.0.x-handoff-repository-maven-check-EAP-jars-in-repo/
     private final Logger logger = LoggerFactory.getLogger( getClass() );
 
-    private String[] filters = new String[]{};
-
-    private final PVTConfiguration configuration;
-
-    public ProductJarsPresentInRepo( PVTConfiguration configuration )
-    {
-        this.configuration = configuration;
-    }
 
     /**
      * Validation logic that should be applied.
@@ -54,19 +46,19 @@ public final class ProductJarsPresentInRepo implements Validator
      * @throws PVTException if an error occurs.
      */
     @Override
-    public boolean validate() throws PVTException
+    public Result validate(PVTConfiguration pvtConfiguration) throws PVTException
     {
         boolean success = false;
 
         List<File> notPresentJars = new ArrayList<File>();
 
-        Collection<File> productJars =  DirUtils.listFilesRecursively( getConfiguration().getDistributionDirectory(), new FileFilter() {
+        Collection<File> productJars =  DirUtils.listFilesRecursively( pvtConfiguration.getDistributionDirectory(), new FileFilter() {
             public boolean accept(File pathname) {
                 return pathname.isFile() && pathname.getName().endsWith(".jar");
             }
         });
 
-        Collection<File> repoJars =  DirUtils.listFilesRecursively(getConfiguration().getRepositoryDirectory(), new FileFilter() {
+        Collection<File> repoJars =  DirUtils.listFilesRecursively(pvtConfiguration.getRepositoryDirectory(), new FileFilter() {
             public boolean accept(File pathname) {
                 return pathname.isFile() && pathname.getName().endsWith(".jar");
             }
@@ -74,7 +66,7 @@ public final class ProductJarsPresentInRepo implements Validator
 
 
         for(File productJar : productJars) {
-            if( filter( productJar)){
+            if( filter(pvtConfiguration, productJar)){
                 logger.info("Ignore jar: " + productJar);
                 continue;
             }
@@ -93,36 +85,24 @@ public final class ProductJarsPresentInRepo implements Validator
         if(notPresentJars.isEmpty()) {
             success = true;
         }
-        return success;
+        return success ? Result.TRUE : Result.FALSE;
     }
 
-    @Override
-    public PVTConfiguration getConfiguration()
-    {
-        return configuration;
-    }
 
     /**
      * Apply a set of filters to a validator
      * // TODO : Define api here.
      */
-    public boolean filter( File... file) {
+    public boolean filter(PVTConfiguration pvtConfiguration, File... file) {
         if ( file.length != 1 )
         {
             throw new PVTSystemException( "Unexpected length of arguments for this filter" );
         }
-        for(String filter : filters) {
+        for(String filter : pvtConfiguration.getArrayConfiguration(this.getClass(), "filter")) {
             if(file[0].getPath().contains(filter)) {
                 return true;
             }
         }
         return false;
     }
-
-    @Override
-    public void initialiseFilter(String[] filters)
-    {
-        this.filters = filters;
-    }
-
 }

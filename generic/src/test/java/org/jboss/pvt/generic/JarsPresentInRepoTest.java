@@ -17,8 +17,7 @@
 package org.jboss.pvt.generic;
 
 import org.jboss.pvt.harness.exception.PVTException;
-import org.jboss.pvt.harness.validators.ProductJarsPresentInRepo;
-import org.junit.Before;
+import org.jboss.pvt.harness.validators.ProductJarsPresentInRepoValidator;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -33,7 +32,7 @@ public class JarsPresentInRepoTest
     @Rule
     public TestName testName = new TestName();
 
-    private ProductJarsPresentInRepo pjp = new ProductJarsPresentInRepo( GenericTestSuite.configuration );
+    private ProductJarsPresentInRepoValidator pjp = new ProductJarsPresentInRepoValidator();
 
     @Test
     public void test1() throws PVTException
@@ -41,8 +40,8 @@ public class JarsPresentInRepoTest
         // TODO: Should possibly come from a config file?
         // This should really be
         // pjp.initialiseFilter( pjp.getConfiguration().getTestFilter( testName.getMethodName() ) );
-        pjp.initialiseFilter(new String[]{"jboss-modules.jar", "jboss-cli-client.jar", "launcher.jar", "jboss-client.jar", "jboss-seam-int.jar", "-jandex.jar"} );
+//        pjp.initialiseFilter(new String[]{"jboss-modules.jar", "jboss-cli-client.jar", "launcher.jar", "jboss-client.jar", "jboss-seam-int.jar", "-jandex.jar"} );
 
-        assertTrue ( pjp.validate() );
+        assertTrue ( pjp.validate(GenericTestSuite.configuration).getBooleanResult() );
     }
 }
