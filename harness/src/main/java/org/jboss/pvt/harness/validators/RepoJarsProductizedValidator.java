@@ -3,6 +3,8 @@ package org.jboss.pvt.harness.validators;
 import org.jboss.pvt.harness.configuration.PVTConfiguration;
 import org.jboss.pvt.harness.exception.PVTException;
 import org.jboss.pvt.harness.utils.DirUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -18,6 +20,8 @@ import java.util.Collection;
  * http://git.app.eng.bos.redhat.com/git/jbossqe/eap-tests-scripts.git/tree/compare-maven-repo/check-maven-repo-for-productized-files.sh
  */
 public class RepoJarsProductizedValidator implements Validator {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     public Result validate(PVTConfiguration pvtConfiguration) throws PVTException {
@@ -53,8 +57,27 @@ public class RepoJarsProductizedValidator implements Validator {
             }
         }
 
-        //TODO: write report
+        logger.info("Productized: " + productized.size()
+                + ", NOT Productized all: " + notProductized_all.size()
+                + ", NOT Productized BOMs: " + notProductized_boms.size()
+                        + ", NOT Productized redhat-todo: " + notProductized_redhat_todo.size()
+                        + ", NOT Productized upstream: " + notProductized_upstream.size()
+
+        );
+        logger.info("Productized artifacts: " + collectionToString(productized));
+        logger.warn("NOT Productized artifacts all: " + collectionToString(notProductized));
+        logger.warn("NOT Productized BOMs: " + collectionToString(notProductized_boms));
+        logger.warn("NOT Productized redhat-todo: " + collectionToString(notProductized_redhat_todo));
+        logger.warn("NOT Productized upstream: " + collectionToString(notProductized_upstream));
+        //TODO: write report to file ???
         return notProductized.isEmpty() ? Result.TRUE : Result.FALSE;
     }
 
+    private String collectionToString(Collection<File> files){
+        StringBuffer sb = new StringBuffer();
+        for(File file: files) {
+            sb.append(file.getPath()).append("\n");
+        }
+        return sb.toString();
+    }
 }
