@@ -14,7 +14,8 @@ import java.io.File;
 public class JarDigestSignTest {
     @Rule
     public TemporaryFolder tf = new TemporaryFolder();
-    @ClassRule TestConfiguration pvtConfiguration = new TestConfiguration();
+    @ClassRule
+    public static TestConfiguration pvtConfiguration = new TestConfiguration();
 
     public JarDigestSignValidator test =  new JarDigestSignValidator();
 
