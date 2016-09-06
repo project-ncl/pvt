@@ -101,7 +101,7 @@ public class JarDigestSignValidator implements Validator{
      * If the jars must signed or not
      */
     protected boolean mustSigned(PVTConfiguration pvtConfiguration){
-        if(pvtConfiguration.getConfiguration(this.getClass(), "signed") != null){
+        if(pvtConfiguration.getConfiguration(this.getClass(), "sign") != null){
             return Boolean.valueOf(pvtConfiguration.getConfiguration(this.getClass(), "sign"));
         }
         else {

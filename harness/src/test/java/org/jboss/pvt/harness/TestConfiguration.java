@@ -41,7 +41,7 @@ public class TestConfiguration extends PVTConfiguration implements TestRule
     @Override
     public Properties getAllConfiguration()
     {
-        return null;
+        return new Properties();
     }
 
     /**
