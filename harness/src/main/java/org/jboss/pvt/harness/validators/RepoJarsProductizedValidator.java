@@ -24,7 +24,7 @@ public class RepoJarsProductizedValidator implements Validator {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
-    public Result validate(PVTConfiguration pvtConfiguration) throws PVTException {
+    public boolean validate( PVTConfiguration pvtConfiguration) throws PVTException {
 
         Collection<File> notProductized_all = DirUtils.listFilesRecursively(pvtConfiguration.getRepositoryDirectory(), new FileFilter() {
             public boolean accept(File pathname) {
@@ -70,7 +70,7 @@ public class RepoJarsProductizedValidator implements Validator {
         logger.warn("NOT Productized redhat-todo: " + collectionToString(notProductized_redhat_todo));
         logger.warn("NOT Productized upstream: " + collectionToString(notProductized_upstream));
         //TODO: write report to file ???
-        return notProductized.isEmpty() ? Result.TRUE : Result.FALSE;
+        return notProductized.isEmpty();
     }
 
     private String collectionToString(Collection<File> files){

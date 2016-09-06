@@ -46,7 +46,7 @@ public final class ProductJarsPresentInRepoValidator implements Validator
      * @throws PVTException if an error occurs.
      */
     @Override
-    public Result validate(PVTConfiguration pvtConfiguration) throws PVTException
+    public boolean validate( PVTConfiguration pvtConfiguration) throws PVTException
     {
         boolean success = false;
 
@@ -85,7 +85,7 @@ public final class ProductJarsPresentInRepoValidator implements Validator
         if(notPresentJars.isEmpty()) {
             success = true;
         }
-        return success ? Result.TRUE : Result.FALSE;
+        return success;
     }
 
 

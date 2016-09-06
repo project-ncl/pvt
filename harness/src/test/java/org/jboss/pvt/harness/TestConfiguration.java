@@ -1,7 +1,6 @@
 package org.jboss.pvt.harness;
 
-import org.jboss.pvt.harness.configuration.PVTConfiguration;
-import org.jboss.pvt.harness.exception.PVTSystemException;
+import org.jboss.pvt.harness.configuration.DefaultConfiguration;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
@@ -12,7 +11,7 @@ import java.util.Properties;
 /**
  * Created by rnc on 12/08/16.
  */
-public class TestConfiguration extends PVTConfiguration implements TestRule
+public class TestConfiguration extends DefaultConfiguration implements TestRule
 {
 
     // TODO: extend ExternalResource to make a JUnit Rule and setup e.g. nested temporary file structure
@@ -42,6 +41,17 @@ public class TestConfiguration extends PVTConfiguration implements TestRule
     public Properties getAllConfiguration()
     {
         return new Properties();
+    }
+
+    /**
+     * Return any filters from the configuration for the test.
+     * @param testName Name of the test.
+     * @return current set of filters.
+     */
+    @Override
+    public String[] getTestFilter( String testName )
+    {
+        return new String[0];
     }
 
     /**

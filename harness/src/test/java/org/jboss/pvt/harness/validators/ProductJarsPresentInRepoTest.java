@@ -8,7 +8,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by rnc on 12/08/16.
@@ -32,7 +32,7 @@ public class ProductJarsPresentInRepoTest
     @Test
     public void validate() throws Exception
     {
-        assertTrue( pjp.validate(tc).getBooleanResult() );
+        assertTrue( pjp.validate(tc) );
     }
 
     @Test
