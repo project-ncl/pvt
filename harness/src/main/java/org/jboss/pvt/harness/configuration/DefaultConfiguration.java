@@ -27,10 +27,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
 
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
+
 /**
  * Created by rnc on 28/07/16.
  */
-public class DefaultConfiguration extends PVTConfiguration
+public class DefaultConfiguration implements PVTConfiguration
 {
     private Logger logger = LoggerFactory.getLogger( getClass() );
 
@@ -69,7 +71,33 @@ public class DefaultConfiguration extends PVTConfiguration
     @Override
     public Properties getAllConfiguration()
     {
-        throw new PVTSystemException( "NYI" );
+        return new Properties(  );
+    }
+
+    @Override
+    public String[] getTestFilter( String testName )
+    {
+        return new String[0];
+    }
+
+    @Override
+    public String[] getArrayConfiguration(Class testClass, String key)
+    {
+        String res = getConfiguration( testClass, key );
+        if ( isNotEmpty (res) )
+        {
+            return res.split(",");
+        }
+        else
+        {
+            return new String[0];
+        }
+    }
+
+    @Override
+    public String getConfiguration(Class testClass, String key)
+    {
+        return getAllConfiguration().getProperty(testClass.getName() + "." + key);
     }
 
     private void downloadZips()

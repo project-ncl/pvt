@@ -42,6 +42,6 @@ public class JarsPresentInRepoTest
         // pjp.initialiseFilter( pjp.getConfiguration().getTestFilter( testName.getMethodName() ) );
 //        pjp.initialiseFilter(new String[]{"jboss-modules.jar", "jboss-cli-client.jar", "launcher.jar", "jboss-client.jar", "jboss-seam-int.jar", "-jandex.jar"} );
 
-        assertTrue ( pjp.validate(GenericTestSuite.configuration).getBooleanResult() );
+        assertTrue ( pjp.validate(GenericTestSuite.configuration) );
     }
 }

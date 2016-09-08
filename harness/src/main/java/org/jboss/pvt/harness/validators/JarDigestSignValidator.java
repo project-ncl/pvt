@@ -24,7 +24,11 @@ import org.jboss.pvt.harness.utils.DirUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.zip.ZipFile;
@@ -38,7 +42,7 @@ public class JarDigestSignValidator implements Validator{
     private final Logger logger = LoggerFactory.getLogger( getClass() );
 
     @Override
-    public Result validate(PVTConfiguration pvtConfiguration) throws PVTException {
+    public boolean validate( PVTConfiguration pvtConfiguration) throws PVTException {
         File eapDir = pvtConfiguration.getDistributionDirectory();
 
         Collection<File> jarFiles = DirUtils.listFilesRecursively( eapDir, new FileFilter() {
@@ -74,14 +78,7 @@ public class JarDigestSignValidator implements Validator{
             throw new PVTSystemException(e);
         }
 
-        if (signed != mustSigned(pvtConfiguration) )
-        {
-            return Result.FALSE;
-        }
-        else
-        {
-            return Result.TRUE;
-        }
+        return (signed == mustSigned(pvtConfiguration) );
     }
 
     /**

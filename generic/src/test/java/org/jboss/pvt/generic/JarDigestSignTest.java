@@ -16,15 +16,9 @@
 
 package org.jboss.pvt.generic;
 
-import org.jboss.pvt.harness.configuration.PVTConfiguration;
 import org.jboss.pvt.harness.exception.PVTException;
 import org.jboss.pvt.harness.validators.JarDigestSignValidator;
-import org.jboss.pvt.harness.validators.Validator;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import java.io.File;
 
 import static org.junit.Assert.assertTrue;
 
@@ -33,14 +27,12 @@ import static org.junit.Assert.assertTrue;
  * From version 7.0.0.ER7 job fails because of org/bouncycastle artifacts are digitally signed - this is correct. Other fails are real failures
  * Created by yyang on 7/11/16.
  */
-@Ignore //TODO : Remove Junit categories and make test generic.
-@Category({EAP7.class, EAP6.class})
 public class JarDigestSignTest {
 
     private JarDigestSignValidator validator = new JarDigestSignValidator();
 
     @Test
     public void testSign() throws PVTException{
-        assertTrue ( validator.validate(GenericTestSuite.configuration).getBooleanResult());
+        assertTrue ( validator.validate(GenericTestSuite.configuration) );
     }
 }
