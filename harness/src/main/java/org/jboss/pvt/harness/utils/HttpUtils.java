@@ -17,6 +17,8 @@
 package org.jboss.pvt.harness.utils;
 
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.net.URL;
@@ -26,12 +28,18 @@ import java.net.URL;
  */
 public class HttpUtils {
 
-    public static void httpDownload(String httpUrl) throws Exception {
+    private static Logger logger = LoggerFactory.getLogger(HttpUtils.class);
+
+
+    public static File httpDownload(String httpUrl) throws Exception {
         String filename = httpUrl.substring(httpUrl.lastIndexOf("/") + 1);
-        httpDownload(httpUrl, filename);
+        return httpDownload(httpUrl, filename);
     }
 
-    public static void httpDownload(String httpUrl,String saveFile) throws Exception {
-        FileUtils.copyURLToFile(new URL(httpUrl), new File(saveFile));
+    public static File httpDownload(String httpUrl,String saveFile) throws Exception {
+        File savedFile = new File(saveFile);
+        logger.info("Downloading " + httpUrl);
+        FileUtils.copyURLToFile(new URL(httpUrl), savedFile);
+        return  savedFile;
     }
 }

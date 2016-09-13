@@ -63,6 +63,11 @@ public class DefaultConfiguration implements PVTConfiguration
         return distributionZip;
     }
 
+    @Override
+    public File getRepository() {
+        return null;
+    }
+
     public File getRepositoryDirectory()
     {
         return new File (mavenRepo); // TODO: Implement repository and distribution zip handling and unzipped.
@@ -98,6 +103,12 @@ public class DefaultConfiguration implements PVTConfiguration
     public String getConfiguration(Class testClass, String key)
     {
         return getAllConfiguration().getProperty(testClass.getName() + "." + key);
+    }
+
+    @Override
+    public String getConfiguration(String key)
+    {
+        return getAllConfiguration().getProperty(key);
     }
 
     private void downloadZips()
