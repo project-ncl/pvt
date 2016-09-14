@@ -38,7 +38,7 @@ public class HttpUtils {
 
     public static File httpDownload(String httpUrl,String saveFile) throws Exception {
         File savedFile = new File(saveFile);
-        logger.info("Downloading " + httpUrl);
+        logger.info("Downloading {}", httpUrl);
         FileUtils.copyURLToFile(new URL(httpUrl), savedFile);
         return  savedFile;
     }

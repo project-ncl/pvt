@@ -1,6 +1,5 @@
 package org.jboss.pvt.harness;
 
-import org.jboss.pvt.harness.configuration.DefaultConfiguration;
 import org.jboss.pvt.harness.configuration.PVTConfiguration;
 import org.jboss.pvt.harness.exception.PVTSystemException;
 import org.jboss.pvt.harness.utils.HttpUtils;
@@ -27,7 +26,8 @@ public class TestConfiguration implements PVTConfiguration, TestRule
     // zip.
 
 //    public static String baseDir = "dist";
-    public static final String PROPERTIES_CONFIG_FILE = "pvt-eap7.properties";
+    public static final String TEST_CONFIG_FILE_KEY = "TEST_CONFIG_FILE";
+    public static final String TEST_STAGING_SERVER_KEY = "TEST_STAGING_SERVER";
 
     private File distribution;
     private File distributionDirectory;
@@ -138,11 +138,11 @@ public class TestConfiguration implements PVTConfiguration, TestRule
     protected void before() throws Throwable {
         // load properties
         if(properties.isEmpty()) {
-
+            String testFilename = System.getProperty(TEST_CONFIG_FILE_KEY);
             try {
-                properties.load(new FileReader(PROPERTIES_CONFIG_FILE));
+                properties.load(new FileReader(testFilename));
             } catch (Exception e) {
-                throw new PVTSystemException("File to load config file: " + PROPERTIES_CONFIG_FILE, e);
+                throw new PVTSystemException("File to load config file: " + testFilename, e);
             }
         }
         prepareResources();
@@ -156,9 +156,10 @@ public class TestConfiguration implements PVTConfiguration, TestRule
     }
 
     protected synchronized void prepareResources() throws Exception{
+        String stagingServer = System.getProperty(TEST_STAGING_SERVER_KEY);
 
         if(distribution == null) {
-            String distributionUrl = getConfiguration(PRODUCT_ZIP_URL_KEY);
+            String distributionUrl = getConfiguration(PRODUCT_ZIP_URL_KEY).replace("{}", stagingServer);
             String filename = distributionUrl.substring(distributionUrl.lastIndexOf("/") + 1);
             distribution = new File(filename);
             if(!distribution.exists()) {
@@ -173,7 +174,7 @@ public class TestConfiguration implements PVTConfiguration, TestRule
         }
 
         if(repository == null) {
-            String repoUrl = getConfiguration(REPO_ZIP_URL_KEY);
+            String repoUrl = getConfiguration(REPO_ZIP_URL_KEY).replace("{}", stagingServer);
             String filename = repoUrl.substring(repoUrl.lastIndexOf("/") + 1);
             repository = new File(filename);
             if(!repository.exists()) {
