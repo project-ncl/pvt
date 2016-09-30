@@ -1,11 +1,12 @@
 package org.jboss.pvt.harness.validators;
 
-import org.jboss.pvt.harness.TestConfiguration;
+import org.jboss.pvt.harness.configuration.DefaultConfiguration;
+import org.jboss.pvt.harness.configuration.PVTConfiguration;
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.contrib.java.lang.system.ProvideSystemProperty;
 import org.junit.rules.TestName;
 
 import static org.junit.Assert.assertTrue;
@@ -15,17 +16,21 @@ import static org.junit.Assert.assertTrue;
  */
 public class ProductJarsPresentInRepoTest
 {
-    @ClassRule
-    public static TestConfiguration tc = new TestConfiguration();
+    @Rule
+    public final ProvideSystemProperty provideSystemProperty  = new ProvideSystemProperty
+                    ( "PVTCFG", this.getClass().getResource( "/pvt.yaml").getFile().toString());
 
     @Rule
     public TestName testName = new TestName();
 
     private ProductJarsPresentInRepoValidator pjp;
 
+    public PVTConfiguration tc;
+
     @Before
     public void setUp() throws Exception
     {
+        tc = new DefaultConfiguration();
         pjp = new ProductJarsPresentInRepoValidator();
     }
 

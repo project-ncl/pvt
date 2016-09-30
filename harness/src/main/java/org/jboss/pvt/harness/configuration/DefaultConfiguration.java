@@ -78,7 +78,6 @@ public class DefaultConfiguration implements PVTConfiguration
                 {
                     logger.debug( "Unable to find file {} ", file );
                     throw new PVTSystemException( "Unable to load yaml file." );
-                    //                config = new Configuration();
                 }
             }
             catch ( FileNotFoundException e )
