@@ -1,30 +1,25 @@
 package org.jboss.pvt.harness.configuration;
 
+import org.jboss.pvt.harness.configuration.pojo.Product;
+import org.jboss.pvt.harness.configuration.pojo.TestCase;
+
 import java.io.File;
-import java.util.Properties;
+import java.util.List;
 
 /**
  * Created by rnc on 12/08/16.
  */
 public interface PVTConfiguration
 {
-    File getDistribution();
+    Product getProduct();
 
     File getDistributionDirectory();
+    
+    File getSourceDistribution();
 
-    File getRepositoryDirectory();
+    List<File> getAuxilliaryZips();
 
-    //TODO: Define type of configuration (Properties, JSON or YAML).
-    Properties getAllConfiguration();
+    TestCase getTestCase ( String key);
 
-    /**
-     * Return any filters from the configuration for the test.
-     * @param testName Name of the test.
-     * @return current set of filters.
-     */
-    String[] getTestFilter (String testName);
-
-    String[] getArrayConfiguration(Class testClass, String key);
-
-    String getConfiguration(Class testClass, String key);
+    File getMavenRepository();
 }

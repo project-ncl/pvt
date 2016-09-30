@@ -26,13 +26,13 @@ public class RepoJarsProductizedValidator implements Validator {
     @Override
     public boolean validate( PVTConfiguration pvtConfiguration) throws PVTException {
 
-        Collection<File> notProductized_all = DirUtils.listFilesRecursively(pvtConfiguration.getRepositoryDirectory(), new FileFilter() {
+        Collection<File> notProductized_all = DirUtils.listFilesRecursively( pvtConfiguration.getMavenRepository(), new FileFilter() {
             public boolean accept(File pathname) {
                 return pathname.getName().endsWith(".pom") && (pathname.getName().contains("todo") || !pathname.getName().contains("redhat-"));
             }
         });
 
-        Collection<File> productized = DirUtils.listFilesRecursively(pvtConfiguration.getRepositoryDirectory(), new FileFilter() {
+        Collection<File> productized = DirUtils.listFilesRecursively( pvtConfiguration.getMavenRepository(), new FileFilter() {
             public boolean accept(File pathname) {
                 return pathname.getName().endsWith(".pom") && pathname.getName().contains("redhat-") && (!pathname.getName().contains("todo"));
             }

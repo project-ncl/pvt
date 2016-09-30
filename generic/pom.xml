@@ -71,7 +71,7 @@
             <include>**/GenericTestSuite.class</include>
           </includes>
           <systemPropertyVariables>
-            <DISTRIBUTION_ZIP>${DISTRIBUTION_ZIP}</DISTRIBUTION_ZIP>
+            <PVTCFG>${PVTCFG}</PVTCFG>
           </systemPropertyVariables>
         </configuration>
       </plugin>
