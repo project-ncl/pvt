@@ -1,6 +1,25 @@
+/*
+ * Copyright (C) 2016 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.jboss.pvt.harness.configuration.pojo;
 
-import java.io.File;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,87 +27,25 @@ import java.util.List;
  */
 public class Configuration
 {
-    Product product = new Product();
-    TestCase testCase = new TestCase();
+    @Getter @Setter
+    private Product product = new Product();
 
-    // TODO: Should these be strings to better handle URLs?
-    File distributionDirectory;
-    File sourceDistribution;
-    File mavenRepository;
-    List<File> auxilliaryZips;
+    @Getter @Setter
+    private TestCase testCase = new TestCase();
 
-    public File getDistributionDirectory()
-    {
-        return distributionDirectory;
-    }
+    @Getter @Setter
+    private String distribution;
 
-    public void setDistributionDirectory( File distributionDirectory )
-    {
-        this.distributionDirectory = distributionDirectory;
-    }
+    @Getter @Setter
+    private String sourceDistribution;
 
-    public File getSourceDistribution()
-    {
-        return sourceDistribution;
-    }
+    @Getter @Setter
+    private String mavenRepository;
 
-    public void setSourceDistribution( File sourceDistribution )
-    {
-        this.sourceDistribution = sourceDistribution;
-    }
-
-    public File getMavenRepository()
-    {
-        return mavenRepository;
-    }
-
-    public void setMavenRepository( File mavenRepository )
-    {
-        this.mavenRepository = mavenRepository;
-    }
-
-    public List<File> getAuxilliaryZips()
-    {
-        return auxilliaryZips;
-    }
-
-    public void setAuxilliaryZips( List<File> auxilliaryZips )
-    {
-        this.auxilliaryZips = auxilliaryZips;
-    }
-
-    public TestCase getTestCase()
-    {
-        return testCase;
-    }
-
-    public void setTestCase( TestCase testCase )
-    {
-        this.testCase = testCase;
-    }
-
-    public Product getProduct()
-    {
-        return product;
-    }
-
-    public void setProduct( Product product )
-    {
-        this.product = product;
-    }
-
-
-    /*
-    Product getProduct();
-
-    File getDistributionDirectory();
-
-    File getSourceDistribution();
-
-    File[] getAuxilliaryZips();
-
-    TestCase getTestCase( String key );
-
-    File getMavenRepository();
-*/
+    /**
+     * This should be configured to be any other zip distributions supplied
+     * by the product.
+     */
+    @Getter @Setter
+    private List<String> auxilliaryDistributions = new ArrayList<>(  );
 }

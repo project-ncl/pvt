@@ -17,17 +17,16 @@
 package org.jboss.pvt.generic;
 
 import org.jboss.pvt.harness.configuration.PVTConfiguration;
-import org.jboss.pvt.harness.utils.ZipUtils;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+import org.zeroturnaround.zip.ZipUtil;
 
 import java.io.File;
 
-import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 import static org.junit.Assert.assertTrue;
 
@@ -99,6 +98,6 @@ public class ResourceTest
         */
         File repoFile = defaultConfiguration.getDistributionDirectory();
         assertTrue(repoFile.exists());
-        ZipUtils.unzip(repoFile);
+        ZipUtil.explode( repoFile );
     }
 }

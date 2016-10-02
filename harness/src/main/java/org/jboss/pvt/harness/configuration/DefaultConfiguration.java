@@ -20,6 +20,7 @@ import org.jboss.pvt.harness.configuration.pojo.Configuration;
 import org.jboss.pvt.harness.configuration.pojo.Product;
 import org.jboss.pvt.harness.configuration.pojo.TestCase;
 import org.jboss.pvt.harness.exception.PVTSystemException;
+import org.jboss.pvt.harness.utils.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -28,9 +29,12 @@ import org.yaml.snakeyaml.representer.Representer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import static org.jboss.pvt.harness.utils.FileUtil.downloadZips;
 
 /**
  * Created by rnc on 28/07/16.
@@ -40,13 +44,12 @@ public class DefaultConfiguration implements PVTConfiguration
 {
     private Logger logger = LoggerFactory.getLogger( getClass() );
 
-/*    private String mavenRepo;
-    private String distribution;
-    private ProductSupport product;
-
-    private File distributionZip;*/
-
     protected Configuration config;
+
+    private File distributionDirectory;
+    private File sourceDistributionDirectory;
+    private File mavenRepositoryDirectory;
+    private List<File> auxillaryDistributions;
 
     public DefaultConfiguration()
     {
@@ -55,9 +58,6 @@ public class DefaultConfiguration implements PVTConfiguration
 
     protected void init ()
     {
-        // TODO:
-        // Currently configuration file is passed in via the system property
-        // PVTCFG
         String file = System.getProperty( "PVTCFG" );
 
         if ( isNotEmpty( file ))
@@ -84,20 +84,21 @@ public class DefaultConfiguration implements PVTConfiguration
             {
                 throw new PVTSystemException( "Unable to load yaml file.", e );
             }
-
-        /*
-        distribution = System.getProperty( "DISTRIBUTION_ZIP" );
-        mavenRepo = System.getProperty( "MAVEN_REPO_ZIP", "" );
-        product = ProductSupport.valueOf( System.getProperty( "PRODUCT", "ALL" ) );
-*/
         }
         else
         {
             logger.warn( "No configuration file found with '{}' ", file );
             config = new Configuration();
         }
-        logger.debug( "Established distribution {}, maven repository {}, and product of {}", config.getDistributionDirectory(), config.getMavenRepository(), config.getProduct());
-        downloadZips();
+        logger.debug( "Established distribution {}, maven repository {}, and product of {}", config.getDistribution(), config.getMavenRepository(), config.getProduct());
+        distributionDirectory = downloadZips( config.getDistribution());
+        mavenRepositoryDirectory = downloadZips( config.getMavenRepository());
+        sourceDistributionDirectory = downloadZips( config.getSourceDistribution());
+        auxillaryDistributions = new ArrayList<>(  );
+        auxillaryDistributions.addAll( config.getAuxilliaryDistributions()
+                                             .stream()
+                                             .map( FileUtil::downloadZips )
+                                             .collect( Collectors.toList() ) );
     }
 
     @Override
@@ -108,19 +109,19 @@ public class DefaultConfiguration implements PVTConfiguration
 
     public File getDistributionDirectory()
     {
-        return config.getDistributionDirectory();
+        return distributionDirectory;
     }
 
     @Override
     public File getSourceDistribution()
     {
-        return config.getSourceDistribution();
+        return sourceDistributionDirectory;
     }
 
     @Override
-    public List<File> getAuxilliaryZips()
+    public List<File> getAuxilliaryDistributions()
     {
-        return config.getAuxilliaryZips();
+        return auxillaryDistributions;
     }
 
     @Override
@@ -131,48 +132,7 @@ public class DefaultConfiguration implements PVTConfiguration
 
     public File getMavenRepository()
     {
-        return config.getMavenRepository(); // TODO: Implement repository and distribution zip handling and unzipped.
+        return mavenRepositoryDirectory;
     }
 
-    protected void downloadZips()
-    {
-        try
-        {
-            /*
-            if ( distribution.startsWith( "http" ) )
-            {
-                distributionZip = new File( System.getProperty( "basedir" ) + "/target/" + distribution.substring(
-                                distribution.lastIndexOf( "/" ) + 1 ) );
-                if ( distributionZip.exists() )
-                {
-                    logger.warn ("Avoiding duplicate download of {} ", distribution);
-                }
-                else
-                {
-                    logger.debug( "Copying URL {} to {}", distribution, distributionZip );
-                    FileUtils.copyURLToFile( new URL( distribution ), distributionZip );
-                }
-            }
-            else
-            {
-                distributionZip = new File( System.getProperty( "basedir" ) + "/target/" + distribution.substring(
-                                distribution.lastIndexOf( "/" ) + 1 ) );
-                if ( distributionZip.exists() )
-                {
-                    logger.warn ("Avoiding duplicate download of {} ", distribution);
-                }
-                else
-                {
-                    FileUtils.copyFile( new File( distribution ), distributionZip );
-                }
-            }
-            logger.debug ( "Create distribution {} ", distributionZip );
-            */
-        }
-        catch ( Exception e )
-        {
-            logger.error( "Caught ", e );
-            throw new PVTSystemException( "Caught exception processing downloads: " + e );
-        }
-    }
 }

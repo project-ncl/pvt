@@ -101,7 +101,7 @@ public class JarDigestSignValidator implements Validator{
      */
     protected boolean mustSigned(PVTConfiguration pvtConfiguration)
     {
-        return pvtConfiguration.getTestCase( this.getClass().toString() ).getExclusion();
+        return pvtConfiguration.getTestCase( this.getClass().toString() ).isExclusion();
     }
 
     private boolean shouldExclude(File file, PVTConfiguration pvtConfiguration){
