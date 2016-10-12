@@ -58,7 +58,7 @@ public final class ProductJarsPresentInRepoValidator implements Validator
             }
         });
 
-        Collection<File> repoJars =  DirUtils.listFilesRecursively(pvtConfiguration.getRepositoryDirectory(), new FileFilter() {
+        Collection<File> repoJars =  DirUtils.listFilesRecursively( pvtConfiguration.getMavenRepository(), new FileFilter() {
             public boolean accept(File pathname) {
                 return pathname.isFile() && pathname.getName().endsWith(".jar");
             }
@@ -98,7 +98,7 @@ public final class ProductJarsPresentInRepoValidator implements Validator
         {
             throw new PVTSystemException( "Unexpected length of arguments for this filter" );
         }
-        for(String filter : pvtConfiguration.getArrayConfiguration(this.getClass(), "filter")) {
+        for(String filter : pvtConfiguration.getTestCase(this.getClass().toString()).getFilters()) {
             if(file[0].getPath().contains(filter)) {
                 return true;
             }

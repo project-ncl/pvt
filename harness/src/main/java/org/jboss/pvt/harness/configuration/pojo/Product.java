@@ -14,24 +14,22 @@
  * limitations under the License.
  */
 
-package org.jboss.pvt.harness.utils;
+package org.jboss.pvt.harness.configuration.pojo;
 
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.net.URL;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
- * Created by yyang on 7/18/16.
+ * Created by rnc on 27/09/16.
  */
-public class HttpUtils {
+public class Product
+{
+    @Getter @Setter
+    private String name;
 
-    public static void httpDownload(String httpUrl) throws Exception {
-        String filename = httpUrl.substring(httpUrl.lastIndexOf("/") + 1);
-        httpDownload(httpUrl, filename);
-    }
+    @Getter @Setter
+    private String version;
 
-    public static void httpDownload(String httpUrl,String saveFile) throws Exception {
-        FileUtils.copyURLToFile(new URL(httpUrl), new File(saveFile));
-    }
+    @Getter @Setter
+    private String milestone;
 }

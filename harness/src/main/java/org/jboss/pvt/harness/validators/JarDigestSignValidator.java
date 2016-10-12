@@ -31,6 +31,8 @@ import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.zip.ZipFile;
 
 /**
@@ -84,27 +86,22 @@ public class JarDigestSignValidator implements Validator{
     /**
      * which class need to be excluded
      */
-    protected String[] getExcludesJarFilter(PVTConfiguration pvtConfiguration){
+    protected List<String> getExcludesJarFilter( PVTConfiguration pvtConfiguration){
         if(!mustSigned(pvtConfiguration)) {
             // bouncycastle jars always are signed
-            return pvtConfiguration.getArrayConfiguration(this.getClass(), "filter");
+            return pvtConfiguration.getTestCase(this.getClass().toString()).getFilters();
         }
         else {
-            return new String[]{};
+            return Collections.emptyList();
         }
     }
 
     /**
      * If the jars must signed or not
      */
-    protected boolean mustSigned(PVTConfiguration pvtConfiguration){
-        if(pvtConfiguration.getConfiguration(this.getClass(), "sign") != null){
-            return Boolean.valueOf(pvtConfiguration.getConfiguration(this.getClass(), "sign"));
-        }
-        else {
-            return true;
-        }
-
+    protected boolean mustSigned(PVTConfiguration pvtConfiguration)
+    {
+        return pvtConfiguration.getTestCase( this.getClass().toString() ).isExclusion();
     }
 
     private boolean shouldExclude(File file, PVTConfiguration pvtConfiguration){

@@ -38,7 +38,7 @@ public class DirUtils {
      * @return
      */
     public static Collection<File> listFilesRecursively(File rootDir, final FileFilter fileFilter){
-        if(!rootDir.exists() || rootDir.isFile()) {
+        if( rootDir == null || !rootDir.exists() || rootDir.isFile()) {
             return Collections.emptyList();
         }
         Collection<File> files = FileUtils.listFilesAndDirs(rootDir, new AbstractFileFilter() {

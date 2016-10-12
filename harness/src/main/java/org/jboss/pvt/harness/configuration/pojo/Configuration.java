@@ -14,28 +14,38 @@
  * limitations under the License.
  */
 
-package org.jboss.pvt.harness.configuration;
+package org.jboss.pvt.harness.configuration.pojo;
 
-import org.jboss.pvt.harness.configuration.pojo.Product;
-import org.jboss.pvt.harness.configuration.pojo.TestCase;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by rnc on 12/08/16.
  */
-public interface PVTConfiguration
+public class Configuration
 {
-    Product getProduct();
+    @Getter @Setter
+    private Product product = new Product();
 
-    File getDistributionDirectory();
-    
-    File getSourceDistribution();
+    @Getter @Setter
+    private TestCase testCase = new TestCase();
 
-    List<File> getAuxilliaryDistributions();
+    @Getter @Setter
+    private String distribution;
 
-    TestCase getTestCase ( String key);
+    @Getter @Setter
+    private String sourceDistribution;
 
-    File getMavenRepository();
+    @Getter @Setter
+    private String mavenRepository;
+
+    /**
+     * This should be configured to be any other zip distributions supplied
+     * by the product.
+     */
+    @Getter @Setter
+    private List<String> auxilliaryDistributions = new ArrayList<>(  );
 }

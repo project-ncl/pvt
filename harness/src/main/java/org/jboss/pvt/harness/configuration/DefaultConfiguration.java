@@ -16,127 +16,123 @@
 
 package org.jboss.pvt.harness.configuration;
 
-import org.apache.commons.io.FileUtils;
+import org.jboss.pvt.harness.configuration.pojo.Configuration;
+import org.jboss.pvt.harness.configuration.pojo.Product;
+import org.jboss.pvt.harness.configuration.pojo.TestCase;
 import org.jboss.pvt.harness.exception.PVTSystemException;
-import org.jboss.pvt.harness.utils.ProductSupport;
+import org.jboss.pvt.harness.utils.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.representer.Representer;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Properties;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import static org.jboss.pvt.harness.utils.FileUtil.downloadZips;
 
 /**
  * Created by rnc on 28/07/16.
  */
+// TODO: Eliminate the PVYConfiguration interface?
 public class DefaultConfiguration implements PVTConfiguration
 {
     private Logger logger = LoggerFactory.getLogger( getClass() );
 
-    private String mavenRepo;
-    private String distribution;
-    private ProductSupport product;
+    protected Configuration config;
 
-    private File distributionZip;
+    private File distributionDirectory;
+    private File sourceDistributionDirectory;
+    private File mavenRepositoryDirectory;
+    private List<File> auxillaryDistributions;
 
     public DefaultConfiguration()
     {
-        distribution = System.getProperty( "DISTRIBUTION_ZIP" );
-        mavenRepo = System.getProperty( "MAVEN_REPO_ZIP", "" );
-        product = ProductSupport.valueOf( System.getProperty( "PRODUCT", "ALL" ) );
-
-        logger.debug( "Established distribution {}, maven repository {}, and product of {}", distribution, mavenRepo, product );
-        downloadZips();
+        init();
     }
 
-
-    public File getDistribution()
+    protected void init ()
     {
-        return distributionZip;
+        String file = System.getProperty( "PVTCFG" );
+
+        if ( isNotEmpty( file ))
+        {
+            Representer representer = new Representer();
+            representer.getPropertyUtils().setSkipMissingProperties( true );
+            Yaml yaml = new Yaml( representer );
+
+            try
+            {
+                File targetConfig = new File( file );
+
+                if ( targetConfig.exists() )
+                {
+                    config = yaml.loadAs( new FileInputStream( targetConfig ), Configuration.class );
+                }
+                else
+                {
+                    logger.debug( "Unable to find file {} ", file );
+                    throw new PVTSystemException( "Unable to load yaml file." );
+                }
+            }
+            catch ( FileNotFoundException e )
+            {
+                throw new PVTSystemException( "Unable to load yaml file.", e );
+            }
+        }
+        else
+        {
+            logger.warn( "No configuration file found with '{}' ", file );
+            config = new Configuration();
+        }
+        logger.debug( "Established distribution {}, maven repository {}, and product of {}", config.getDistribution(), config.getMavenRepository(), config.getProduct());
+        distributionDirectory = downloadZips( config.getDistribution());
+        mavenRepositoryDirectory = downloadZips( config.getMavenRepository());
+        sourceDistributionDirectory = downloadZips( config.getSourceDistribution());
+        auxillaryDistributions = new ArrayList<>(  );
+        auxillaryDistributions.addAll( config.getAuxilliaryDistributions()
+                                             .stream()
+                                             .map( FileUtil::downloadZips )
+                                             .collect( Collectors.toList() ) );
+    }
+
+    @Override
+    public Product getProduct()
+    {
+        return config.getProduct();
     }
 
     public File getDistributionDirectory()
     {
-        return distributionZip;
-    }
-
-    public File getRepositoryDirectory()
-    {
-        return new File (mavenRepo); // TODO: Implement repository and distribution zip handling and unzipped.
+        return distributionDirectory;
     }
 
     @Override
-    public Properties getAllConfiguration()
+    public File getSourceDistribution()
     {
-        return new Properties(  );
+        return sourceDistributionDirectory;
     }
 
     @Override
-    public String[] getTestFilter( String testName )
+    public List<File> getAuxilliaryDistributions()
     {
-        return new String[0];
+        return auxillaryDistributions;
     }
 
     @Override
-    public String[] getArrayConfiguration(Class testClass, String key)
+    public TestCase getTestCase( String key )
     {
-        String res = getConfiguration( testClass, key );
-        if ( isNotEmpty (res) )
-        {
-            return res.split(",");
-        }
-        else
-        {
-            return new String[0];
-        }
+        return config.getTestCase();
     }
 
-    @Override
-    public String getConfiguration(Class testClass, String key)
+    public File getMavenRepository()
     {
-        return getAllConfiguration().getProperty(testClass.getName() + "." + key);
+        return mavenRepositoryDirectory;
     }
 
-    private void downloadZips()
-    {
-        try
-        {
-            if ( distribution.startsWith( "http" ) )
-            {
-                distributionZip = new File( System.getProperty( "basedir" ) + "/target/" + distribution.substring(
-                                distribution.lastIndexOf( "/" ) + 1 ) );
-                if ( distributionZip.exists() )
-                {
-                    logger.warn ("Avoiding duplicate download of {} ", distribution);
-                }
-                else
-                {
-                    logger.debug( "Copying URL {} to {}", distribution, distributionZip );
-                    FileUtils.copyURLToFile( new URL( distribution ), distributionZip );
-                }
-            }
-            else
-            {
-                distributionZip = new File( System.getProperty( "basedir" ) + "/target/" + distribution.substring(
-                                distribution.lastIndexOf( "/" ) + 1 ) );
-                if ( distributionZip.exists() )
-                {
-                    logger.warn ("Avoiding duplicate download of {} ", distribution);
-                }
-                else
-                {
-                    FileUtils.copyFile( new File( distribution ), distributionZip );
-                }
-            }
-            logger.debug ( "Create distribution {} ", distributionZip );
-        }
-        catch ( IOException e )
-        {
-            logger.error( "Caught ", e );
-            throw new PVTSystemException( "Caught exception processing downloads: " + e );
-        }
-    }
 }

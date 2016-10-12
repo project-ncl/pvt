@@ -1,0 +1,14 @@
+#
+# Sample PVT Configuration File.
+#
+
+product:
+  name: my-product
+  version: 1.0
+  milestone: CR1
+sourceDistribution:
+  #foo.zip
+distributionDirectory:
+  #/tmp/foo.zip
+mavenRepository:
+  #/tmp/foo.zip

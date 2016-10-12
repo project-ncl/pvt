@@ -14,17 +14,28 @@
  * limitations under the License.
  */
 
-package org.jboss.pvt.harness.utils;
+package org.jboss.pvt.harness.configuration.pojo;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by rnc on 28/07/16.
- *
- * TODO: Consider replacing by configuration file
+ * Created by rnc on 27/09/16.
  */
-public enum ProductSupport
+public class TestCase
 {
-    AMQ,
-    EAP,
-    BRMS,
-    ALL
+    /**
+     * Contain a list of strings that should be filtered out from this test case.
+     */
+    @Getter @Setter
+    private List<String> filters = new ArrayList<>(  );
+
+    /**
+     * Denote if this entire test should be excluded for the product
+     */
+    @Getter @Setter
+    private boolean exclusion;
 }
