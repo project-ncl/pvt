@@ -27,7 +27,6 @@ public class TestConfiguration implements PVTConfiguration, TestRule
 
 //    public static String baseDir = "dist";
     public static final String TEST_CONFIG_FILE_KEY = "TEST_CONFIG_FILE";
-    public static final String TEST_STAGING_SERVER_KEY = "TEST_STAGING_SERVER";
 
     private File distribution;
     private File distributionDirectory;
@@ -139,8 +138,12 @@ public class TestConfiguration implements PVTConfiguration, TestRule
         // load properties
         if(properties.isEmpty()) {
             String testFilename = System.getProperty(TEST_CONFIG_FILE_KEY);
+            if(testFilename == null) {
+                testFilename = "pvt-eap7.properties"; // default using pvt config file
+            }
+            System.out.println(getClass().getClassLoader().getResource(testFilename));
             try {
-                properties.load(new FileReader(testFilename));
+                properties.load(getClass().getResourceAsStream("/"+testFilename));
             } catch (Exception e) {
                 throw new PVTSystemException("File to load config file: " + testFilename, e);
             }
@@ -156,15 +159,8 @@ public class TestConfiguration implements PVTConfiguration, TestRule
     }
 
     protected synchronized void prepareResources() throws Exception{
-        String stagingServer = System.getProperty(TEST_STAGING_SERVER_KEY);
-
         if(distribution == null) {
-            String distributionUrl = getConfiguration(PRODUCT_ZIP_URL_KEY).replace("{}", stagingServer);
-            String filename = distributionUrl.substring(distributionUrl.lastIndexOf("/") + 1);
-            distribution = new File(filename);
-            if(!distribution.exists()) {
-                distribution = HttpUtils.httpDownload(distributionUrl);
-            }
+            distribution = new File(this.getClass().getResource("/" +getConfiguration(PRODUCT_ZIP_URL_KEY)).getFile());
             ZipUtils.unzip(distribution);
             String distributionDirectoryName = getConfiguration(PRODUCT_ZIP_NAME_KEY);
             if(!new File(distributionDirectoryName).exists()){
@@ -174,12 +170,7 @@ public class TestConfiguration implements PVTConfiguration, TestRule
         }
 
         if(repository == null) {
-            String repoUrl = getConfiguration(REPO_ZIP_URL_KEY).replace("{}", stagingServer);
-            String filename = repoUrl.substring(repoUrl.lastIndexOf("/") + 1);
-            repository = new File(filename);
-            if(!repository.exists()) {
-                repository = HttpUtils.httpDownload(repoUrl);
-            }
+            repository = new File(this.getClass().getResource("/" + getConfiguration(REPO_ZIP_URL_KEY)).getFile());
             ZipUtils.unzip(repository);
             String repositoryDirectoryName = getConfiguration(REPO_ZIP_NAME_KEY);
             if(!new File(repositoryDirectoryName).exists()) {

@@ -32,7 +32,7 @@ public class ProductJarsPresentInRepoTest
     @Test
     public void validate() throws Exception
     {
-        assertTrue( pjp.validate(tc) );
+        assertTrue(! pjp.validate(tc) );
     }
 
     @Test
