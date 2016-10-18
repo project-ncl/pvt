@@ -12,3 +12,10 @@ distributionDirectory:
   #/tmp/foo.zip
 mavenRepository:
   #/tmp/foo.zip
+testcases:
+  org.jboss.pvt.generic.JarsPresentInRepoTest:
+    filer: jboss-modules.jar,jboss-cli-client.jar,launcher.jar,jboss-client.jar,jboss-seam-int.jar,-jandex.jar
+  org.jboss.pvt.generic.JarDigestSignTest:
+    sign: false
+  org.jboss.pvt.generic.JarDigestSignTest:
+    filter: bouncycastle/
