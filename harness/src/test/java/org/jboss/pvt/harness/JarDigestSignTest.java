@@ -2,7 +2,7 @@ package org.jboss.pvt.harness;
 
 import org.jboss.pvt.harness.configuration.DefaultConfiguration;
 import org.jboss.pvt.harness.configuration.PVTConfiguration;
-import org.jboss.pvt.harness.validators.JarDigestSignValidator;
+import org.jboss.pvt.harness.validators.JBossSignatureCheckValidator;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -23,7 +23,7 @@ public class JarDigestSignTest {
 
     public PVTConfiguration pvtConfiguration;
 
-    public JarDigestSignValidator test =  new JarDigestSignValidator();
+    public JBossSignatureCheckValidator test =  new JBossSignatureCheckValidator();
 
     @Before
     public void before( )
