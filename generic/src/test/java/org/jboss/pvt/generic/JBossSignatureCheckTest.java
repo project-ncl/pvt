@@ -17,7 +17,7 @@
 package org.jboss.pvt.generic;
 
 import org.jboss.pvt.harness.exception.PVTException;
-import org.jboss.pvt.harness.validators.JarDigestSignValidator;
+import org.jboss.pvt.harness.validators.JBossSignatureCheckValidator;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -27,9 +27,9 @@ import static org.junit.Assert.assertTrue;
  * From version 7.0.0.ER7 job fails because of org/bouncycastle artifacts are digitally signed - this is correct. Other fails are real failures
  * Created by yyang on 7/11/16.
  */
-public class JarDigestSignTest {
+public class JBossSignatureCheckTest {
 
-    private JarDigestSignValidator validator = new JarDigestSignValidator();
+    private JBossSignatureCheckValidator validator = new JBossSignatureCheckValidator();
 
     @Test
     public void testSign() throws PVTException{

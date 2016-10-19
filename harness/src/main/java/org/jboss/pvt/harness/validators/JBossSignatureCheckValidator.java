@@ -39,7 +39,7 @@ import java.util.zip.ZipFile;
  * Created by yyang on 7/11/16.
  */
 
-public class JarDigestSignValidator implements Validator{
+public class JBossSignatureCheckValidator implements Validator{
 
     private final Logger logger = LoggerFactory.getLogger( getClass() );
 
