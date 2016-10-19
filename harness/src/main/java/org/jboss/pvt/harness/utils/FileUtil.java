@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import static org.apache.commons.lang.StringUtils.isEmpty;
 
 /**
  * Created by rnc on 02/10/16.
@@ -46,7 +47,7 @@ public class FileUtil
                 if ( zip.contains( "://" ) )
                 {
                     result = new File
-                                    ( System.getProperty( "basedir" ) + "/target/" + zip.substring( zip.lastIndexOf( "/" ) + 1 ) );
+                                    ((isEmpty(System.getProperty( "basedir" )) ? "." : System.getProperty( "basedir" )) + "/target/" + zip.substring( zip.lastIndexOf( "/" ) + 1 ) );
                     if ( result.exists() )
                     {
                         logger.warn( "Avoiding duplicate download of {} ", zip );
@@ -63,14 +64,14 @@ public class FileUtil
                 {
 
                     result = new File
-                                    ( System.getProperty( "basedir" ) + "/target/" + zip.substring( zip.lastIndexOf( "/" ) + 1 ) );
+                                    ( (isEmpty(System.getProperty( "basedir" )) ? "." : System.getProperty( "basedir" )) + "/target/" + zip.substring( zip.indexOf( "/" ) + 1 ) );
                     if ( result.exists() )
                     {
                         logger.warn( "Avoiding duplicate download of {} ", zip );
                     }
                     else
                     {
-                        org.apache.commons.io.FileUtils.copyFile( new File( zip ), result );
+                        org.apache.commons.io.FileUtils.copyFile( new File( zip.substring( zip.indexOf( "/" ) + 1 ) ), result );
                         ZipUtil.explode( result );
                     }
                 }

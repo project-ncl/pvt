@@ -7,15 +7,15 @@ product:
   version: 1.0
   milestone: CR1
 sourceDistribution:
-  #foo.zip
-distributionDirectory:
-  #/tmp/foo.zip
+  /jboss-eap-7.0.0.CR2-src.zip
+distribution:
+  /jboss-eap-7.0.0.CR2.zip
 mavenRepository:
-  #/tmp/foo.zip
-testcases:
-  org.jboss.pvt.generic.JarsPresentInRepoTest:
-    filer: jboss-modules.jar,jboss-cli-client.jar,launcher.jar,jboss-client.jar,jboss-seam-int.jar,-jandex.jar
-  org.jboss.pvt.generic.JarDigestSignTest:
-    sign: false
-  org.jboss.pvt.generic.JarDigestSignTest:
-    filter: bouncycastle/
+  /jboss-eap-7.0.0.CR2-maven-repository.zip
+testCases:
+#  org.jboss.pvt.generic.JarsPresentInRepoTest:
+#    filers: []jboss-modules.jar,jboss-cli-client.jar,launcher.jar,jboss-client.jar,jboss-seam-int.jar,-jandex.jar]
+#  org.jboss.pvt.generic.JarDigestSignTest:
+#    sign: false
+  org.jboss.pvt.harness.validators.JarDigestSignValidator:
+    filters: [bouncycastle/]
