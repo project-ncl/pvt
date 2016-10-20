@@ -17,5 +17,5 @@ testCases:
 #    filers: []jboss-modules.jar,jboss-cli-client.jar,launcher.jar,jboss-client.jar,jboss-seam-int.jar,-jandex.jar]
 #  org.jboss.pvt.generic.JarDigestSignTest:
 #    sign: false
-  org.jboss.pvt.harness.validators.JarDigestSignValidator:
+  org.jboss.pvt.harness.validators.JBossSignatureCheckValidator:
     filters: [bouncycastle/]
