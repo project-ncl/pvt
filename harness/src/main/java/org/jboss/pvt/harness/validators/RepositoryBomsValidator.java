@@ -20,7 +20,7 @@ import org.jboss.pvt.harness.configuration.PVTConfiguration;
 import org.jboss.pvt.harness.exception.PVTException;
 
 /**
- * Created by yyang on 7/27/16.
+ * Created by yyang on   7/27/16.
  */
 public class RepositoryBomsValidator implements Validator
 {
