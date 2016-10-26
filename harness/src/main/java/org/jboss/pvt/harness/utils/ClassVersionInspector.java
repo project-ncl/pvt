@@ -101,4 +101,35 @@ public class ClassVersionInspector
 
         return true;
     }
+
+    public static boolean checkJarVersion (String filename, ClassVersion minVersion, ClassVersion maxVersion) throws PVTException
+    {
+        JarFile jar;
+        try
+        {
+            jar = new JarFile( filename );
+
+            Enumeration<JarEntry> entries = jar.entries();
+
+            while ( entries.hasMoreElements() )
+            {
+                JarEntry entry = entries.nextElement();
+                if ( entry.getName().endsWith( ".class" ) )
+                {
+                    ClassVersion cv = checkClassVersion( jar.getInputStream( entry ) );
+                    if (cv.intValue() < minVersion.intValue() || cv.intValue() > maxVersion.intValue() )
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        catch ( IOException e )
+        {
+            throw new PVTException( "Error processing jar file.", e );
+        }
+
+        return true;
+    }
+
 }

@@ -20,7 +20,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by rnc on 27/09/16.
@@ -38,4 +40,8 @@ public class TestCase
      */
     @Getter @Setter
     private boolean exclusion;
+
+    @Getter @Setter
+    private String versions;
+
 }

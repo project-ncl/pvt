@@ -16,7 +16,7 @@ import java.io.File;
 /**
  * Created by yyang on 8/3/16.
  */
-public class JarDigestSignTest {
+public class JBossSignatureCheckValidatorTest {
     @Rule
     public final ProvideSystemProperty provideSystemProperty  = new ProvideSystemProperty
                     ( "PVTCFG", this.getClass().getResource( "/pvt.yaml").getFile().toString());

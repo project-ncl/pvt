@@ -19,3 +19,9 @@ testCases:
 #    sign: false
   org.jboss.pvt.harness.validators.JBossSignatureCheckValidator:
     filters: [bouncycastle/]
+  org.jboss.pvt.harness.validators.JDKCompatibleCheckValidator:
+    filters: [example/]
+    versions: 0,52
+  org.jboss.pvt.harness.validators.VersionFormatCheckValidator:
+    filters: [example/]
+    format: -redhat-
