@@ -64,6 +64,7 @@ public class JBossSignatureCheckValidator implements Validator{
                         continue;
                     }
                     ZipFile zipFile = new ZipFile(jarFile);
+                    logger.debug("Check jar: " + jarFile.getAbsolutePath());
                     StringWriter sw = new StringWriter();
                     IOUtils.copy(new InputStreamReader(zipFile.getInputStream(zipFile.getEntry("META-INF/MANIFEST.MF"))), sw);
                     signed = sw.getBuffer().toString().contains("Digest:");
@@ -89,7 +90,7 @@ public class JBossSignatureCheckValidator implements Validator{
     protected List<String> getExcludesJarFilter( PVTConfiguration pvtConfiguration){
         if(!mustSigned(pvtConfiguration)) {
             // bouncycastle jars always are signed
-            return pvtConfiguration.getTestCase(this.getClass().toString()).getFilters();
+            return pvtConfiguration.getTestCase(this.getClass().getName()).getFilters();
         }
         else {
             return Collections.emptyList();
@@ -101,7 +102,7 @@ public class JBossSignatureCheckValidator implements Validator{
      */
     protected boolean mustSigned(PVTConfiguration pvtConfiguration)
     {
-        return pvtConfiguration.getTestCase( this.getClass().toString() ).isExclusion();
+        return false; //pvtConfiguration.getTestCase( this.getClass().toString() ).isExclusion();
     }
 
     private boolean shouldExclude(File file, PVTConfiguration pvtConfiguration){

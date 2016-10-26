@@ -20,7 +20,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by rnc on 12/08/16.
@@ -31,7 +33,7 @@ public class Configuration
     private Product product = new Product();
 
     @Getter @Setter
-    private TestCase testCase = new TestCase();
+    private Map<String, TestCase> testCases = new HashMap<>();
 
     @Getter @Setter
     private String distribution;
