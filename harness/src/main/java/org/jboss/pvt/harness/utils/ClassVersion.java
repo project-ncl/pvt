@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public enum ClassVersion
 {
-    JAVA_12( 46 ), JAVA_13( 47 ), JAVA_14( 48 ), JAVA_15( 49 ), JAVA_16( 50 ), JAVA_17( 51 ), JAVA_18( 52 );
+    JAVA_0(0), JAVA_12( 46 ), JAVA_13( 47 ), JAVA_14( 48 ), JAVA_15( 49 ), JAVA_16( 50 ), JAVA_17( 51 ), JAVA_18( 52 );
 
     private static Map<Integer, ClassVersion> map = new HashMap<>();
 
@@ -24,12 +24,16 @@ public enum ClassVersion
 
     private int byteValue;
 
-    ClassVersion( int value )
+    ClassVersion(int value )
     {
         this.byteValue = value;
     }
 
-    public static ClassVersion parseInt( int value ) throws PVTException
+    public int intValue(){
+        return this.byteValue;
+    }
+
+    public static ClassVersion parseInt(int value ) throws PVTException
     {
         ClassVersion result = map.get( value );
         if ( result == null )
