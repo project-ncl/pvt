@@ -98,6 +98,14 @@ public class ClassVersionInspector
         return true;
     }
 
+    /**
+     * Support version scope
+     * @param filename
+     * @param minVersion
+     * @param maxVersion
+     * @return
+     * @throws PVTException
+     */
     public static boolean checkJarVersion (String filename, ClassVersion minVersion, ClassVersion maxVersion) throws PVTException
     {
         JarFile jar;
