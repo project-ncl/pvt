@@ -125,9 +125,9 @@ public class DefaultConfiguration implements PVTConfiguration
     }
 
     @Override
-    public TestCase getTestCase(String key )
+    public TestCase getTestCase( String key )
     {
-        return config.getTestCases().get(key);
+        return config.getTestCase();
     }
 
     public File getMavenRepository()
