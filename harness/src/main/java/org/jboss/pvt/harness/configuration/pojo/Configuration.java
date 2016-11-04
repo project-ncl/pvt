@@ -20,9 +20,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by rnc on 12/08/16.
@@ -43,10 +41,6 @@ public class Configuration
 
     @Getter @Setter
     private String mavenRepository;
-
-    @Getter @Setter
-    private Map<String, TestCase> testCases = new HashMap<>();
-
 
     /**
      * This should be configured to be any other zip distributions supplied
