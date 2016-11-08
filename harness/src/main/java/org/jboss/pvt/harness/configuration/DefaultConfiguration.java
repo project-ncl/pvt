@@ -44,12 +44,12 @@ public class DefaultConfiguration implements PVTConfiguration
 {
     private Logger logger = LoggerFactory.getLogger( getClass() );
 
-    protected Configuration config;
+    private Configuration config;
 
-    private File distributionDirectory;
-    private File sourceDistributionDirectory;
-    private File mavenRepositoryDirectory;
-    private List<File> auxillaryDistributions;
+    protected File distributionDirectory;
+    protected File sourceDistributionDirectory;
+    protected File mavenRepositoryDirectory;
+    protected List<File> auxillaryDistributions;
 
     public DefaultConfiguration()
     {
@@ -107,6 +107,7 @@ public class DefaultConfiguration implements PVTConfiguration
         return config.getProduct();
     }
 
+    @Override
     public File getDistributionDirectory()
     {
         return distributionDirectory;
@@ -130,6 +131,7 @@ public class DefaultConfiguration implements PVTConfiguration
         return config.getTestCase();
     }
 
+    @Override
     public File getMavenRepository()
     {
         return mavenRepositoryDirectory;
