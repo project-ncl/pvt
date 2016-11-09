@@ -25,9 +25,18 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static java.nio.file.Files.isRegularFile;
+import static java.util.stream.Collectors.toSet;
+import static org.apache.commons.lang.StringUtils.isEmpty;
 
 /**
  * Created by yyang on 7/27/16.
@@ -48,44 +57,29 @@ public final class ProductJarsPresentInRepoValidator implements Validator
     @Override
     public boolean validate( PVTConfiguration pvtConfiguration) throws PVTException
     {
-        boolean success = false;
-
-        List<File> notPresentJars = new ArrayList<File>();
-
-        Collection<File> productJars =  DirUtils.listFilesRecursively( pvtConfiguration.getDistributionDirectory(), new FileFilter() {
-            public boolean accept(File pathname) {
-                return pathname.isFile() && pathname.getName().endsWith(".jar");
-            }
-        });
-
-        Collection<File> repoJars =  DirUtils.listFilesRecursively( pvtConfiguration.getMavenRepository(), new FileFilter() {
-            public boolean accept(File pathname) {
-                return pathname.isFile() && pathname.getName().endsWith(".jar");
-            }
-        });
-
-
-        for(File productJar : productJars) {
-            if( filter(pvtConfiguration, productJar)){
-                logger.info("Ignore jar: " + productJar);
-                continue;
-            }
-            boolean present = false;
-            for(File repoJar : repoJars){
-                if(repoJar.getName().equals(productJar.getName()) && repoJar.length()==productJar.length()) {
-                    present = true;
-                    break;
-                }
-            }
-
-            if(!present){
-                notPresentJars.add(productJar);
-            }
+        if ( pvtConfiguration.getMavenRepository() == null || pvtConfiguration.getDistributionDirectory() == null )
+        {
+            return false;
         }
-        if(notPresentJars.isEmpty()) {
-            success = true;
+
+        try
+        {
+            Set<String>repoJars = Files.walk (pvtConfiguration.getMavenRepository().toPath()).
+                            filter( p -> p.toString().endsWith(".jar") && isRegularFile(p)).
+                            map ( p-> p.toFile().getName() ).
+                            collect( toSet() );
+
+            long count = Files.walk (pvtConfiguration.getDistributionDirectory().toPath()).
+                            filter(p -> isRegularFile( p ) && p.toString().endsWith(".jar") && filter( pvtConfiguration, p.toFile() ) ).
+                            filter( p -> ! repoJars.contains( p.toFile().getName() ) ).
+                            count();
+
+            return ( count == 0);
         }
-        return success;
+        catch ( IOException e )
+        {
+             throw new PVTException( "Caught " , e);
+        }
     }
 
 
@@ -100,9 +94,9 @@ public final class ProductJarsPresentInRepoValidator implements Validator
         }
         for(String filter : pvtConfiguration.getTestCase(this.getClass().toString()).getFilters()) {
             if(file[0].getPath().contains(filter)) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 }
