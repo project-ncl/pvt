@@ -23,6 +23,7 @@ public class ClassVersionInspectorTest
     @Rule
     public TemporaryFolder tf = new TemporaryFolder(  );
 
+/*
 
     @Test
     public void checkClassVersionTest() throws PVTException
@@ -52,4 +53,5 @@ public class ClassVersionInspectorTest
 
         assertFalse( ClassVersionInspector.checkJarVersion( target.toString(), ClassVersion.JAVA_15 ) );
     }
+*/
 }

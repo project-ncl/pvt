@@ -16,8 +16,10 @@
 
 package org.jboss.pvt.harness.validators;
 
-import org.jboss.pvt.harness.configuration.PVTConfiguration;
 import org.jboss.pvt.harness.exception.PVTException;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yyang on 7/27/16.
@@ -25,8 +27,9 @@ import org.jboss.pvt.harness.exception.PVTException;
 public class RepositoryBomsValidator implements Validator
 {
     @Override
-    public boolean validate( PVTConfiguration pvtConfiguration) throws PVTException {
+    public boolean validate(List<String> resources, List<String> filters, Map<String, String> params) throws PVTException {
         return false;
     }
+
     //TODO: https://jenkins.mw.lab.eng.bos.redhat.com/hudson/view/EAP7/view/EAP7-Prod/job/jboss-eap-7.0.x-handoff-check-eap-maven-repository-boms/
 }

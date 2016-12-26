@@ -16,7 +16,7 @@
 
 package org.jboss.pvt.generic;
 
-import org.jboss.pvt.harness.configuration.PVTConfiguration;
+import org.jboss.pvt.harness.configuration.ConfigurationLoader;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
@@ -38,12 +38,12 @@ import static org.junit.Assert.assertTrue;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ResourceTest
 {
-    private PVTConfiguration defaultConfiguration;
+    private ConfigurationLoader defaultConfiguration;
 
     @Before
     public void setupBefore()
     {
-        defaultConfiguration = GenericTestSuite.configuration;
+//        defaultConfiguration = PVTTestSuite.yamlConfigLoader;
 
         // Don't bother running this test if the environment has not been set correctly.
         Assume.assumeTrue ( isNotEmpty ( System.getProperty( "PVTCFG" ) ) );
@@ -52,12 +52,12 @@ public class ResourceTest
     @Test
     public void testConfiguration()
     {
-        Assert.assertNotNull( defaultConfiguration.getDistributionDirectory() );
+//        Assert.assertNotNull( defaultConfiguration.getDistributionDirectory() );
     }
 
     @Test
     public void testDownload1() throws Exception{
-        assertTrue( defaultConfiguration.getDistributionDirectory().exists() );
+//        assertTrue( defaultConfiguration.getDistributionDirectory().exists() );
 
 /*
         logger.info("Download EAP zip: " + EAP7TestSuite.EAPTestConfig.getInstance().getEapZipUrl());
@@ -73,7 +73,7 @@ public class ResourceTest
     @Test
     public void testDownload2() throws Exception{
         // We want to ensure it doesn't download again.
-        assertTrue( defaultConfiguration.getDistributionDirectory().exists() );
+//        assertTrue( defaultConfiguration.getDistributionDirectory().exists() );
         /*
         logger.info("Download EAP zip: " + EAP7TestSuite.EAPTestConfig.getInstance().getEapZipUrl());
         HttpUtils.httpDownload(EAP7TestSuite.EAPTestConfig.getInstance().getEapZipUrl());
@@ -96,8 +96,8 @@ public class ResourceTest
         logger.info("Extract: " + EAP7TestSuite.EAPTestConfig.getInstance().getRepoZipName());
         File repoFile = new File( EAP7TestSuite.EAPTestConfig.getInstance().getRepoZipName());
         */
-        File repoFile = defaultConfiguration.getDistributionDirectory();
-        assertTrue(repoFile.exists());
-        ZipUtil.explode( repoFile );
+//        File repoFile = defaultConfiguration.getDistributionDirectory();
+//        assertTrue(repoFile.exists());
+//        ZipUtil.explode( repoFile );
     }
 }

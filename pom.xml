@@ -121,12 +121,6 @@
               <version>2.12</version>
             </dependency>
           </dependencies>
-          <configuration>
-            <systemPropertyVariables>
-              <basedir>${basedir}</basedir>
-              <DISTRIBUTION_ZIP>${DISTRIBUTION_ZIP}</DISTRIBUTION_ZIP>
-            </systemPropertyVariables>
-          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -152,6 +146,7 @@
         <version>2.19.1</version>
         <configuration>
           <aggregate>true</aggregate>
+          <outputName>PVT testing report</outputName>
         </configuration>
       </plugin>
     </plugins>

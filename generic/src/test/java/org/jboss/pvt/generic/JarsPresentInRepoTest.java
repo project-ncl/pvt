@@ -18,9 +18,8 @@ package org.jboss.pvt.generic;
 
 import org.jboss.pvt.harness.exception.PVTException;
 import org.jboss.pvt.harness.validators.ProductJarsPresentInRepoValidator;
-import org.junit.Rule;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.rules.TestName;
 
 import static org.junit.Assert.assertTrue;
 
@@ -29,10 +28,13 @@ import static org.junit.Assert.assertTrue;
  */
 public class JarsPresentInRepoTest
 {
-    @Rule
-    public TestName testName = new TestName();
 
     private ProductJarsPresentInRepoValidator pjp = new ProductJarsPresentInRepoValidator();
+
+    @Before
+    public void checkResources(){
+
+    }
 
     @Test
     public void test1() throws PVTException
@@ -42,6 +44,6 @@ public class JarsPresentInRepoTest
         // pjp.initialiseFilter( pjp.getConfiguration().getTestFilter( testName.getMethodName() ) );
 //        pjp.initialiseFilter(new String[]{"jboss-modules.jar", "jboss-cli-client.jar", "launcher.jar", "jboss-client.jar", "jboss-seam-int.jar", "-jandex.jar"} );
 
-        assertTrue ( pjp.validate(GenericTestSuite.configuration) );
+//        assertTrue ( pjp.validate(PVTTestSuite.yamlConfigLoader) );
     }
 }

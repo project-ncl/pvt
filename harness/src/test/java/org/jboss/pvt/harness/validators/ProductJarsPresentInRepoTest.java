@@ -1,7 +1,7 @@
 package org.jboss.pvt.harness.validators;
 
-import org.jboss.pvt.harness.configuration.DefaultConfiguration;
-import org.jboss.pvt.harness.configuration.PVTConfiguration;
+import org.jboss.pvt.harness.configuration.YAMLConfigurationLoader;
+import org.jboss.pvt.harness.configuration.ConfigurationLoader;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -16,6 +16,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class ProductJarsPresentInRepoTest
 {
+/*
     @Rule
     public final ProvideSystemProperty provideSystemProperty  = new ProvideSystemProperty
                     ( "PVTCFG", this.getClass().getResource( "/pvt.yaml").getFile().toString());
@@ -25,12 +26,12 @@ public class ProductJarsPresentInRepoTest
 
     private ProductJarsPresentInRepoValidator pjp;
 
-    public PVTConfiguration tc;
+    public ConfigurationLoader tc;
 
     @Before
     public void setUp() throws Exception
     {
-        tc = new DefaultConfiguration();
+        tc = new YAMLConfigurationLoader();
         pjp = new ProductJarsPresentInRepoValidator();
     }
 
@@ -46,4 +47,5 @@ public class ProductJarsPresentInRepoTest
     {
 
     }
+*/
 }

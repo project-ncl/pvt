@@ -16,36 +16,62 @@
 
 package org.jboss.pvt.harness.configuration.pojo;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by rnc on 12/08/16.
  */
 public class Configuration
 {
-    @Getter @Setter
-    private Product product = new Product();
+    private String product;
 
-    @Getter @Setter
-    private TestCase testCase = new TestCase();
-
-    @Getter @Setter
-    private String distribution;
-
-    @Getter @Setter
-    private String sourceDistribution;
-
-    @Getter @Setter
-    private String mavenRepository;
+    private String version;
 
     /**
-     * This should be configured to be any other zip distributions supplied
-     * by the product.
+     * The path the dist store
      */
-    @Getter @Setter
-    private List<String> auxilliaryDistributions = new ArrayList<>(  );
+    private String distrepo;
+
+    private Map<String,TestConfig> tests = new TreeMap<>();
+
+    public String getProduct() {
+        return product;
+    }
+
+    public void setProduct(String product) {
+        this.product = product;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getDistrepo() {
+        return distrepo;
+    }
+
+    public void setDistrepo(String distrepo) {
+        this.distrepo = distrepo;
+    }
+
+    public Map<String, TestConfig> getTests() {
+        return tests;
+    }
+
+    public TestConfig getTestConfig(String clazz) {
+        return tests.get(clazz);
+    }
+
+    public TestConfig getTestConfig(Class clazz) {
+        return tests.get(clazz.getName());
+    }
+
+    public void setTests(Map<String, TestConfig> tests) {
+        this.tests = tests;
+    }
 }
