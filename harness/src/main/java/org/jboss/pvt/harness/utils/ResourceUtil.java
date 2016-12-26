@@ -31,10 +31,15 @@ import static org.apache.commons.lang.StringUtils.isNotEmpty;
 /**
  * Created by rnc on 02/10/16.
  */
-public class FileUtil
+public class ResourceUtil
 {
-    private static Logger logger = LoggerFactory.getLogger( FileUtil.class );
+    private static Logger logger = LoggerFactory.getLogger( ResourceUtil.class );
 
+    /**
+     *
+     * @param zip local zip or http url
+     * @return explored dir
+     */
     public static File downloadZips( String zip )
     {
         File result = null;
@@ -45,9 +50,8 @@ public class FileUtil
                 // URL Based form
                 if ( zip.contains( "://" ) )
                 {
-                    result = new File
-                                    ( System.getProperty( "basedir" ) + "/target/" + zip.substring( zip.lastIndexOf( "/" ) + 1 ) );
-                    if ( result.exists() )
+                    result = new File("target/" + zip.substring( zip.lastIndexOf( "/" ) + 1 ) );
+                    if ( result.exists())
                     {
                         logger.warn( "Avoiding duplicate download of {} ", zip );
                     }
@@ -62,8 +66,7 @@ public class FileUtil
                 else
                 {
 
-                    result = new File
-                                    ( System.getProperty( "basedir" ) + "/target/" + zip.substring( zip.lastIndexOf( "/" ) + 1 ) );
+                    result = new File( System.getProperty( "basedir" ) + "/target/" + zip.substring( zip.lastIndexOf( "/" ) + 1 ) );
                     if ( result.exists() )
                     {
                         logger.warn( "Avoiding duplicate download of {} ", zip );

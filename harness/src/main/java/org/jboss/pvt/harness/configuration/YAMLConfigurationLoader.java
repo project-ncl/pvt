@@ -17,10 +17,7 @@
 package org.jboss.pvt.harness.configuration;
 
 import org.jboss.pvt.harness.configuration.pojo.Configuration;
-import org.jboss.pvt.harness.configuration.pojo.Product;
-import org.jboss.pvt.harness.configuration.pojo.TestCase;
 import org.jboss.pvt.harness.exception.PVTSystemException;
-import org.jboss.pvt.harness.utils.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -29,46 +26,36 @@ import org.yaml.snakeyaml.representer.Representer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.apache.commons.lang.StringUtils.isNotEmpty;
-import static org.jboss.pvt.harness.utils.FileUtil.downloadZips;
 
 /**
  * Created by rnc on 28/07/16.
  */
-// TODO: Eliminate the PVYConfiguration interface?
-public class DefaultConfiguration implements PVTConfiguration
+public class YAMLConfigurationLoader implements ConfigurationLoader
 {
     private Logger logger = LoggerFactory.getLogger( getClass() );
 
-    private Configuration config;
+    protected Configuration config;
 
-    protected File distributionDirectory;
-    protected File sourceDistributionDirectory;
-    protected File mavenRepositoryDirectory;
-    protected List<File> auxillaryDistributions;
+    private File distributionDirectory;
+    private File sourceDistributionDirectory;
+    private File mavenRepositoryDirectory;
+    private List<File> auxillaryDistributions;
 
-    public DefaultConfiguration()
+    public YAMLConfigurationLoader()
     {
-        init();
     }
 
-    protected void init ()
+    public Configuration loadConfig (File configFile)
     {
-        String file = System.getProperty( "PVTCFG" );
 
-        if ( isNotEmpty( file ))
-        {
             Representer representer = new Representer();
             representer.getPropertyUtils().setSkipMissingProperties( true );
             Yaml yaml = new Yaml( representer );
 
             try
             {
-                File targetConfig = new File( file );
+                File targetConfig = configFile;
 
                 if ( targetConfig.exists() )
                 {
@@ -76,7 +63,7 @@ public class DefaultConfiguration implements PVTConfiguration
                 }
                 else
                 {
-                    logger.debug( "Unable to find file {} ", file );
+                    logger.debug( "Unable to find file {} ", targetConfig );
                     throw new PVTSystemException( "Unable to load yaml file." );
                 }
             }
@@ -84,57 +71,19 @@ public class DefaultConfiguration implements PVTConfiguration
             {
                 throw new PVTSystemException( "Unable to load yaml file.", e );
             }
-        }
-        else
-        {
-            logger.warn( "No configuration file found with '{}' ", file );
-            config = new Configuration();
-        }
+
+/*
         logger.debug( "Established distribution {}, maven repository {}, and product of {}", config.getDistribution(), config.getMavenRepository(), config.getProduct());
         distributionDirectory = downloadZips( config.getDistribution());
         mavenRepositoryDirectory = downloadZips( config.getMavenRepository());
         sourceDistributionDirectory = downloadZips( config.getSourceDistribution());
         auxillaryDistributions = new ArrayList<>(  );
         auxillaryDistributions.addAll( config.getAuxilliaryDistributions()
-                                             .stream()
-                                             .map( FileUtil::downloadZips )
-                                             .collect( Collectors.toList() ) );
-    }
-
-    @Override
-    public Product getProduct()
-    {
-        return config.getProduct();
-    }
-
-    @Override
-    public File getDistributionDirectory()
-    {
-        return distributionDirectory;
-    }
-
-    @Override
-    public File getSourceDistribution()
-    {
-        return sourceDistributionDirectory;
-    }
-
-    @Override
-    public List<File> getAuxilliaryDistributions()
-    {
-        return auxillaryDistributions;
-    }
-
-    @Override
-    public TestCase getTestCase( String key )
-    {
-        return config.getTestCase();
-    }
-
-    @Override
-    public File getMavenRepository()
-    {
-        return mavenRepositoryDirectory;
+                .stream()
+                .map( FileUtil::downloadZips )
+                .collect( Collectors.toList() ) );
+*/
+        return config;
     }
 
 }
