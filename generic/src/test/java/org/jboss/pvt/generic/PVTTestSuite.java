@@ -45,7 +45,8 @@ public class PVTTestSuite implements TestClassFilter
 {
 
     // use this property to specify config file, instead of default pvt.yaml, support http://
-    private static final String PROPERTY_CONFIG = "config";
+    private static final String PROPERTY_CONFIG = "pvt.config";
+    private static final String PROPERTY_VERSION = "pvt.version";
 
     public static String configFile = "pvt.yaml";
 
@@ -58,6 +59,8 @@ public class PVTTestSuite implements TestClassFilter
     }
 
     private void init() throws PVTSystemException {
+
+
         if(System.getProperty(PROPERTY_CONFIG) != null && !System.getProperty(PROPERTY_CONFIG).trim().isEmpty()) {
             configFile = System.getProperty(PROPERTY_CONFIG).trim();
         }
@@ -76,6 +79,11 @@ public class PVTTestSuite implements TestClassFilter
         }
         logger.info("Config file loaded: " + confFile);
         configuration = new YAMLConfigurationLoader().loadConfig(confFile);
+
+        if(System.getProperty(PROPERTY_VERSION) != null && !System.getProperty(PROPERTY_VERSION).trim().isEmpty()) {
+            // override the version defined in config file
+            configuration.setVersion(System.getProperty(PROPERTY_VERSION).trim());
+        }
     }
 
     public static Configuration getConfiguration(){
