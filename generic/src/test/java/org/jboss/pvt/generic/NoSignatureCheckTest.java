@@ -33,7 +33,7 @@ public class NoSignatureCheckTest extends PVTSuperTestCase{
 //    TemporaryFolder tf = new TemporaryFolder();
 
     @Test
-    public void testSign() throws Exception{
+    public void testNoSignature() throws Exception{
         assertTrue(test());
     }
 
