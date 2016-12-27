@@ -26,7 +26,7 @@ public class VersionFormatCheckValidator extends AbstractJarsValidator {
         if(params.containsKey(PARAM_FORMAT)){
             format = params.get(PARAM_FORMAT).trim();
         }
-        return jarFile.getName().matches(format);
+        return jarFile.getAbsolutePath().matches(format);
     }
 
 }

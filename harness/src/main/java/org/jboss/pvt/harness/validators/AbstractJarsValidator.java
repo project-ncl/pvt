@@ -38,7 +38,7 @@ public abstract class AbstractJarsValidator implements Validator {
                     filterJars.add(jarFile);
                 }
             }
-            logger.warn("Filtered jars from  " + resource + ": " + Arrays.toString(filterJars.toArray()));
+            logger.warn("Filtered jars in resource " + resource + ": " + Arrays.toString(filterJars.toArray()));
 
             List<File> passedJars = new ArrayList<>();
             List<File> notPassedJars = new ArrayList<>();
@@ -54,8 +54,8 @@ public abstract class AbstractJarsValidator implements Validator {
                     }
                 }
             }
-            logger.warn("Not passed: " + Arrays.toString(notPassedJars.toArray()));
-            logger.warn("Passed: " + Arrays.toString(passedJars.toArray()));
+            logger.warn("Not passed jars in resource " + resource + ": " + Arrays.toString(notPassedJars.toArray()));
+            logger.warn("Passed jars in resource " + resource + ": " + Arrays.toString(passedJars.toArray()));
         }
         logger.info("VALIDATION RESULT: passed=" + passed);
         return passed;
@@ -66,7 +66,7 @@ public abstract class AbstractJarsValidator implements Validator {
             if(filter.trim().isEmpty()) {
                 continue;
             }
-            if(jarFile.getName().matches(filter)) {
+            if(jarFile.getAbsolutePath().matches(filter)) {
                 return true;
             }
         }
