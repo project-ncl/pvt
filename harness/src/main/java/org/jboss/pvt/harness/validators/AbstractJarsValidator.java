@@ -55,7 +55,7 @@ public abstract class AbstractJarsValidator implements Validator {
                 }
             }
             logger.warn("Not passed jars in resource " + resource + ": " + Arrays.toString(notPassedJars.toArray()));
-            logger.warn("Passed jars in resource " + resource + ": " + Arrays.toString(passedJars.toArray()));
+            logger.debug("Passed jars in resource " + resource + ": " + Arrays.toString(passedJars.toArray()));
         }
         logger.info("VALIDATION RESULT: passed=" + passed);
         return passed;
