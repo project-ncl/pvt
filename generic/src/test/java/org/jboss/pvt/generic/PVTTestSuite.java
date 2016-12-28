@@ -96,7 +96,7 @@ public class PVTTestSuite implements TestClassFilter
     {
         for(String testClassName : configuration.getTests().keySet() ){
             if(s.equals(testClassName)) {
-                System.out.println ("### DEBUG: Including " + s + ':' + s.endsWith( "Test" ));
+                logger.info ("Including Test case " + s);
                 return true;
             }
         }
@@ -109,7 +109,7 @@ public class PVTTestSuite implements TestClassFilter
     {
         for(String testClassName : configuration.getTests().keySet() ){
             if(aClass.getName().equals(testClassName)) {
-                System.out.println ("### DEBUG: Including class " + aClass);
+                logger.info ("Including Test case class " + aClass.getName());
                 return aClass.getAnnotation(Ignore.class) == null;
             }
         }
