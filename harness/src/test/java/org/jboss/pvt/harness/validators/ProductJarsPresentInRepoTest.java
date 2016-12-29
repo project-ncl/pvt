@@ -16,36 +16,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class ProductJarsPresentInRepoTest
 {
-/*
-    @Rule
-    public final ProvideSystemProperty provideSystemProperty  = new ProvideSystemProperty
-                    ( "PVTCFG", this.getClass().getResource( "/pvt.yaml").getFile().toString());
-
-    @Rule
-    public TestName testName = new TestName();
-
-    private ProductJarsPresentInRepoValidator pjp;
-
-    public ConfigurationLoader tc;
-
-    @Before
-    public void setUp() throws Exception
-    {
-        tc = new YAMLConfigurationLoader();
-        pjp = new ProductJarsPresentInRepoValidator();
-    }
-
     @Test
-    public void validate() throws Exception
-    {
-        assertTrue( pjp.validate(tc) );
-    }
-
-    @Test
-    @Ignore
-    public void initialiseFilter() throws Exception
-    {
+    public void test(){
 
     }
-*/
 }
