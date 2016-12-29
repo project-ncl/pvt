@@ -52,7 +52,7 @@ public abstract class PVTSuperTestCase {
 
         List<String> fullpathResources = new ArrayList<>();
         for(String resource : resources) {
-            String fullpath = configuration.getDistrepo() + "/" + resource;
+            String fullpath = configuration.getDistrepo() + (configuration.getDistrepo().endsWith("/") ? "" : "/") + resource;
             fullpath = fullpath.replace("%{version}", configuration.getVersion());
             fullpathResources.add(fullpath);
         }
