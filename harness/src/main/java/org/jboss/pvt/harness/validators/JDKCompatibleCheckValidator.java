@@ -20,8 +20,8 @@ public class JDKCompatibleCheckValidator extends AbstractJarsValidator {
 
     private final Logger logger = LoggerFactory.getLogger( getClass() );
 
-    private final static String PARAM_MIN_VERSION = "min-version";
-    private final static String PARAM_MAX_VERSION = "max-version";
+    public final static String PARAM_MIN_VERSION = "min-version";
+    public final static String PARAM_MAX_VERSION = "max-version";
 
 
     @Override

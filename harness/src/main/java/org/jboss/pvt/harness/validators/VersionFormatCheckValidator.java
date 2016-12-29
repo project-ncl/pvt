@@ -18,7 +18,7 @@ public class VersionFormatCheckValidator extends AbstractJarsValidator {
 
     private static final String DEFAULT_FORMAT = ".*[\\.-]redhat-\\d+.*";
 
-    private static final String PARAM_FORMAT = "format";
+    public static final String PARAM_FORMAT = "format";
 
     @Override
     protected boolean validate(File jarFile, Map<String, String> params) throws Exception {
