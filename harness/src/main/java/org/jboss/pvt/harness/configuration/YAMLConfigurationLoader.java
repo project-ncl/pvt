@@ -37,11 +37,6 @@ public class YAMLConfigurationLoader implements ConfigurationLoader
 
     protected Configuration config;
 
-    private File distributionDirectory;
-    private File sourceDistributionDirectory;
-    private File mavenRepositoryDirectory;
-    private List<File> auxillaryDistributions;
-
     public YAMLConfigurationLoader()
     {
     }
@@ -72,17 +67,6 @@ public class YAMLConfigurationLoader implements ConfigurationLoader
                 throw new PVTSystemException( "Unable to load yaml file.", e );
             }
 
-/*
-        logger.debug( "Established distribution {}, maven repository {}, and product of {}", config.getDistribution(), config.getMavenRepository(), config.getProduct());
-        distributionDirectory = downloadZips( config.getDistribution());
-        mavenRepositoryDirectory = downloadZips( config.getMavenRepository());
-        sourceDistributionDirectory = downloadZips( config.getSourceDistribution());
-        auxillaryDistributions = new ArrayList<>(  );
-        auxillaryDistributions.addAll( config.getAuxilliaryDistributions()
-                .stream()
-                .map( FileUtil::downloadZips )
-                .collect( Collectors.toList() ) );
-*/
         return config;
     }
 
