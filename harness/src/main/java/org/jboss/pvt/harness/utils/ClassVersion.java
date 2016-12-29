@@ -1,6 +1,7 @@
 package org.jboss.pvt.harness.utils;
 
 import org.jboss.pvt.harness.exception.PVTException;
+import org.jboss.pvt.harness.exception.PVTSystemException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,12 +34,12 @@ public enum ClassVersion
         return this.byteValue;
     }
 
-    public static ClassVersion parseInt(int value ) throws PVTException
+    public static ClassVersion parseInt(int value ) throws PVTSystemException
     {
         ClassVersion result = map.get( value );
         if ( result == null )
         {
-            throw new PVTException( "Class version type not found for " + value );
+            throw new PVTSystemException( "Class version type not found for " + value );
         }
         return result;
     }

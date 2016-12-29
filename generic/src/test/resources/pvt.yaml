@@ -1,0 +1,19 @@
+#
+# Sample PVT Configuration File.
+#
+
+product: JBOSSAS
+version: 6.1.0.Final
+distrepo: http://central.maven.org/maven2/org/jboss/jbossas/jboss-as-distribution/%{version}/
+tests:
+  org.jboss.pvt.generic.NoSignatureCheckTest:
+    resources: ['jboss-as-distribution-%{version}.zip']
+    filters: ['.*bouncycastle/.*']
+  org.jboss.pvt.generic.JDKCompatibleCheckTest:
+    resources: ['jboss-as-distribution-%{version}.zip']
+    filters: ['.*example.*']
+    params: {min-version: '0', 'max-version':'52'}
+  org.jboss.pvt.generic.VersionFormatTest:
+    resources: ['jboss-as-distribution-%{version}.zip']
+    filters: ['.*jboss-modules.jar.*', '.*/client/.*', '.*/bin/.*']
+    params: {'format':'.*\d+.*'}

@@ -23,7 +23,6 @@ public class ClassVersionInspectorTest
     @Rule
     public TemporaryFolder tf = new TemporaryFolder(  );
 
-
     @Test
     public void checkClassVersionTest() throws PVTException
     {

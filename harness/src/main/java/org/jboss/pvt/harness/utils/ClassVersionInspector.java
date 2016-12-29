@@ -58,7 +58,7 @@ public class ClassVersionInspector
             int minor = in.readUnsignedShort();
             int major = in.readUnsignedShort();
 
-            logger.debug ("Found class major {} and minor {} ", major, minor);
+//            logger.debug ("Found class major {} and minor {} ", major, minor);
 
             return ClassVersion.parseInt( ( major + minor ) );
         }

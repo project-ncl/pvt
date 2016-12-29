@@ -16,26 +16,14 @@
 
 package org.jboss.pvt.harness.configuration;
 
-import org.jboss.pvt.harness.configuration.pojo.Product;
-import org.jboss.pvt.harness.configuration.pojo.TestCase;
+import org.jboss.pvt.harness.configuration.pojo.Configuration;
 
 import java.io.File;
-import java.util.List;
 
 /**
  * Created by rnc on 12/08/16.
  */
-public interface PVTConfiguration
+public interface ConfigurationLoader
 {
-    Product getProduct();
-
-    File getDistributionDirectory();
-    
-    File getSourceDistribution();
-
-    List<File> getAuxilliaryDistributions();
-
-    TestCase getTestCase ( String key);
-
-    File getMavenRepository();
+    Configuration loadConfig(File configFile);
 }

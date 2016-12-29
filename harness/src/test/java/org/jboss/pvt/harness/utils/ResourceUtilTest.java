@@ -26,13 +26,13 @@ import org.zeroturnaround.zip.ZipUtil;
 import java.io.File;
 import java.io.IOException;
 
-import static org.jboss.pvt.harness.utils.FileUtil.downloadZips;
+import static org.jboss.pvt.harness.utils.ResourceUtil.downloadZips;
 import static org.junit.Assert.*;
 
 /**
  * Created by rnc on 02/10/16.
  */
-public class FileUtilTest
+public class ResourceUtilTest
 {
     @Rule
     public TemporaryFolder tf = new TemporaryFolder(  );

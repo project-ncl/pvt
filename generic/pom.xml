@@ -68,11 +68,8 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <includes>
-            <include>**/GenericTestSuite.class</include>
+            <include>**/PVTTestSuite.class</include>
           </includes>
-          <systemPropertyVariables>
-            <PVTCFG>${PVTCFG}</PVTCFG>
-          </systemPropertyVariables>
         </configuration>
       </plugin>
     </plugins>
