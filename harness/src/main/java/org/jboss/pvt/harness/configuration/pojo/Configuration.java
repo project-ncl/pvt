@@ -52,7 +52,7 @@ public class Configuration
     }
 
     public String getDistrepo() {
-        return distrepo;
+        return distrepo.replace("%{version}", getVersion());
     }
 
     public void setDistrepo(String distrepo) {
