@@ -12,7 +12,7 @@ tests:
   org.jboss.pvt.generic.JDKCompatibleCheckTest:
     resources: ['jboss-as-distribution-%{version}.zip']
     filters: ['.*example.*']
-    params: {min-version: '48', 'max-version':'52'}
+    params: {min-version: '0', 'max-version':'52'}
   org.jboss.pvt.generic.VersionFormatTest:
     resources: ['jboss-as-distribution-%{version}.zip']
     filters: ['.*jboss-modules.jar.*', '.*/client/.*', '.*/bin/.*']
