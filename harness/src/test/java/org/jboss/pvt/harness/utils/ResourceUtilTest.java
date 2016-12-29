@@ -36,7 +36,6 @@ public class ResourceUtilTest
 {
     @Rule
     public TemporaryFolder tf = new TemporaryFolder(  );
-/*
 
     @Test(expected = PVTSystemException.class)
     public void invalidPathTest ()
@@ -75,6 +74,5 @@ public class ResourceUtilTest
         assertTrue( located.exists() );
         assertTrue( FileUtils.listFiles (located, null, true).size() > 0 );
     }
-*/
 
 }
