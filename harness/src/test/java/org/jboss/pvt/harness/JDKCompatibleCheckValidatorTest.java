@@ -26,6 +26,6 @@ public class JDKCompatibleCheckValidatorTest {
         params.put(JDKCompatibleCheckValidator.PARAM_MIN_VERSION, "0");
         params.put(JDKCompatibleCheckValidator.PARAM_MAX_VERSION, "52");
         Assert.assertTrue(test.validate(Arrays.asList(new String[]{"https://github.com/release-engineering/pom-manipulation-ext/archive/pom-manipulation-parent-2.4.zip"}),
-                Collections.emptyList(), params));
+                Collections.emptyList(), params).isValid());
     }
 }

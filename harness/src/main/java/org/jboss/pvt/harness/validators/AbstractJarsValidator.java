@@ -22,8 +22,12 @@ public abstract class AbstractJarsValidator implements Validator {
     protected final Logger logger = LoggerFactory.getLogger( getClass() );
 
     @Override
-    public boolean validate(List<String> resources, List<String> filters, Map<String, String> params) throws Exception {
+    public ValidationResult validate(List<String> resources, List<String> filters, Map<String, String> params) throws Exception {
         boolean passed = true;
+        long startTime = System.currentTimeMillis();
+        List<File> passedJars = new ArrayList<>();
+        List<File> notPassedJars = new ArrayList<>();
+        List<File> filterJars = new ArrayList<>();
         for(String resource : resources) {
             File exploredDir = ResourceUtil.downloadZips(resource);
             Collection<File> jarFiles = DirUtils.listFilesRecursively( exploredDir, new FileFilter() {
@@ -32,16 +36,12 @@ public abstract class AbstractJarsValidator implements Validator {
                 }
             });
 
-            List<File> filterJars = new ArrayList<>();
             for(File jarFile : jarFiles) {
                 if (filter(jarFile, filters)) {
                     filterJars.add(jarFile);
                 }
             }
-            logger.warn("Filtered jars in resource " + resource + ": " + Arrays.toString(filterJars.toArray()));
 
-            List<File> passedJars = new ArrayList<>();
-            List<File> notPassedJars = new ArrayList<>();
             for(File jarFile : jarFiles) {
                 if (!filterJars.contains(jarFile)) {
                     boolean _passed = validate(jarFile, params);
@@ -54,11 +54,15 @@ public abstract class AbstractJarsValidator implements Validator {
                     }
                 }
             }
-            logger.warn("Not passed jars in resource " + resource + ": " + Arrays.toString(notPassedJars.toArray()));
-            logger.debug("Passed jars in resource " + resource + ": " + Arrays.toString(passedJars.toArray()));
         }
+        logger.warn("Filtered jars: " + Arrays.toString(filterJars.toArray()));
+        logger.warn("Not passed jars: " + Arrays.toString(notPassedJars.toArray()));
+        logger.debug("Passed jars: " + Arrays.toString(passedJars.toArray()));
         logger.info("VALIDATION RESULT: passed=" + passed);
-        return passed;
+        return passed ?
+                ValidationResult.pass(System.currentTimeMillis()-startTime, toStringList(filterJars), toStringList(passedJars))
+                :
+                ValidationResult.notPass(System.currentTimeMillis()-startTime, toStringList(filterJars), toStringList(passedJars), toStringList(notPassedJars));
     }
 
     public boolean filter(File jarFile,  List<String> filters){
@@ -71,6 +75,14 @@ public abstract class AbstractJarsValidator implements Validator {
             }
         }
         return false;
+    }
+
+    private static List<String> toStringList(List<File> files){
+        List<String> list = new ArrayList<>(files.size());
+        for(File file : files){
+            list.add(file.getPath());
+        }
+        return list;
     }
 
     protected abstract boolean validate(File jarFile,  Map<String, String> params) throws Exception;
