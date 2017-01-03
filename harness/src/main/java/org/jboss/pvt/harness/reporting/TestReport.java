@@ -16,9 +16,6 @@ public class TestReport {
     private TestConfig testConfig;
     private ValidationResult validationResult;
 
-    // execution time in seconds
-    private long during;
-
     public TestReport(String testCase, TestConfig testConfig) {
         this.testCase = testCase;
         this.testConfig = testConfig;
@@ -32,14 +29,6 @@ public class TestReport {
         return testConfig;
     }
 
-    public long getDuring() {
-        return during;
-    }
-
-    public void setDuring(long during) {
-        this.during = during;
-    }
-
     public ValidationResult getValidationResult() {
         return validationResult;
     }
@@ -48,12 +37,26 @@ public class TestReport {
         this.validationResult = validationResult;
     }
 
+    public long getDuring() {
+        if(validationResult != null) {
+            return validationResult.getDuring();
+        }
+        else {
+            return 0;
+        }
+    }
+
     @Override
     public String toString() {
-        return "TestReport{" +
-                "testCase='" + testCase + '\'' +
-                ", during=" + during +
-                ", validationResult=" + validationResult +
-                '}';
+        String s = "TestReport{" +
+                "testCase='" + testCase + '\'';
+
+        if(validationResult != null) {
+            s+= ", validationResult='" + validationResult + "\'";
+        }
+
+        s +='}';
+        return s;
     }
+
 }

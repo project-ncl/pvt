@@ -17,9 +17,6 @@ public class Report {
     private Configuration configuration;
     private Map<String, TestReport> testReports = new HashMap<>();
 
-    // execution time in seconds
-    private long during;
-
     public Report(Configuration configuration) {
         this.configuration = configuration;
     }
@@ -38,23 +35,22 @@ public class Report {
 
     public void addTestReport(TestReport testReport){
         this.testReports.put(testReport.getTestCase(), testReport);
-        this.during += testReport.getDuring();
     }
 
     public long getDuring() {
+        long during = 0;
+        for(TestReport testReport : testReports.values()){
+            during += testReport.getDuring();
+        }
         return during;
-    }
-
-    public void setDuring(long during) {
-        this.during = during;
     }
 
 
     @Override
     public String toString() {
         return "Report{" +
-                "during=" + during +
-                ", testReports=" + testReports +
+                "during=" + getDuring() +
+                "ms, testReports=" + testReports +
                 '}';
     }
 }
