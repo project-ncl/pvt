@@ -59,6 +59,7 @@
       <artifactId>junit-dynamicsuite</artifactId>
       <scope>test</scope>
     </dependency>
+
   </dependencies>
 
   <build>

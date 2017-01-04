@@ -22,6 +22,7 @@ import org.jboss.pvt.harness.configuration.pojo.Configuration;
 import org.jboss.pvt.harness.configuration.pojo.TestConfig;
 import org.jboss.pvt.harness.exception.PVTSystemException;
 import org.jboss.pvt.harness.reporting.Report;
+import org.jboss.pvt.harness.reporting.Reporter;
 import org.jboss.pvt.harness.reporting.TestReport;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -137,7 +138,12 @@ public class PVTTestSuite implements TestClassFilter
 
     @AfterClass
     public static void tearDown() {
-        logger.info(report.toString());
+        try {
+            Reporter.getFreemarkerReporter().render(report);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static TestReport getTestReport(Class testClass) {
