@@ -26,6 +26,7 @@
   <modules>
     <module>harness</module>
     <module>generic</module>
+    <module>handover</module>
   </modules>
 
   <dependencyManagement>
@@ -100,6 +101,11 @@
         <version>1.9</version>
       </dependency>
 
+      <dependency>
+        <groupId>org.freemarker</groupId>
+        <artifactId>freemarker</artifactId>
+        <version>2.3.22</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
