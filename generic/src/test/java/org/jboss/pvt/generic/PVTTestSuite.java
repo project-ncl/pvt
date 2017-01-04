@@ -147,6 +147,6 @@ public class PVTTestSuite implements TestClassFilter
     }
 
     public static TestReport getTestReport(Class testClass) {
-        return report.getTestReports().get(testClass.getName());
+        return report.getTestReport(testClass);
     }
 }

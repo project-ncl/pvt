@@ -1,12 +1,8 @@
 package org.jboss.pvt.harness.reporting;
 
 import org.jboss.pvt.harness.configuration.pojo.Configuration;
-import org.jboss.pvt.harness.configuration.pojo.TestConfig;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Report for a TestSuite
@@ -15,7 +11,7 @@ import java.util.Map;
  */
 public class Report {
     private Configuration configuration;
-    private Map<String, TestReport> testReports = new HashMap<>();
+    private Map<String, TestReport> testReports = new TreeMap<>();
 
     public Report(Configuration configuration) {
         this.configuration = configuration;
@@ -29,6 +25,13 @@ public class Report {
         return testReports;
     }
 
+    public TestReport getTestReport(Class testClazz) {
+        return getTestReport(testClazz.getName());
+    }
+
+    public TestReport getTestReport(String testClazz) {
+        return testReports.get(testClazz);
+    }
     public void setTestReports(Map<String, TestReport> testReports) {
         this.testReports = testReports;
     }
@@ -45,6 +48,29 @@ public class Report {
         return during;
     }
 
+    public int getCount() {
+        return testReports.size();
+    }
+
+    public int getPassed(){
+        int passed = 0;
+        for(TestReport testReport : testReports.values()) {
+            if(testReport.getValidationResult().isValid()) {
+                passed++;
+            }
+        }
+        return passed;
+    }
+
+    public int getNotPassed(){
+        int notPassed = 0;
+        for(TestReport testReport : testReports.values()) {
+            if(!testReport.getValidationResult().isValid()) {
+                notPassed++;
+            }
+        }
+        return notPassed;
+    }
 
     @Override
     public String toString() {

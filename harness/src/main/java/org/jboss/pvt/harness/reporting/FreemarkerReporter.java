@@ -3,9 +3,11 @@ package org.jboss.pvt.harness.reporting;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
+import freemarker.template.ObjectWrapper;
 import freemarker.template.Template;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
@@ -20,10 +22,11 @@ public class FreemarkerReporter extends Reporter{
     public void render(Report report, File outFile) throws Exception {
         Configuration cfg = new Configuration();
         cfg.setTemplateLoader(new ClassTemplateLoader());
+        cfg.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER);
         Template temp = cfg.getTemplate(DEFAULT_TEMPLATE);
         Map root = new HashMap();
         root.put("report", report);
-        Writer out = new OutputStreamWriter(System.out);
+        Writer out = new FileWriter(outFile);
         temp.process(root, out);
         out.flush();
     }

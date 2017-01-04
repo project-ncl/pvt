@@ -40,41 +40,78 @@
         <div class="col-sm-12">
             <p style="padding: 10px 0">
                 <b>Summary:</b>
-                <span class="label label-primary">Tests:</span> <span class="badge">3</span>,
-                <span class="label label-success">Passed:</span> <span class="badge">1</span>,
-                <span class="label label-danger">Not passed:</span> <span class="badge">2</span>,
+                <span class="label label-primary">Tests:</span> <span class="badge">${report.count}</span>,
+                <span class="label label-success">Passed:</span> <span class="badge">${report.passed}</span>,
+                <span class="label label-danger">Not passed:</span> <span class="badge">${report.notPassed}</span>,
+                <span>Time consumed: ${report.during}ms</span>
                 &nbsp;&nbsp;&nbsp;&nbsp;Track this PVT test, <a href="#">JIRA ISSUE</a> .
             </p>
         </div>
 
         <div class="col-sm-12">
-            <!-- Nav tabs -->
             <ul id="testTab" class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab" style="color: #5cb85c">JDKCompatibleTest</a></li>
-                <li role="presentation"><a href="#profile" role="tab" data-toggle="tab" style="color: #d9534f">VersionFormatTest</a></li>
+                <#list report.getTestReports().keySet() as testName>
+                    <li role="presentation" <#if testName_index ==0>class="active"</#if>><a href="#${testName_index}" role="tab" data-toggle="tab" style="color: #5cb85c">${testName}</a></li>
+                </#list>
             </ul>
 
             <!-- Tab panes -->
-            <div class="tab-content" style="border: solid 1px #ddd;border-top: 0;">
-                <div role="tabpanel" class="tab-pane active" id="home">
-                    <p>JDKCompatibleTest resources:</p>
-                    <p>JDKCompatibleTest resources:</p>
-                    <p>JDKCompatibleTest resources:</p>
-                    <p>JDKCompatibleTest resources:</p>
-                    <p>JDKCompatibleTest resources:</p>
-                    <p>JDKCompatibleTest resources:</p>
+            <div class="tab-content" style="border: solid 1px #ddd;border-top: 0; padding: 15px">
+                <#list report.getTestReports().keySet() as testName>
+                    <#assign testReport = report.getTestReport(testName)/>
+                    <div role="tabpanel" class="tab-pane <#if testName_index ==0>active</#if>" id="${testName_index}">
+                        <p>Test Config: ${testReport.testConfig.toString()}</p>
+                        <p>Time consumed: ${testReport.during}ms</p>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-condensed table-bordered table-striped">
+                                <caption>Filtered Out: (${testReport.validationResult.filtered.size()})</caption>
+                                <thead>
+                                <tr style="font-weight: bold" class="active">
+                                    <td>Resources</td>
+                                    <td style="width: 10%">Status</td>
+                                </tr>
+                                </thead>
+                                <#list testReport.validationResult.filtered as filter>
+                                <tr>
+                                    <td>${filter}</td>
+                                    <td><span class="label label-warning">filtered</span></td>
+                                </tr>
+                                </#list>
+                            </table>
+                            <table class="table table-hover table-condensed table-bordered table-striped">
+                                <caption>Not Passed: (${testReport.validationResult.notPassed.size()})</caption>
+                                <thead>
+                                <tr style="font-weight: bold" class="danger">
+                                    <td>Resources</td>
+                                    <td style="width: 10%">Status</td>
+                                </tr>
+                                </thead>
+                                <#list testReport.validationResult.notPassed as filter>
+                                    <tr>
+                                        <td>${filter}</td>
+                                        <td><span class="label label-danger">passed</span></td>
+                                    </tr>
+                                </#list>
+                            </table>
+                            <table class="table table-hover table-condensed table-bordered table-striped">
+                                <caption>Passed: (${testReport.validationResult.passed.size()})</caption>
+                                <thead>
+                                <tr style="font-weight: bold" class="success">
+                                    <td>Resources</td>
+                                    <td style="width: 10%">Status</td>
+                                </tr>
+                                </thead>
+                                <#list testReport.validationResult.passed as filter>
+                                    <tr>
+                                        <td>${filter}</td>
+                                        <td><span class="label label-success">passed</span></td>
+                                    </tr>
+                                </#list>
+                            </table>
 
-                </div>
-                <div role="tabpanel" class="tab-pane" id="profile">
-                    <p>VersionFormatTest resources:</p>
-                    <p>VersionFormatTest resources:</p>
-                    <p>VersionFormatTest resources:</p>
-                    <p>VersionFormatTest resources:</p>
-                    <p>VersionFormatTest resources:</p>
-                    <p>VersionFormatTest resources:</p>
-                    <p>VersionFormatTest resources:</p>
-                    <p>VersionFormatTest resources:</p>
-                </div>
+                        </div>
+                    </div>
+                </#list>
             </div>
         </div>
     </div>
