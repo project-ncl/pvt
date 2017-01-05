@@ -1,5 +1,8 @@
 package org.jboss.pvt.harness.reporting;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -19,6 +22,8 @@ public abstract class Reporter {
     private String outFile;
 
     private final static Reporter freemarkerReport = new FreemarkerReporter();
+
+    protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public static Reporter getFreemarkerReporter(){
         return freemarkerReport;
@@ -40,7 +45,9 @@ public abstract class Reporter {
     }
 
     public void render(Report report) throws Exception{
-        render(report, new File(getOutFile(report)));
+        String file = getOutFile(report);
+        logger.info("Generating report to " + file);
+        render(report, new File(file));
     }
 
     public abstract void render(Report report, File outFile) throws Exception;

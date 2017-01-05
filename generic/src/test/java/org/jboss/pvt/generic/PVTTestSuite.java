@@ -138,7 +138,9 @@ public class PVTTestSuite implements TestClassFilter
 
     @AfterClass
     public static void tearDown() {
+        logger.info("TestSuite tearing down");
         try {
+            logger.info("Report rendering");
             Reporter.getFreemarkerReporter().render(report);
         }
         catch (Exception e) {
