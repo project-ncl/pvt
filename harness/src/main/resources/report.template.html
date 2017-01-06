@@ -51,7 +51,8 @@
         <div class="col-sm-12">
             <ul id="testTab" class="nav nav-tabs" role="tablist">
                 <#list report.getTestReports().keySet() as testName>
-                    <li role="presentation" <#if testName_index ==0>class="active"</#if>><a href="#${testName_index}" role="tab" data-toggle="tab" style="color: #5cb85c">${testName}</a></li>
+                    <#assign lastDotIndex=testName.lastIndexOf(".") />
+                    <li role="presentation" <#if testName_index ==0>class="active"</#if>><a href="#${testName_index}" role="tab" data-toggle="tab" style="color: #5cb85c">${testName.substring(lastDotIndex+1)}</a></li>
                 </#list>
             </ul>
 
@@ -60,8 +61,13 @@
                 <#list report.getTestReports().keySet() as testName>
                     <#assign testReport = report.getTestReport(testName)/>
                     <div role="tabpanel" class="tab-pane <#if testName_index ==0>active</#if>" id="${testName_index}">
-                        <p>Test Config: ${testReport.testConfig.toString()}</p>
-                        <p>Time consumed: ${testReport.during}ms</p>
+                        <p><b>Time consumed:</b> ${testReport.during}ms</p>
+                        <p><b>Testcase Class:</b> ${testName}</p>
+                        <p><b>Test Config:</b> <br/>
+                            <span style="padding-left: 100px">resources: ${testReport.testConfig.resources}</span> <br/>
+                            <span style="padding-left: 100px">filters: ${testReport.testConfig.filters}</span>  <br/>
+                            <span style="padding-left: 100px">params: ${testReport.testConfig.params}</span>  <br/>
+                        </p>
                         <div class="table-responsive">
                             <table class="table table-hover table-condensed table-bordered table-striped">
                                 <caption>Filtered Out: (${testReport.validationResult.filtered.size()})</caption>
