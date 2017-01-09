@@ -73,13 +73,20 @@
                                 <caption>Filtered Out: (${testReport.validationResult.filtered.size()})</caption>
                                 <thead>
                                 <tr style="font-weight: bold" class="active">
-                                    <td>Resources</td>
+                                    <td>File name</td>
+                                    <td>Path</td>
                                     <td style="width: 10%">Status</td>
                                 </tr>
                                 </thead>
-                                <#list testReport.validationResult.filtered as filter>
+                                <#list testReport.validationResult.groupedFiltered.entrySet() as filterEntry>
                                 <tr>
-                                    <td>${filter}</td>
+                                    <td>${filterEntry.key}</td>
+                                    <td>
+                                        <#list filterEntry.value as path>
+                                            ${path}
+                                            <#if path_has_next></#if><br/></if>
+                                        </#list>
+                                    </td>
                                     <td><span class="label label-warning">filtered</span></td>
                                 </tr>
                                 </#list>
@@ -88,14 +95,21 @@
                                 <caption>Not Passed: (${testReport.validationResult.notPassed.size()})</caption>
                                 <thead>
                                 <tr style="font-weight: bold" class="danger">
-                                    <td>Resources</td>
+                                    <td>File name</td>
+                                    <td>Path</td>
                                     <td style="width: 10%">Status</td>
                                 </tr>
                                 </thead>
-                                <#list testReport.validationResult.notPassed as filter>
+                                <#list testReport.validationResult.groupedNotPassed.entrySet() as filterEntry>
                                     <tr>
-                                        <td>${filter}</td>
-                                        <td><span class="label label-danger">notPassed</span></td>
+                                        <td>${filterEntry.key}</td>
+                                        <td>
+                                            <#list filterEntry.value as path>
+                                                ${path}
+                                                <#if path_has_next></#if><br/></if>
+                                            </#list>
+                                        </td>
+                                        <td><span class="label label-warning">filtered</span></td>
                                     </tr>
                                 </#list>
                             </table>
@@ -103,7 +117,7 @@
                                 <caption>Passed: (${testReport.validationResult.passed.size()})</caption>
                                 <thead>
                                 <tr style="font-weight: bold" class="success">
-                                    <td>Resources</td>
+                                    <td>File</td>
                                     <td style="width: 10%">Status</td>
                                 </tr>
                                 </thead>

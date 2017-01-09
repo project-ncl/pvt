@@ -60,9 +60,9 @@ public abstract class AbstractJarsValidator implements Validator {
         logger.debug("Passed jars: " + Arrays.toString(passedJars.toArray()));
         logger.info("VALIDATION RESULT: passed=" + passed);
         return passed ?
-                ValidationResult.pass(System.currentTimeMillis()-startTime, toStringList(filterJars), toStringList(passedJars))
+                ValidationResult.pass(System.currentTimeMillis()-startTime, (filterJars), (passedJars))
                 :
-                ValidationResult.notPass(System.currentTimeMillis()-startTime, toStringList(filterJars), toStringList(passedJars), toStringList(notPassedJars));
+                ValidationResult.notPass(System.currentTimeMillis()-startTime, (filterJars), (passedJars), (notPassedJars));
     }
 
     public boolean filter(File jarFile,  List<String> filters){
