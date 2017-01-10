@@ -46,6 +46,10 @@ public class TestReport {
         }
     }
 
+    public boolean isValid(){
+        return validationResult.isValid();
+    }
+
     @Override
     public String toString() {
         String s = "TestReport{" +

@@ -39,28 +39,62 @@
     <div class="row">
         <div class="col-sm-12">
             <p style="padding: 10px 0">
-                <b>Summary:</b>
-                <span class="label label-primary">Tests:</span> <span class="badge">${report.count}</span>,
-                <span class="label label-success">Passed:</span> <span class="badge">${report.passed}</span>,
-                <span class="label label-danger">Not passed:</span> <span class="badge">${report.notPassed}</span>,
-                <span>Time consumed: ${report.during}ms</span>
                 &nbsp;&nbsp;&nbsp;&nbsp;Track this PVT test, <a href="#">JIRA ISSUE</a> .
             </p>
         </div>
 
         <div class="col-sm-12">
             <ul id="testTab" class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#summary" role="tab" data-toggle="tab" style="color: <#if report.notPassed==0>#5cb85c<#else>#d9534f</#if>">Summary</a></li>
                 <#list report.getTestReports().keySet() as testName>
                     <#assign lastDotIndex=testName.lastIndexOf(".") />
-                    <li role="presentation" <#if testName_index ==0>class="active"</#if>><a href="#${testName_index}" role="tab" data-toggle="tab" style="color: #5cb85c">${testName.substring(lastDotIndex+1)}</a></li>
+                    <li role="presentation"><a href="#${testName_index}" role="tab" data-toggle="tab" style="color: <#if report.getTestReport(testName).isValid()>#5cb85c<#else>#d9534f</#if>">${testName.substring(lastDotIndex+1)}</a></li>
                 </#list>
             </ul>
 
             <!-- Tab panes -->
             <div class="tab-content" style="border: solid 1px #ddd;border-top: 0; padding: 15px">
+                <div role="tabpanel" class="tab-pane active" id="summary">
+                    <p style="padding: 10px 0">
+                        <!--<b>Summary:</b>-->
+                        <span class="label label-primary">Tests:</span> <span class="badge">${report.count}</span>,
+                        <span class="label label-success">Passed:</span> <span class="badge">${report.passed}</span>,
+                        <span class="label label-danger">Not passed:</span> <span class="badge">${report.notPassed}</span>,
+                        <span>Time consumed: ${report.during}ms</span>
+                    </p>
+                    <#if report.notPassedTestReports?has_content>
+                        <#list report.getNotPassedTestReports().keySet() as testName>
+                        <#assign testReport = report.getTestReport(testName)/>
+                        <table class="table table-hover table-condensed table-bordered table-striped">
+                            <caption>Not Passed in ${testName})</caption>
+                            <thead>
+                            <tr style="font-weight: bold" class="danger">
+                                <td>File name</td>
+                                <td>Path</td>
+                                <td style="width: 10%">Status</td>
+                            </tr>
+                            </thead>
+                            <#list testReport.validationResult.groupedNotPassed.entrySet() as filterEntry>
+                                <tr>
+                                    <td>${filterEntry.key}</td>
+                                    <td>
+                                        <#list filterEntry.value as path>
+                                            ${path}
+                                            <#if path_has_next></#if><br/></if>
+                                        </#list>
+                                    </td>
+                                    <td><span class="label label-danger">not_passed</span></td>
+                                </tr>
+                            </#list>
+                        </table>
+                        </#list>
+                    <#else>
+                        All tests passed!
+                    </#if>
+                </div>
                 <#list report.getTestReports().keySet() as testName>
                     <#assign testReport = report.getTestReport(testName)/>
-                    <div role="tabpanel" class="tab-pane <#if testName_index ==0>active</#if>" id="${testName_index}">
+                    <div role="tabpanel" class="tab-pane" id="${testName_index}">
                         <p><b>Time consumed:</b> ${testReport.during}ms</p>
                         <p><b>Testcase Class:</b> ${testName}</p>
                         <p><b>Test Config:</b> <br/>
@@ -109,7 +143,7 @@
                                                 <#if path_has_next></#if><br/></if>
                                             </#list>
                                         </td>
-                                        <td><span class="label label-warning">filtered</span></td>
+                                        <td><span class="label label-danger">not_passed</span></td>
                                     </tr>
                                 </#list>
                             </table>

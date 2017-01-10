@@ -25,6 +25,16 @@ public class Report {
         return testReports;
     }
 
+    public Map<String, TestReport> getNotPassedTestReports() {
+        Map<String, TestReport> notPassedTestReports = new TreeMap<>();
+        for(Map.Entry<String, TestReport> entry : testReports.entrySet()){
+            if(!entry.getValue().isValid()) {
+                notPassedTestReports.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return notPassedTestReports;
+    }
+
     public TestReport getTestReport(Class testClazz) {
         return getTestReport(testClazz.getName());
     }
@@ -32,6 +42,7 @@ public class Report {
     public TestReport getTestReport(String testClazz) {
         return testReports.get(testClazz);
     }
+
     public void setTestReports(Map<String, TestReport> testReports) {
         this.testReports = testReports;
     }
