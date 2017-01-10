@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PVT Report for ${report.configuration.product} ${report.configuration.version}</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $('#testTab a').click(function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            })
+
+        });
+    </script>
+</head>
+
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="head" style="text-align: center">
+                <h2>PVT Report for ${report.configuration.product} ${report.configuration.version} </h2>
+                <h5>Dist ${report.configuration.distrepo}</h5>
+                <h5>Created at ${.now}</h5>
+                <h1 style="border-bottom: solid #eee 1px; width: 98%;margin: 0 auto"></h1>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <p style="padding: 10px 0">
+                &nbsp;&nbsp;&nbsp;&nbsp;Track this PVT test, <a href="#">JIRA ISSUE</a> .
+            </p>
+        </div>
+
+        <div class="col-sm-12">
+            <ul id="testTab" class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#summary" role="tab" data-toggle="tab" style="color: <#if report.notPassed==0>#5cb85c<#else>#d9534f</#if>">Summary</a></li>
+                <#list report.getTestReports().keySet() as testName>
+                    <#assign lastDotIndex=testName.lastIndexOf(".") />
+                    <li role="presentation"><a href="#${testName_index}" role="tab" data-toggle="tab" style="color: <#if report.getTestReport(testName).isValid()>#5cb85c<#else>#d9534f</#if>">${testName.substring(lastDotIndex+1)}</a></li>
+                </#list>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content" style="border: solid 1px #ddd;border-top: 0; padding: 15px">
+                <div role="tabpanel" class="tab-pane active" id="summary">
+                    <p style="padding: 10px 0">
+                        <!--<b>Summary:</b>-->
+                        <span class="label label-primary">Tests:</span> <span class="badge">${report.count}</span>,
+                        <span class="label label-success">Passed:</span> <span class="badge">${report.passed}</span>,
+                        <span class="label label-danger">Not passed:</span> <span class="badge">${report.notPassed}</span>,
+                        <span>Time consumed: ${report.during}ms</span>
+                    </p>
+                    <#if report.notPassedTestReports?has_content>
+                        <#list report.getNotPassedTestReports().keySet() as testName>
+                        <#assign testReport = report.getTestReport(testName)/>
+                        <table class="table table-hover table-condensed table-bordered table-striped">
+                            <caption>Not Passed in ${testName}</caption>
+                            <thead>
+                            <tr style="font-weight: bold" class="danger">
+                                <td>File name</td>
+                                <td>Path</td>
+                                <td style="width: 10%">Status</td>
+                            </tr>
+                            </thead>
+                            <#list testReport.validationResult.groupedNotPassed.entrySet() as filterEntry>
+                                <tr>
+                                    <td>${filterEntry.key}</td>
+                                    <td>
+                                        <#list filterEntry.value as path>
+                                            ${path}
+                                            <#if path_has_next></#if><br/></if>
+                                        </#list>
+                                    </td>
+                                    <td><span class="label label-danger">not_passed</span></td>
+                                </tr>
+                            </#list>
+                        </table>
+                        </#list>
+                    <#else>
+                        All tests passed!
+                    </#if>
+                </div>
+                <#list report.getTestReports().keySet() as testName>
+                    <#assign testReport = report.getTestReport(testName)/>
+                    <div role="tabpanel" class="tab-pane" id="${testName_index}">
+                        <p><b>Time consumed:</b> ${testReport.during}ms</p>
+                        <p><b>Testcase Class:</b> ${testName}</p>
+                        <p><b>Test Config:</b> <br/>
+                            <span style="padding-left: 100px">resources: ${testReport.testConfig.resources}</span> <br/>
+                            <span style="padding-left: 100px">filters: ${testReport.testConfig.filters}</span>  <br/>
+                            <span style="padding-left: 100px">params: ${testReport.testConfig.params}</span>  <br/>
+                        </p>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-condensed table-bordered table-striped">
+                                <caption>Filtered Out: (${testReport.validationResult.filtered.size()})</caption>
+                                <thead>
+                                <tr style="font-weight: bold" class="active">
+                                    <td>File name</td>
+                                    <td>Path</td>
+                                    <td style="width: 10%">Status</td>
+                                </tr>
+                                </thead>
+                                <#list testReport.validationResult.groupedFiltered.entrySet() as filterEntry>
+                                <tr>
+                                    <td>${filterEntry.key}</td>
+                                    <td>
+                                        <#list filterEntry.value as path>
+                                            ${path}
+                                            <#if path_has_next></#if><br/></if>
+                                        </#list>
+                                    </td>
+                                    <td><span class="label label-warning">filtered</span></td>
+                                </tr>
+                                </#list>
+                            </table>
+                            <table class="table table-hover table-condensed table-bordered table-striped">
+                                <caption>Not Passed: (${testReport.validationResult.notPassed.size()})</caption>
+                                <thead>
+                                <tr style="font-weight: bold" class="danger">
+                                    <td>File name</td>
+                                    <td>Path</td>
+                                    <td style="width: 10%">Status</td>
+                                </tr>
+                                </thead>
+                                <#list testReport.validationResult.groupedNotPassed.entrySet() as filterEntry>
+                                    <tr>
+                                        <td>${filterEntry.key}</td>
+                                        <td>
+                                            <#list filterEntry.value as path>
+                                                ${path}
+                                                <#if path_has_next></#if><br/></if>
+                                            </#list>
+                                        </td>
+                                        <td><span class="label label-danger">not_passed</span></td>
+                                    </tr>
+                                </#list>
+                            </table>
+                            <table class="table table-hover table-condensed table-bordered table-striped">
+                                <caption>Passed: (${testReport.validationResult.passed.size()})</caption>
+                                <thead>
+                                <tr style="font-weight: bold" class="success">
+                                    <td>File</td>
+                                    <td style="width: 10%">Status</td>
+                                </tr>
+                                </thead>
+                                <#list testReport.validationResult.passed as filter>
+                                    <tr>
+                                        <td>${filter}</td>
+                                        <td><span class="label label-success">passed</span></td>
+                                    </tr>
+                                </#list>
+                            </table>
+
+                        </div>
+                    </div>
+                </#list>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div style="text-align: center">
+                <!--<h1 style="border-bottom: solid #eee 1px; width: 90%;margin: 0 auto"></h1>-->
+                <p>
+                    This report is generated by <a href="https://github.com/project-ncl/pvt/" target="_blank">PVT</a><small>(Productisation Verification Tool)</small>, part of Project-PNC.
+                </p>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

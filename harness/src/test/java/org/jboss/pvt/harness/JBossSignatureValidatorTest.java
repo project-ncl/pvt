@@ -20,7 +20,7 @@ public class JBossSignatureValidatorTest {
     @Test
     public void testSigned() throws Exception{
         Assert.assertTrue(test.validate(Arrays.asList(new String[]{"https://github.com/release-engineering/pom-manipulation-ext/archive/pom-manipulation-parent-2.4.zip"}),
-                Collections.emptyList(), Collections.emptyMap()));
+                Collections.emptyList(), Collections.emptyMap()).isValid());
     }
 
 
