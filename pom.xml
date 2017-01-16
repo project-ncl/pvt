@@ -26,7 +26,7 @@
   <modules>
     <module>harness</module>
     <module>generic</module>
-    <module>handover</module>
+    <!--<module>handover</module>-->
   </modules>
 
   <dependencyManagement>
