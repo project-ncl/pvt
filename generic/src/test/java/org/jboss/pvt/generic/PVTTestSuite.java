@@ -19,7 +19,13 @@ package org.jboss.pvt.generic;
 import org.apache.commons.io.FileUtils;
 import org.jboss.pvt.harness.configuration.YAMLConfigurationLoader;
 import org.jboss.pvt.harness.configuration.pojo.Configuration;
+import org.jboss.pvt.harness.configuration.pojo.TestConfig;
 import org.jboss.pvt.harness.exception.PVTSystemException;
+import org.jboss.pvt.harness.reporting.Report;
+import org.jboss.pvt.harness.reporting.Reporter;
+import org.jboss.pvt.harness.reporting.TestReport;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.extensions.dynamicsuite.Directory;
 import org.junit.extensions.dynamicsuite.Filter;
@@ -31,6 +37,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Map;
 
 @RunWith(DynamicSuite.class)
 //@Filter(DefaultFilter.class)
@@ -53,6 +60,8 @@ public class PVTTestSuite implements TestClassFilter
     public static Configuration configuration;
 
     private static Logger logger = LoggerFactory.getLogger(PVTTestSuite.class);
+
+    private static Report report;
 
     public PVTTestSuite() {
         init();
@@ -83,6 +92,12 @@ public class PVTTestSuite implements TestClassFilter
         if(System.getProperty(PROPERTY_VERSION) != null && !System.getProperty(PROPERTY_VERSION).trim().isEmpty()) {
             // override the version defined in config file
             configuration.setVersion(System.getProperty(PROPERTY_VERSION).trim());
+        }
+
+        // init report
+        report = new Report(configuration);
+        for(Map.Entry<String, TestConfig> entry : configuration.getTests().entrySet()){
+            report.addTestReport(new TestReport(entry.getKey(), entry.getValue()));
         }
     }
 
@@ -115,4 +130,27 @@ public class PVTTestSuite implements TestClassFilter
         }
         return false;
     }
+
+    @BeforeClass
+    public static void setUp() {
+        logger.info("TestSuite setting up");
+    }
+
+    @AfterClass
+    public static void tearDown() {
+        logger.info("TestSuite tearing down");
+        try {
+            logger.info("Report rendering");
+            Reporter.getFreemarkerReporter().render(report);
+            Reporter.getFreemarkerReporter().renderHandoverSummary(report);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static TestReport getTestReport(Class testClass) {
+        return report.getTestReport(testClass);
+    }
 }
+

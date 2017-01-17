@@ -1,0 +1,13 @@
+<#list report.getNotPassedTestReports().keySet() as testName>
+<#assign testReport = report.getTestReport(testName)/>
+[options="header"]
+.Not Passed in ${testName}
+|============
+|File name
+<#list testReport.validationResult.groupedNotPassed.entrySet() as filterEntry>
+
+|${filterEntry.key}
+</#list>
+
+|============
+</#list>

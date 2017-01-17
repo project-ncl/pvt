@@ -18,6 +18,6 @@ public interface Validator {
      * @return true if it validates successfully.
      * @throws PVTException if an error occurs.
      */
-    boolean validate(List<String> resources, List<String> filters, Map<String, String> params) throws Exception;
+    ValidationResult validate(List<String> resources, List<String> filters, Map<String, String> params) throws Exception;
 
 }
