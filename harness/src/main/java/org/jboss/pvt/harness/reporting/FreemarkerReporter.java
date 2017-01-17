@@ -19,11 +19,11 @@ import java.util.Map;
 public class FreemarkerReporter extends Reporter{
 
     @Override
-    public void render(Report report, File outFile) throws Exception {
+    public void render(Report report, String templateFile, File outFile) throws Exception {
         Configuration cfg = new Configuration();
         cfg.setTemplateLoader(new ClassTemplateLoader());
         cfg.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER);
-        Template temp = cfg.getTemplate(DEFAULT_TEMPLATE);
+        Template temp = cfg.getTemplate(templateFile);
         Map root = new HashMap();
         root.put("report", report);
         Writer out = new FileWriter(outFile);

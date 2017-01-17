@@ -142,6 +142,7 @@ public class PVTTestSuite implements TestClassFilter
         try {
             logger.info("Report rendering");
             Reporter.getFreemarkerReporter().render(report);
+            Reporter.getFreemarkerReporter().renderHandoverSummary(report);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -152,3 +153,4 @@ public class PVTTestSuite implements TestClassFilter
         return report.getTestReport(testClass);
     }
 }
+

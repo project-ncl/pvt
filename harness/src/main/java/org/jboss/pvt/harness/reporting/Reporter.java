@@ -19,6 +19,9 @@ public abstract class Reporter {
     public static final String DEFAULT_TEMPLATE = "/report.template.html";
     public static final String DEFAULT_OUTPUT_PATH = "pvt_report_%{product}_%{version}_%{date}.html";
 
+    public static final String DEFAULT_HANDOVER_SUMMARY_TEMPLATE = "/handover-summary.adoc";
+    public static final String DEFAULT_HANDOVER_SUMMARY_OUTPUT_PATH = "pvt_handover_summary_%{product}_%{version}_%{date}.adoc";
+
     private String outFile;
 
     private final static Reporter freemarkerReport = new FreemarkerReporter();
@@ -47,8 +50,16 @@ public abstract class Reporter {
     public void render(Report report) throws Exception{
         String file = getOutFile(report);
         logger.info("Generating report to " + file);
-        render(report, new File(file));
+        render(report,DEFAULT_TEMPLATE, new File(file));
     }
 
-    public abstract void render(Report report, File outFile) throws Exception;
+    public void renderHandoverSummary(Report report) throws Exception{
+        String out = DEFAULT_HANDOVER_SUMMARY_OUTPUT_PATH.replace("%{product}", report.getConfiguration().getProduct())
+                .replace("%{version}",report.getConfiguration().getVersion())
+                .replace("%{date}", new SimpleDateFormat("yyMMdd").format(new Date()));
+        logger.info("Generating handover summary doc to " + out);
+        render(report, DEFAULT_HANDOVER_SUMMARY_TEMPLATE, new File(out));
+    }
+
+    public abstract void render(Report report, String templateFile,File outFile) throws Exception;
 }
