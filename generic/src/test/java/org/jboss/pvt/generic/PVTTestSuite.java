@@ -52,8 +52,8 @@ public class PVTTestSuite implements TestClassFilter
 {
 
     // use this property to specify config file, instead of default pvt.yaml, support http://
-    private static final String PROPERTY_CONFIG = "pvt.config";
-    private static final String PROPERTY_VERSION = "pvt.version";
+    private static final String PROPERTY_CONFIG = "product.config";
+    private static final String PROPERTY_VERSION = "product.version";
 
     public static String configFile = "pvt.yaml";
 
