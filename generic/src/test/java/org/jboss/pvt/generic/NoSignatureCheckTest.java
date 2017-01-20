@@ -41,4 +41,9 @@ public class NoSignatureCheckTest extends PVTSuperTestCase{
     protected Class<? extends Validator> getValidatorClass() {
         return NOSignatureCheckValidator.class;
     }
+
+    @Override
+    public String getDescription() {
+        return "Test to ensure the delivered jars don't have signature which imply performance issue";
+    }
 }

@@ -2,7 +2,6 @@ package org.jboss.pvt.generic;
 
 import org.jboss.pvt.harness.configuration.pojo.Configuration;
 import org.jboss.pvt.harness.configuration.pojo.TestConfig;
-import org.jboss.pvt.harness.reporting.TestReport;
 import org.jboss.pvt.harness.validators.ValidationResult;
 import org.jboss.pvt.harness.validators.Validator;
 import org.junit.After;
@@ -62,9 +61,11 @@ public abstract class PVTSuperTestCase {
         List<String> filters = testConfig.getFilters();
         Map<String, String> params = testConfig.getParams();
         ValidationResult validationResult = getValidatorClass().newInstance().validate(fullpathResources, filters, params);
+        validationResult.setTestCaseObject(this);
         PVTTestSuite.getTestReport(this.getClass()).setValidationResult(validationResult);
         logger.info("isValid = " + validationResult.isValid() + ", during: " + validationResult.getDuring() + "ms");
         return validationResult.isValid();
     }
 
+    public abstract String getDescription();
 }

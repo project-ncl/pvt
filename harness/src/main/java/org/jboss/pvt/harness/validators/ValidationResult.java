@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.*;
 
 /**
+ * Validation Result, include everything a test return
+ *
  * @author <a href="mailto:yyang@redhat.com">Yong Yang</a>
  */
 public class ValidationResult {
@@ -12,10 +14,13 @@ public class ValidationResult {
     private List<File> filtered = new ArrayList<>();
     private List<File> passed = new ArrayList<>();
     private List<File> notPassed = new ArrayList<>();
+    private Object testCaseObject;
 
     private Throwable throwable;
 
     private long during;
+
+
 
     private ValidationResult(boolean valid, long during, List<File> filtered, List<File> passed, List<File> notPassed) {
         this.valid = valid;
@@ -33,12 +38,12 @@ public class ValidationResult {
         return new ValidationResult(false, during, filtered, passed, notPassed);
     }
 
-    private static List<String> toStringList(List<File> files){
-        List<String> list = new ArrayList<>(files.size());
-        for(File file : files){
-            list.add(file.getPath());
-        }
-        return list;
+    public void setTestCaseObject(Object testCaseObject) {
+        this.testCaseObject = testCaseObject;
+    }
+
+    public Object getTestCaseObject() {
+        return testCaseObject;
     }
 
     public Throwable getThrowable() {

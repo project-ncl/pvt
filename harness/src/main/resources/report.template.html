@@ -95,6 +95,7 @@
                 <#list report.getTestReports().keySet() as testName>
                     <#assign testReport = report.getTestReport(testName)/>
                     <div role="tabpanel" class="tab-pane" id="${testName_index}">
+                        <p><b>Description:</b> ${testReport.validationResult.testCaseObject.getDescription()}</p>
                         <p><b>Time consumed:</b> ${testReport.during}ms</p>
                         <p><b>Testcase Class:</b> ${testName}</p>
                         <p><b>Test Config:</b> <br/>
