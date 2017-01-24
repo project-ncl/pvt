@@ -2,6 +2,10 @@
 <#assign testReport = report.getTestReport(testName)/>
 [options="header"]
 .Not Passed in ${testName}
++
+*_Description_* : ${testReport.validationResult.testCaseObject.getDescription()}
++
+[width="100%",options="header,footer",align="center",frame="all"]
 |============
 |File name
 <#list testReport.validationResult.groupedNotPassed.entrySet() as filterEntry>

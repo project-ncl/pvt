@@ -19,4 +19,9 @@ public class VersionFormatTest extends PVTSuperTestCase{
     protected Class<? extends Validator> getValidatorClass() {
         return VersionFormatCheckValidator.class;
     }
+
+    @Override
+    public String getDescription() {
+        return "Test if the jars' version have the redhat-X suffix";
+    }
 }
