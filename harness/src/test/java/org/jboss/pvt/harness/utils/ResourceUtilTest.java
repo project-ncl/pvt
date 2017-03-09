@@ -26,7 +26,7 @@ import org.zeroturnaround.zip.ZipUtil;
 import java.io.File;
 import java.io.IOException;
 
-import static org.jboss.pvt.harness.utils.ResourceUtil.downloadZips;
+import static org.jboss.pvt.harness.utils.ResourceUtil.downloadZipExplored;
 import static org.junit.Assert.*;
 
 /**
@@ -40,14 +40,14 @@ public class ResourceUtilTest
     @Test(expected = PVTSystemException.class)
     public void invalidPathTest ()
     {
-        downloadZips ("/foo/bar.zip");
+        downloadZipExplored("/foo/bar.zip");
     }
 
     @Test(expected = PVTSystemException.class)
     public void invalidFile () throws IOException
     {
         File tmpFile = tf.newFile();
-        downloadZips (tmpFile.toString());
+        downloadZipExplored(tmpFile.toString());
     }
 
     @Test
@@ -58,19 +58,19 @@ public class ResourceUtilTest
         (new File (newFolder, "xxx")).createNewFile();
 
         ZipUtil.pack( newFolder, tmpFile );
-        downloadZips (tmpFile.toString());
+        downloadZipExplored(tmpFile.toString());
     }
 
     @Test(expected = PVTSystemException.class)
     public void invalidURLTest () throws IOException
     {
-        downloadZips ("http://www.foo.bar/my.zip");
+        downloadZipExplored("http://www.foo.bar/my.zip");
     }
 
     @Test
     public void validURL () throws IOException
     {
-        File located = downloadZips ("https://github.com/release-engineering/pom-manipulation-ext/archive/pom-manipulation-parent-2.4.zip");
+        File located = downloadZipExplored("https://github.com/release-engineering/pom-manipulation-ext/archive/pom-manipulation-parent-2.4.zip");
         assertTrue( located.exists() );
         assertTrue( FileUtils.listFiles (located, null, true).size() > 0 );
     }

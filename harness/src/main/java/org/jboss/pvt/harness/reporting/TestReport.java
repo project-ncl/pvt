@@ -1,10 +1,8 @@
 package org.jboss.pvt.harness.reporting;
 
 import org.jboss.pvt.harness.configuration.pojo.TestConfig;
-import org.jboss.pvt.harness.validators.ValidationResult;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.jboss.pvt.harness.validators.JarsValidation;
+import org.jboss.pvt.harness.validators.Validation;
 
 /**
  * Report for a Test
@@ -14,7 +12,7 @@ import java.util.List;
 public class TestReport {
     private String testCase;
     private TestConfig testConfig;
-    private ValidationResult validationResult;
+    private Validation validation;
 
     public TestReport(String testCase, TestConfig testConfig) {
         this.testCase = testCase;
@@ -29,17 +27,17 @@ public class TestReport {
         return testConfig;
     }
 
-    public ValidationResult getValidationResult() {
-        return validationResult;
+    public Validation getValidation() {
+        return validation;
     }
 
-    public void setValidationResult(ValidationResult validationResult) {
-        this.validationResult = validationResult;
+    public void setValidation(Validation validation) {
+        this.validation = validation;
     }
 
     public long getDuring() {
-        if(validationResult != null) {
-            return validationResult.getDuring();
+        if(validation != null) {
+            return validation.getDuring();
         }
         else {
             return 0;
@@ -47,7 +45,7 @@ public class TestReport {
     }
 
     public boolean isValid(){
-        return validationResult.isValid();
+        return validation.isValid();
     }
 
     @Override
@@ -55,8 +53,8 @@ public class TestReport {
         String s = "TestReport{" +
                 "testCase='" + testCase + '\'';
 
-        if(validationResult != null) {
-            s+= ", validationResult='" + validationResult + "\'";
+        if(validation != null) {
+            s+= ", validationResult='" + validation + "\'";
         }
 
         s +='}';

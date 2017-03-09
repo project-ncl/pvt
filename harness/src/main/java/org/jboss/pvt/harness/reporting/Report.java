@@ -66,7 +66,7 @@ public class Report {
     public int getPassed(){
         int passed = 0;
         for(TestReport testReport : testReports.values()) {
-            if(testReport.getValidationResult().isValid()) {
+            if(testReport.getValidation().isValid()) {
                 passed++;
             }
         }
@@ -76,7 +76,7 @@ public class Report {
     public int getNotPassed(){
         int notPassed = 0;
         for(TestReport testReport : testReports.values()) {
-            if(!testReport.getValidationResult().isValid()) {
+            if(!testReport.getValidation().isValid()) {
                 notPassed++;
             }
         }

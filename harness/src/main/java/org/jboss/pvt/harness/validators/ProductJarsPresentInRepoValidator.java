@@ -38,7 +38,7 @@ public final class ProductJarsPresentInRepoValidator implements Validator
     private final Logger logger = LoggerFactory.getLogger( getClass() );
 
     @Override
-    public ValidationResult validate(List<String> resources, List<String> filters, Map<String, String> params) throws PVTException {
+    public Validation validate(List resources, List filters, Map params) throws Exception {
         return null;
     }
 

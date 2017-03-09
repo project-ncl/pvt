@@ -17,3 +17,7 @@ tests:
     resources: ['jboss-as-distribution-%{version}.zip']
     filters: ['.*jboss-modules.jar.*', '.*/client/.*', '.*/bin/.*']
     params: {'format':'.*\d+.*'}
+  org.jboss.pvt.generic.ZipDiffTest:
+      resources: ['http://central.maven.org/maven2/org/jboss/jbossas/jboss-as-distribution/6.0.0.Final/jboss-as-distribution-6.0.0.Final.zip','jboss-as-distribution-%{version}.zip']
+      filters: ['.*jboss-modules.jar.*', '.*/client/.*', '.*/bin/.*']
+      params: {'expectChanges':'', 'expectAdds': '', 'expectRemoved': '', 'expectUnchanges': ''}

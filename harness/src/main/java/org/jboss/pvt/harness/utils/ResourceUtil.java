@@ -40,7 +40,7 @@ public class ResourceUtil
      * @param zip local zip or http url
      * @return explored dir
      */
-    public static File downloadZips( String zip )
+    public static File downloadZip(String zip )
     {
         File result = null;
         try
@@ -59,7 +59,6 @@ public class ResourceUtil
                     {
                         logger.debug( "Copying URL {} to {}", zip, result );
                         org.apache.commons.io.FileUtils.copyURLToFile( new URL( zip ), result );
-                        ZipUtil.explode( result );
                     }
                 }
                 // Local file path
@@ -67,6 +66,59 @@ public class ResourceUtil
                 {
 
                     result = new File( System.getProperty( "basedir" ) + "/target/" + zip.substring( zip.lastIndexOf( "/" ) + 1 ) );
+                    if ( result.exists() )
+                    {
+                        logger.warn( "Avoiding duplicate download of {} ", zip );
+                    }
+                    else
+                    {
+                        org.apache.commons.io.FileUtils.copyFile( new File( zip ), result );
+                    }
+                }
+                logger.debug( "Create distribution {} ", result );
+            }
+        }
+        catch ( IOException | ZipException e )
+        {
+            logger.error( "Caught ", e );
+            throw new PVTSystemException( "Caught exception processing downloads: ", e );
+        }
+        return result;
+    }
+
+
+    /**
+     *
+     * @param zip local zip or http url
+     * @return explored dir
+     */
+    public static File downloadZipExplored(String zip )
+    {
+        File result = null;
+        try
+        {
+            if ( isNotEmpty( zip ) )
+            {
+                // URL Based form
+                if ( zip.contains( "://" ) )
+                {
+                    result = new File("target/" + zip.substring( zip.lastIndexOf( "/" ) + 1 ) + ".unzipped" );
+                    if ( result.exists())
+                    {
+                        logger.warn( "Avoiding duplicate download of {} ", zip );
+                    }
+                    else
+                    {
+                        logger.debug( "Copying URL {} to {}", zip, result );
+                        org.apache.commons.io.FileUtils.copyURLToFile( new URL( zip ), result );
+                        ZipUtil.explode( result );
+                    }
+                }
+                // Local file path
+                else
+                {
+
+                    result = new File( System.getProperty( "basedir" ) + "/target/" + zip.substring( zip.lastIndexOf( "/" ) + 1 ) + ".unzipped" );
                     if ( result.exists() )
                     {
                         logger.warn( "Avoiding duplicate download of {} ", zip );
@@ -87,4 +139,6 @@ public class ResourceUtil
         }
         return result;
     }
+
+
 }
