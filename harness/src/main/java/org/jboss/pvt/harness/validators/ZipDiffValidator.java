@@ -119,7 +119,8 @@ public class ZipDiffValidator extends AbstractValidator<DiffValidation> {
         }
         for(String expect : expects){
             boolean meet = false;
-            if(expect.trim().isEmpty()) {
+            expect = expect.trim();
+            if(expect.isEmpty()) {
                 continue;
             }
             for(File file : files){
