@@ -24,11 +24,6 @@ public class DiffValidation extends Validation {
         this.changed = changed;
     }
 
-    @Override
-    public boolean isValid() {
-        return added.isEmpty() && removed.isEmpty() && changed.isEmpty();
-    }
-
     public List<File> getAdded() {
         return added;
     }

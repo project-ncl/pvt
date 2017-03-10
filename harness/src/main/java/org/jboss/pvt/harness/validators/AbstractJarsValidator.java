@@ -1,7 +1,8 @@
 package org.jboss.pvt.harness.validators;
 
 import org.jboss.pvt.harness.utils.DirUtils;
-import org.jboss.pvt.harness.utils.ResourceUtil;
+import org.jboss.pvt.harness.utils.ResourceUtils;
+import org.jboss.pvt.harness.utils.ValidatorUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +15,7 @@ import java.util.*;
  *
  * @author <a href="mailto:yyang@redhat.com">Yong Yang</a>
  */
-public abstract class AbstractJarsValidator implements Validator<JarsValidation> {
+public abstract class AbstractJarsValidator extends AbstractValidator<JarsValidation> {
 
     protected final Logger logger = LoggerFactory.getLogger( getClass() );
 
@@ -26,7 +27,7 @@ public abstract class AbstractJarsValidator implements Validator<JarsValidation>
         List<File> notPassedJars = new ArrayList<>();
         List<File> filterJars = new ArrayList<>();
         for(String resource : resources) {
-            File exploredDir = ResourceUtil.downloadZipExplored(resource);
+            File exploredDir = ResourceUtils.downloadZipExplored(resource);
             Collection<File> jarFiles = DirUtils.listFilesRecursively( exploredDir, new FileFilter() {
                 public boolean accept(File pathname) {
                     return  pathname.isFile() && pathname.getName().endsWith(".jar");
@@ -34,7 +35,7 @@ public abstract class AbstractJarsValidator implements Validator<JarsValidation>
             });
 
             for(File jarFile : jarFiles) {
-                if (Validator.filter(jarFile, filters)) {
+                if (ValidatorUtils.filter(jarFile, filters)) {
                     filterJars.add(jarFile);
                 }
             }

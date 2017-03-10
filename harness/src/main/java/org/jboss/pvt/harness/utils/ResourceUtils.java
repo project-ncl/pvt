@@ -31,9 +31,9 @@ import static org.apache.commons.lang.StringUtils.isNotEmpty;
 /**
  * Created by rnc on 02/10/16.
  */
-public class ResourceUtil
+public class ResourceUtils
 {
-    private static Logger logger = LoggerFactory.getLogger( ResourceUtil.class );
+    private static Logger logger = LoggerFactory.getLogger( ResourceUtils.class );
 
     /**
      *
