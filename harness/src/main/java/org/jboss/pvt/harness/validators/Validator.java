@@ -2,6 +2,7 @@ package org.jboss.pvt.harness.validators;
 
 import org.jboss.pvt.harness.exception.PVTException;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -20,4 +21,15 @@ public interface Validator<T extends Validation> {
      */
     T validate(List<String> resources, List<String> filters, Map<String, String> params) throws Exception;
 
+    public static boolean filter(File jarFile, List<String> filters){
+        for(String filter : filters) {
+            if(filter.trim().isEmpty()) {
+                continue;
+            }
+            if(jarFile.getAbsolutePath().matches(filter)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

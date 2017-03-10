@@ -57,7 +57,7 @@ public class ResourceUtil
                     }
                     else
                     {
-                        logger.debug( "Copying URL {} to {}", zip, result );
+                        logger.info( "Copying URL {} to {}", zip, result );
                         org.apache.commons.io.FileUtils.copyURLToFile( new URL( zip ), result );
                     }
                 }
@@ -109,7 +109,7 @@ public class ResourceUtil
                     }
                     else
                     {
-                        logger.debug( "Copying URL {} to {}", zip, result );
+                        logger.info( "Copying URL {} to {}", zip, result );
                         org.apache.commons.io.FileUtils.copyURLToFile( new URL( zip ), result );
                         ZipUtil.explode( result );
                     }

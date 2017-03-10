@@ -34,7 +34,7 @@ public abstract class AbstractJarsValidator implements Validator<JarsValidation>
             });
 
             for(File jarFile : jarFiles) {
-                if (filter(jarFile, filters)) {
+                if (Validator.filter(jarFile, filters)) {
                     filterJars.add(jarFile);
                 }
             }
@@ -60,18 +60,6 @@ public abstract class AbstractJarsValidator implements Validator<JarsValidation>
                 JarsValidation.pass(System.currentTimeMillis()-startTime, (filterJars), (passedJars))
                 :
                 JarsValidation.notPass(System.currentTimeMillis()-startTime, (filterJars), (passedJars), (notPassedJars));
-    }
-
-    public boolean filter(File jarFile,  List<String> filters){
-        for(String filter : filters) {
-            if(filter.trim().isEmpty()) {
-                continue;
-            }
-            if(jarFile.getAbsolutePath().matches(filter)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private static List<String> toStringList(List<File> files){
