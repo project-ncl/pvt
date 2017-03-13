@@ -255,6 +255,25 @@
                                 </#list>
                             </table>
                             <table class="table table-hover table-condensed table-bordered table-striped">
+                                <caption>Changed: (${testReport.validation.changed.size()})</caption>
+                                <thead>
+                                <tr style="font-weight: bold" class="danger">
+                                    <td>File name</td>
+                                    <td>Size</td>
+                                    <td style="width: 10%">Status</td>
+                                </tr>
+                                </thead>
+                                <#list testReport.validation.changed.entrySet() as filterEntry>
+                                    <tr>
+                                        <td>${filterEntry.key}</td>
+                                        <td>
+                                            ${filterEntry.value[0].length()} -> ${filterEntry.value[1].length()}
+                                        </td>
+                                        <td><span class="label label-warning">changed</span></td>
+                                    </tr>
+                                </#list>
+                            </table>
+                            <table class="table table-hover table-condensed table-bordered table-striped">
                                 <caption>Unchanged: (${testReport.validation.unchanged.size()})</caption>
                                 <thead>
                                 <tr style="font-weight: bold" class="danger">
@@ -272,26 +291,7 @@
                                                 <#if path_has_next></#if><br/></if>
                                             </#list>
                                         </td>
-                                        <td><span class="label label-warning">unchanged</span></td>
-                                    </tr>
-                                </#list>
-                            </table>
-                            <table class="table table-hover table-condensed table-bordered table-striped">
-                                <caption>Changed: (${testReport.validation.changed.size()})</caption>
-                                <thead>
-                                <tr style="font-weight: bold" class="danger">
-                                    <td>File name</td>
-                                    <td>Size</td>
-                                    <td style="width: 10%">Status</td>
-                                </tr>
-                                </thead>
-                                <#list testReport.validation.changed.entrySet() as filterEntry>
-                                    <tr>
-                                        <td>${filterEntry.key}</td>
-                                        <td>
-                                            ${filterEntry.value[0].length()} -> ${filterEntry.value[1].length()}
-                                        </td>
-                                        <td><span class="label label-warning">changed</span></td>
+                                        <td><span class="label label-info">unchanged</span></td>
                                     </tr>
                                 </#list>
                             </table>
