@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.util.*;
 
 /**
@@ -79,10 +80,10 @@ public class ZipDiffValidator extends AbstractValidator<DiffValidation> {
             }
         }
         // Compare files
-        Set<String> filenames = new HashSet<>();
-        filenames.addAll(leftFilesMap.keySet());
-        filenames.addAll(rightFilesMap.keySet());
-        for (String name : filenames) {
+        Set<String> allFilenames = new HashSet<>();
+        allFilenames.addAll(leftFilesMap.keySet());
+        allFilenames.addAll(rightFilesMap.keySet());
+        for (String name : allFilenames) {
             if (leftFilesMap.containsKey(name) && (!rightFilesMap.containsKey(name))) {
                 removed.add(leftFilesMap.get(name));
             }
@@ -92,7 +93,7 @@ public class ZipDiffValidator extends AbstractValidator<DiffValidation> {
             else if (leftFilesMap.containsKey(name) && (rightFilesMap.containsKey(name))) {
                 File leftFile = leftFilesMap.get(name);
                 File rightFile = rightFilesMap.get(name);
-                if((leftFile.isDirectory() == rightFile.isDirectory())
+                if((leftFile.isDirectory() && rightFile.isDirectory())
                         || ( leftFile.isFile() && rightFile.isFile() && (leftFile.length() == rightFile.length()))) {
                     unchanged.add(rightFile);
                 }
@@ -102,60 +103,46 @@ public class ZipDiffValidator extends AbstractValidator<DiffValidation> {
             }
         }
 
-        DiffValidation diffValidation = new DiffValidation(added, removed, unchanged, changed);
+        List<File> allFiles = new ArrayList<>();
+        allFiles.addAll(leftFiles);
+        allFiles.addAll(rightFiles);
+
+        List<File> allChangedFiles = new ArrayList<>();
+        for(File[] files : changed.values()){
+            allChangedFiles.add(files[0]);
+            allChangedFiles.add(files[1]);
+        }
+
+        List<File> fails = new ArrayList<>();
+
+        DiffValidation diffValidation = new DiffValidation(
+                        meetExpects(allFiles, expectAdds, added, fails)
+                        && meetExpects(allFiles, expectRemoves, removed, fails)
+                        && meetExpects(allFiles, expectUnchanges, unchanged, fails)
+                        && meetExpects(allFiles, expectChanges, allChangedFiles, fails), filtered, added, removed, unchanged, changed);
         diffValidation.setDuring(System.currentTimeMillis() - startTime);
-        diffValidation.setFiltered(filtered);
-        diffValidation.setValid(
-                meetExpect(added, expectAdds)
-                        && meetExpect(removed, expectRemoves)
-                        && meetExpect(unchanged, expectUnchanges)
-                        && meetExpect(changed.keySet(), expectChanges));
+        diffValidation.setFailed(fails);
         return diffValidation;
     }
 
-    private boolean meetExpect(List<File> files, String[] expects){
-        if(expects == null || expects.length == 0) {
-            return true;
-        }
-        for(String expect : expects){
-            boolean meet = false;
-            expect = expect.trim();
-            if(expect.isEmpty()) {
-                continue;
-            }
-            for(File file : files){
-                if(file.getAbsolutePath().matches(expect)) {
-                    meet = true;
-                    break;
-                }
-            }
-            if(!meet) {
-                return false;
-            }
-        }
-        return true;
-    }
 
-    private boolean meetExpect(Collection<String> files, String[] expects){
+    private boolean meetExpects(List<File> allFiles, String[] expects, List<File> done, List<File> fails){
         if(expects == null || expects.length == 0) {
             return true;
         }
-        for(String expect : expects){
-            boolean meet = false;
-            if(expect.trim().isEmpty()) {
-                continue;
-            }
-            for(String file : files) {
-                if(file.matches(expect)) {
-                    meet = true;
-                    break;
+        for(File file : allFiles){
+            for(String expect : expects){
+                boolean meet = false;
+                expect = expect.trim();
+                if(expect.isEmpty()) {
+                    continue;
+                }
+                if(file.getAbsolutePath().matches(expect) && !done.contains(file)) {
+                    fails.add(file);
                 }
             }
-            if(!meet) {
-                return false;
-            }
         }
-        return true;
+        return fails.isEmpty();
     }
 
     private Map<String, File> collectionToMap(File dir, Collection<File> files){

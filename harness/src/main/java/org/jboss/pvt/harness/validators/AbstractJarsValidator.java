@@ -57,10 +57,12 @@ public abstract class AbstractJarsValidator extends AbstractValidator<JarsValida
         logger.warn("Not passed jars: " + Arrays.toString(notPassedJars.toArray()));
         logger.debug("Passed jars: " + Arrays.toString(passedJars.toArray()));
         logger.info("VALIDATION RESULT: passed=" + passed);
-        return passed ?
-                JarsValidation.pass(System.currentTimeMillis()-startTime, (filterJars), (passedJars))
+        JarsValidation validation =  passed ?
+                JarsValidation.pass((filterJars), (passedJars))
                 :
-                JarsValidation.notPass(System.currentTimeMillis()-startTime, (filterJars), (passedJars), (notPassedJars));
+                JarsValidation.notPass((filterJars), (passedJars), (notPassedJars));
+        validation.setDuring(System.currentTimeMillis()-startTime);
+        return validation;
     }
 
     private static List<String> toStringList(List<File> files){

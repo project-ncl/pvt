@@ -16,8 +16,8 @@ public class DiffValidation extends Validation {
     private Map<String, File[]> changed = new HashMap<>();
     private List<File> unchanged = new ArrayList<>();
 
-    public DiffValidation(List<File> added, List<File> removed, List<File> unchanged, Map<String, File[]> changed) {
-        super(false);
+    public DiffValidation(boolean passed, List<File> filtered, List<File> added, List<File> removed, List<File> unchanged, Map<String, File[]> changed) {
+        super(passed, filtered);
         this.added = added;
         this.removed = removed;
         this.unchanged = unchanged;
@@ -55,4 +55,17 @@ public class DiffValidation extends Validation {
     public void setUnchanged(List<File> unchanged) {
         this.unchanged = unchanged;
     }
+
+    public Map<String, List<String>> getGroupedAdded() {
+        return createGroupedMap(added);
+    }
+
+    public Map<String, List<String>> getGroupedRemoved() {
+        return createGroupedMap(added);
+    }
+
+    public Map<String, List<String>> getGroupedUnchanged() {
+        return createGroupedMap(added);
+    }
+
 }
