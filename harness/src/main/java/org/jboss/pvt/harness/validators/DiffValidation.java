@@ -61,11 +61,11 @@ public class DiffValidation extends Validation {
     }
 
     public Map<String, List<String>> getGroupedRemoved() {
-        return createGroupedMap(added);
+        return createGroupedMap(removed);
     }
 
     public Map<String, List<String>> getGroupedUnchanged() {
-        return createGroupedMap(added);
+        return createGroupedMap(unchanged);
     }
 
 }

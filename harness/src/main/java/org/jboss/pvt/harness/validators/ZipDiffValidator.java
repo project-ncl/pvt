@@ -55,13 +55,33 @@ public class ZipDiffValidator extends AbstractValidator<DiffValidation> {
         final Map<String, File[]> changed = new java.util.HashMap<>();
         final List<File> unchanged = new ArrayList<>();
 
-        File leftDir = ResourceUtils.downloadZipExplored(resources.get(0));
-        File rightDir = ResourceUtils.downloadZipExplored(resources.get(1));
 
-        Collection<File> leftFiles = FileUtils.listFiles(leftDir, null, true);
-        Collection<File> rightFiles = FileUtils.listFiles(rightDir, null, true);
-        Map<String, File> leftFilesMap = collectionToMap(leftDir, leftFiles);
-        Map<String, File> rightFilesMap = collectionToMap(rightDir, rightFiles);
+        String[] stringLeftDirs = resources.get(0).split(",");
+        String[] stringRightDirs = resources.get(1).split(",");
+        if(stringLeftDirs.length != stringRightDirs.length){
+            throw new IllegalArgumentException("left resources size is not equal to right resources size.");
+        }
+
+        List<File> leftFiles = new ArrayList<>();
+        List<File> rightFiles = new ArrayList<>();
+        Map<String, File> leftFilesMap = new HashMap<>();
+        Map<String, File> rightFilesMap = new HashMap<>();
+
+        File[] leftDirs = new File[stringLeftDirs.length];
+        for(int i=0; i<stringLeftDirs.length; i++){
+            leftDirs[i] = ResourceUtils.downloadZipExplored(stringLeftDirs[i]);
+            Collection<File> files = FileUtils.listFiles(leftDirs[i], null, true);
+            leftFiles.addAll(files);
+            leftFilesMap.putAll(collectionToMap(leftDirs[i], files));
+        }
+
+        File[] rightDirs = new File[stringRightDirs.length];
+        for(int i=0; i<stringLeftDirs.length; i++){
+            rightDirs[i] = ResourceUtils.downloadZipExplored(stringRightDirs[i]);
+            Collection<File> files = FileUtils.listFiles(rightDirs[i], null, true);
+            rightFiles.addAll(files);
+            rightFilesMap.putAll(collectionToMap(rightDirs[i], files));
+        }
 
         // Filter out left
         for (Iterator<Map.Entry<String, File>> it = leftFilesMap.entrySet().iterator(); it.hasNext();) {
@@ -147,9 +167,12 @@ public class ZipDiffValidator extends AbstractValidator<DiffValidation> {
 
     private Map<String, File> collectionToMap(File dir, Collection<File> files){
         Map<String, File> map = new TreeMap<>();
-        for(File file: files){
+        for(File file: files){ //TODO: if two files have same name
             String relativePath = file.getPath().substring(dir.getPath().length());
             relativePath = relativePath.substring(relativePath.indexOf("/", 2) + 1); // remove the root dir, such as jboss-6.0.0.Final
+            if(map.containsKey(relativePath)){
+                logger.warn("File name exists, " + relativePath);
+            }
             map.put(relativePath, file);
         }
         return map;

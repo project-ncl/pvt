@@ -106,29 +106,7 @@
                         </p>
                         <div class="table-responsive">
                         <#if testReport.validation.class.simpleName == "JarsValidation" >
-                            <table class="table table-hover table-condensed table-bordered table-striped">
-                                <caption>Filtered Out: (${testReport.validation.filtered.size()})</caption>
-                                <thead>
-                                <tr style="font-weight: bold" class="active">
-                                    <td>File name</td>
-                                    <td>Path</td>
-                                    <td style="width: 10%">Status</td>
-                                </tr>
-                                </thead>
-                                <#list testReport.validation.groupedFiltered.entrySet() as filterEntry>
-                                <tr>
-                                    <td>${filterEntry.key}</td>
-                                    <td>
-                                        <#list filterEntry.value as path>
-                                            ${path}
-                                            <#if path_has_next></#if><br/></if>
-                                        </#list>
-                                    </td>
-                                    <td><span class="label label-warning">filtered</span></td>
-                                </tr>
-                                </#list>
-                            </table>
-                            <table class="table table-hover table-condensed table-bordered table-striped">
+                            <table class="table table-hover table-condensed table-bordered table-striped" style="table-layout: fixed">
                                 <caption>Not Passed: (${testReport.validation.failed.size()})</caption>
                                 <thead>
                                 <tr style="font-weight: bold" class="danger">
@@ -139,8 +117,8 @@
                                 </thead>
                                 <#list testReport.validation.groupedFailed.entrySet() as filterEntry>
                                     <tr>
-                                        <td>${filterEntry.key}</td>
-                                        <td>
+                                        <td style="word-wrap: break-word">${filterEntry.key}</td>
+                                        <td style="word-wrap: break-word">
                                             <#list filterEntry.value as path>
                                                 ${path}
                                                 <#if path_has_next></#if><br/></if>
@@ -150,11 +128,11 @@
                                     </tr>
                                 </#list>
                             </table>
-                            <table class="table table-hover table-condensed table-bordered table-striped">
+                            <table class="table table-hover table-condensed table-bordered table-striped" style="table-layout: fixed">
                                 <caption>Passed: (${testReport.validation.passed.size()})</caption>
                                 <thead>
                                 <tr style="font-weight: bold" class="success">
-                                    <td>File</td>
+                                    <td style="word-wrap: break-word">File</td>
                                     <td style="width: 10%">Status</td>
                                 </tr>
                                 </thead>
@@ -165,8 +143,7 @@
                                     </tr>
                                 </#list>
                             </table>
-                        <#elseif testReport.validation.class.simpleName == "DiffValidation">
-                            <table class="table table-hover table-condensed table-bordered table-striped">
+                            <table class="table table-hover table-condensed table-bordered table-striped" style="table-layout: fixed">
                                 <caption>Filtered Out: (${testReport.validation.filtered.size()})</caption>
                                 <thead>
                                 <tr style="font-weight: bold" class="active">
@@ -177,8 +154,8 @@
                                 </thead>
                                 <#list testReport.validation.groupedFiltered.entrySet() as filterEntry>
                                     <tr>
-                                        <td>${filterEntry.key}</td>
-                                        <td>
+                                        <td style="word-wrap: break-word">${filterEntry.key}</td>
+                                        <td style="word-wrap: break-word">
                                             <#list filterEntry.value as path>
                                                 ${path}
                                                 <#if path_has_next></#if><br/></if>
@@ -188,7 +165,8 @@
                                     </tr>
                                 </#list>
                             </table>
-                            <table class="table table-hover table-condensed table-bordered table-striped">
+                            <#elseif testReport.validation.class.simpleName == "DiffValidation">
+                            <table class="table table-hover table-condensed table-bordered table-striped" style="table-layout: fixed">
                                 <caption>Not Passed: (${testReport.validation.failed.size()})</caption>
                                 <thead>
                                 <tr style="font-weight: bold" class="danger">
@@ -199,8 +177,8 @@
                                 </thead>
                                 <#list testReport.validation.groupedFailed.entrySet() as filterEntry>
                                     <tr>
-                                        <td>${filterEntry.key}</td>
-                                        <td>
+                                        <td style="word-wrap: break-word">${filterEntry.key}</td>
+                                        <td style="word-wrap: break-word">
                                             <#list filterEntry.value as path>
                                                 ${path}
                                                 <#if path_has_next></#if><br/></if>
@@ -210,7 +188,7 @@
                                     </tr>
                                 </#list>
                             </table>
-                            <table class="table table-hover table-condensed table-bordered table-striped">
+                            <table class="table table-hover table-condensed table-bordered table-striped" style="table-layout: fixed">
                                 <caption>Added: (${testReport.validation.added.size()})</caption>
                                 <thead>
                                 <tr style="font-weight: bold" class="danger">
@@ -221,8 +199,8 @@
                                 </thead>
                                 <#list testReport.validation.groupedAdded.entrySet() as filterEntry>
                                     <tr>
-                                        <td>${filterEntry.key}</td>
-                                        <td>
+                                        <td style="word-wrap: break-word">${filterEntry.key}</td>
+                                        <td style="word-wrap: break-word">
                                             <#list filterEntry.value as path>
                                                 ${path}
                                                 <#if path_has_next></#if><br/></if>
@@ -232,7 +210,7 @@
                                     </tr>
                                 </#list>
                             </table>
-                            <table class="table table-hover table-condensed table-bordered table-striped">
+                            <table class="table table-hover table-condensed table-bordered table-striped" style="table-layout: fixed">
                                 <caption>Removed: (${testReport.validation.removed.size()})</caption>
                                 <thead>
                                 <tr style="font-weight: bold" class="danger">
@@ -243,8 +221,8 @@
                                 </thead>
                                 <#list testReport.validation.groupedRemoved.entrySet() as filterEntry>
                                     <tr>
-                                        <td>${filterEntry.key}</td>
-                                        <td>
+                                        <td style="word-wrap: break-word">${filterEntry.key}</td>
+                                        <td style="word-wrap: break-word">
                                             <#list filterEntry.value as path>
                                                 ${path}
                                                 <#if path_has_next></#if><br/></if>
@@ -254,7 +232,7 @@
                                     </tr>
                                 </#list>
                             </table>
-                            <table class="table table-hover table-condensed table-bordered table-striped">
+                            <table class="table table-hover table-condensed table-bordered table-striped" style="table-layout: fixed">
                                 <caption>Changed: (${testReport.validation.changed.size()})</caption>
                                 <thead>
                                 <tr style="font-weight: bold" class="danger">
@@ -265,15 +243,15 @@
                                 </thead>
                                 <#list testReport.validation.changed.entrySet() as filterEntry>
                                     <tr>
-                                        <td>${filterEntry.key}</td>
-                                        <td>
+                                        <td style="word-wrap: break-word">${filterEntry.key}</td>
+                                        <td style="word-wrap: break-word">
                                             ${filterEntry.value[0].length()} -> ${filterEntry.value[1].length()}
                                         </td>
                                         <td><span class="label label-warning">changed</span></td>
                                     </tr>
                                 </#list>
                             </table>
-                            <table class="table table-hover table-condensed table-bordered table-striped">
+                            <table class="table table-hover table-condensed table-bordered table-striped" style="table-layout: fixed">
                                 <caption>Unchanged: (${testReport.validation.unchanged.size()})</caption>
                                 <thead>
                                 <tr style="font-weight: bold" class="danger">
@@ -284,8 +262,8 @@
                                 </thead>
                                 <#list testReport.validation.groupedUnchanged.entrySet() as filterEntry>
                                     <tr>
-                                        <td>${filterEntry.key}</td>
-                                        <td>
+                                        <td style="word-wrap: break-word">${filterEntry.key}</td>
+                                        <td style="word-wrap: break-word">
                                             <#list filterEntry.value as path>
                                                 ${path}
                                                 <#if path_has_next></#if><br/></if>
@@ -295,6 +273,28 @@
                                     </tr>
                                 </#list>
                             </table>
+                            <table class="table table-hover table-condensed table-bordered table-striped" style="table-layout: fixed">
+                                    <caption>Filtered Out: (${testReport.validation.filtered.size()})</caption>
+                                    <thead>
+                                    <tr style="font-weight: bold" class="active">
+                                        <td>File name</td>
+                                        <td>Path</td>
+                                        <td style="width: 10%">Status</td>
+                                    </tr>
+                                    </thead>
+                                    <#list testReport.validation.groupedFiltered.entrySet() as filterEntry>
+                                        <tr>
+                                            <td style="word-wrap: break-word">${filterEntry.key}</td>
+                                            <td style="word-wrap: break-word">
+                                                <#list filterEntry.value as path>
+                                                    ${path}
+                                                    <#if path_has_next></#if><br/></if>
+                                                </#list>
+                                            </td>
+                                            <td><span class="label label-warning">filtered</span></td>
+                                        </tr>
+                                    </#list>
+                                </table>
                         </#if>
                         </div>
                     </div>
