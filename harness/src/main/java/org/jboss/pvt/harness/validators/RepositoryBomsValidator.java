@@ -27,9 +27,8 @@ import java.util.Map;
 public class RepositoryBomsValidator implements Validator
 {
     @Override
-    public ValidationResult validate(List<String> resources, List<String> filters, Map<String, String> params) throws PVTException {
+    public Validation validate(List resources, List filters, Map params) throws Exception {
         return null;
     }
-
-    //TODO: https://jenkins.mw.lab.eng.bos.redhat.com/hudson/view/EAP7/view/EAP7-Prod/job/jboss-eap-7.0.x-handoff-check-eap-maven-repository-boms/
+//TODO: https://jenkins.mw.lab.eng.bos.redhat.com/hudson/view/EAP7/view/EAP7-Prod/job/jboss-eap-7.0.x-handoff-check-eap-maven-repository-boms/
 }

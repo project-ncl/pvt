@@ -2,7 +2,7 @@ package org.jboss.pvt.generic;
 
 import org.jboss.pvt.harness.configuration.pojo.Configuration;
 import org.jboss.pvt.harness.configuration.pojo.TestConfig;
-import org.jboss.pvt.harness.validators.ValidationResult;
+import org.jboss.pvt.harness.validators.Validation;
 import org.jboss.pvt.harness.validators.Validator;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -47,25 +47,40 @@ public abstract class PVTSuperTestCase {
     protected abstract Class<? extends Validator> getValidatorClass();
 
     protected boolean test() throws Exception{
-        Configuration configuration = PVTTestSuite.getConfiguration();
-        TestConfig testConfig = configuration.getTestConfig(this.getClass());
-        List<String> resources = testConfig.getResources();
-
-        List<String> fullpathResources = new ArrayList<>();
-        for(String resource : resources) {
-            String fullpath = configuration.getDistrepo() + (configuration.getDistrepo().endsWith("/") ? "" : "/") + resource;
-            fullpath = fullpath.replace("%{version}", configuration.getVersion());
-            fullpathResources.add(fullpath);
-        }
+        TestConfig testConfig = parseTestConfig();
 
         List<String> filters = testConfig.getFilters();
         Map<String, String> params = testConfig.getParams();
-        ValidationResult validationResult = getValidatorClass().newInstance().validate(fullpathResources, filters, params);
-        validationResult.setTestCaseObject(this);
-        PVTTestSuite.getTestReport(this.getClass()).setValidationResult(validationResult);
-        logger.info("isValid = " + validationResult.isValid() + ", during: " + validationResult.getDuring() + "ms");
-        return validationResult.isValid();
+        Validation validation = getValidatorClass().newInstance().validate(testConfig.getParsedResources(), filters, params);
+        validation.setTestcase(this);
+        PVTTestSuite.getTestReport(this.getClass()).setValidation(validation);
+        logger.info("isValid = " + validation.isValid() + ", during: " + validation.getDuring() + "ms");
+        return validation.isValid();
     }
+
+    protected TestConfig parseTestConfig() {
+        Configuration configuration = PVTTestSuite.getConfiguration();
+        TestConfig testConfig = configuration.getTestConfig(this.getClass());
+
+        List<String> resources = testConfig.getResources();
+        if(resources == null || resources.isEmpty()) {
+            throw new IllegalArgumentException("resources");
+        }
+
+        List<String> parsedResources = new ArrayList<>();
+        for(String resource : resources) {
+            String fullpath = resource;
+            if(!fullpath.contains("://")) { // relative path
+                fullpath = configuration.getDistrepo() + (configuration.getDistrepo().endsWith("/") ? "" : "/") + resource;
+            }
+            fullpath = fullpath.replace("%{version}", configuration.getVersion());
+            parsedResources.add(fullpath);
+        }
+        testConfig.setParsedResources(parsedResources);
+
+        return testConfig;
+    }
+
 
     public abstract String getDescription();
 }

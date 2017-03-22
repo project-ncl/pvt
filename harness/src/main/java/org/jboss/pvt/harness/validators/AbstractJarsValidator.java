@@ -1,35 +1,33 @@
 package org.jboss.pvt.harness.validators;
 
-import org.apache.commons.io.FileUtils;
-import org.jboss.pvt.harness.exception.PVTException;
 import org.jboss.pvt.harness.utils.DirUtils;
-import org.jboss.pvt.harness.utils.ResourceUtil;
+import org.jboss.pvt.harness.utils.ResourceUtils;
+import org.jboss.pvt.harness.utils.ValidatorUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.util.*;
-import java.util.regex.Pattern;
 
 /**
  * Abstract Validator which validate against jars in the distributed zips
  *
  * @author <a href="mailto:yyang@redhat.com">Yong Yang</a>
  */
-public abstract class AbstractJarsValidator implements Validator {
+public abstract class AbstractJarsValidator extends AbstractValidator<JarsValidation> {
 
     protected final Logger logger = LoggerFactory.getLogger( getClass() );
 
     @Override
-    public ValidationResult validate(List<String> resources, List<String> filters, Map<String, String> params) throws Exception {
+    public JarsValidation validate(List<String> resources, List<String> filters, Map<String, String> params) throws Exception {
         boolean passed = true;
         long startTime = System.currentTimeMillis();
         List<File> passedJars = new ArrayList<>();
         List<File> notPassedJars = new ArrayList<>();
         List<File> filterJars = new ArrayList<>();
         for(String resource : resources) {
-            File exploredDir = ResourceUtil.downloadZips(resource);
+            File exploredDir = ResourceUtils.downloadZipExplored(resource);
             Collection<File> jarFiles = DirUtils.listFilesRecursively( exploredDir, new FileFilter() {
                 public boolean accept(File pathname) {
                     return  pathname.isFile() && pathname.getName().endsWith(".jar");
@@ -37,7 +35,7 @@ public abstract class AbstractJarsValidator implements Validator {
             });
 
             for(File jarFile : jarFiles) {
-                if (filter(jarFile, filters)) {
+                if (ValidatorUtils.filter(jarFile, filters)) {
                     filterJars.add(jarFile);
                 }
             }
@@ -59,22 +57,12 @@ public abstract class AbstractJarsValidator implements Validator {
         logger.warn("Not passed jars: " + Arrays.toString(notPassedJars.toArray()));
         logger.debug("Passed jars: " + Arrays.toString(passedJars.toArray()));
         logger.info("VALIDATION RESULT: passed=" + passed);
-        return passed ?
-                ValidationResult.pass(System.currentTimeMillis()-startTime, (filterJars), (passedJars))
+        JarsValidation validation =  passed ?
+                JarsValidation.pass((filterJars), (passedJars))
                 :
-                ValidationResult.notPass(System.currentTimeMillis()-startTime, (filterJars), (passedJars), (notPassedJars));
-    }
-
-    public boolean filter(File jarFile,  List<String> filters){
-        for(String filter : filters) {
-            if(filter.trim().isEmpty()) {
-                continue;
-            }
-            if(jarFile.getAbsolutePath().matches(filter)) {
-                return true;
-            }
-        }
-        return false;
+                JarsValidation.notPass((filterJars), (passedJars), (notPassedJars));
+        validation.setDuring(System.currentTimeMillis()-startTime);
+        return validation;
     }
 
     private static List<String> toStringList(List<File> files){

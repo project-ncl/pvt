@@ -2,6 +2,7 @@ package org.jboss.pvt.harness.validators;
 
 import org.jboss.pvt.harness.exception.PVTException;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +10,7 @@ import java.util.Map;
  * Updated by yyang on 16/DEC/16
  * Created by rnc on 02/08/16.
  */
-public interface Validator {
+public interface Validator<T extends Validation> {
     /**
      * Validation logic that should be applied.
      * @param resources what resources[zips, jars, etc...] this validator run against
@@ -18,6 +19,6 @@ public interface Validator {
      * @return true if it validates successfully.
      * @throws PVTException if an error occurs.
      */
-    ValidationResult validate(List<String> resources, List<String> filters, Map<String, String> params) throws Exception;
+    T validate(List<String> resources, List<String> filters, Map<String, String> params) throws Exception;
 
 }

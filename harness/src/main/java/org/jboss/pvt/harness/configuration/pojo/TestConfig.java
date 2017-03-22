@@ -32,6 +32,8 @@ public class TestConfig {
     private List<String> resources = new ArrayList<>(  );
 
 
+    private List<String> parsedResources = new ArrayList<>();
+
     /**
      * Contain a list of strings that should be filtered out from this test case.
      * format: java regexp
@@ -65,6 +67,15 @@ public class TestConfig {
         this.params = params;
     }
 
+
+    public List<String> getParsedResources() {
+        return parsedResources;
+    }
+
+    public void setParsedResources(List<String> parsedResources) {
+        this.parsedResources = parsedResources;
+    }
+
     @Override
     public String toString() {
         return "TestConfig{" +
@@ -73,4 +84,5 @@ public class TestConfig {
                 ", params=" + params +
                 '}';
     }
+
 }

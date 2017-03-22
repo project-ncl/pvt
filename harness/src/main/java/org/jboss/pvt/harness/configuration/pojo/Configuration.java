@@ -52,6 +52,10 @@ public class Configuration
     }
 
     public String getDistrepo() {
+        return distrepo;
+    }
+
+    public String getParsedDistrepo() {
         return distrepo.replace("%{version}", getVersion());
     }
 
