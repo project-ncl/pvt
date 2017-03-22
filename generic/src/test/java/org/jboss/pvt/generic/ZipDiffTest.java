@@ -8,7 +8,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -31,39 +30,47 @@ public class ZipDiffTest extends PVTSuperTestCase {
         TestConfig testConfig = configuration.getTestConfig(this.getClass());
 
         List<String> resources = testConfig.getResources();
+        List<String> parsedResource = new ArrayList<>();
         if(resources == null || resources.isEmpty()) {
             throw new IllegalArgumentException("resources");
         }
-        if(resources.size() == 1){
-            String leftZip = ""; //TODO: guess leftZips
-            resources.add(0, leftZip);
-        }
-        else if(resources.size() ==2){
-            if(resources.get(0).contains(",") && resources.get(1).contains(",")){
-                resources.set(0, parseZipsString(resources.get(0).split(","),configuration.getDistrepo()));
-                resources.set(1, parseZipsString(resources.get(1).split(","),configuration.getDistrepo()));
-            }
-        }
-        else {
-            throw new IllegalArgumentException("Need 1 or 2 resources.");
-        }
-        return super.parseTestConfig();
+
+        String diffVersion = guessDiffVersion(configuration);
+        // previous resources
+        parsedResource.add(0, parseZipsFullPath(resources.get(0),configuration.getDistrepo(), diffVersion));
+        // current resources
+        parsedResource.add(1, parseZipsFullPath(resources.get(resources.size()-1),configuration.getDistrepo(), configuration.getVersion()));
+
+        testConfig.setParsedResources(parsedResource);
+        return testConfig;
     }
 
-    private String parseZipsString(String[] zips, String distRepo){
+    private String parseZipsFullPath(String resources, String distRepo, String version){
+        String[] zips = resources.split(",");
         String[] fullPathZips = new String[zips.length];
+        distRepo = distRepo.replace("%{version}", version);
         for(int i=0; i<zips.length; i++){
             String fullpath = zips[i].trim();
             if(!fullpath.contains("://")) { // relative path
                 fullpath = distRepo + (distRepo.endsWith("/") ? "" : "/") + fullpath;
             }
+            fullpath = fullpath.replace("%{version}", version);
+            fullpath = fullpath.replace("%{diffVersion}", version);
             fullPathZips[i] = fullpath;
         }
         return String.join(",", fullPathZips);
     }
 
-    private String guessPreviousVersion(String version) {
-        return version;
+    private String guessDiffVersion(Configuration configuration) {
+        TestConfig testConfig = configuration.getTestConfig(this.getClass());
+        String diffVersion = testConfig.getParams().get(ZipDiffValidator.PARAM_DIFF_VERSION);
+        if(diffVersion != null && !diffVersion.trim().isEmpty()) {
+            return diffVersion;
+        }
+        else {
+            //TODO: auto detect the diffVersion
+            throw new IllegalArgumentException("No diffVersion defined");
+        }
     }
 
     @Override

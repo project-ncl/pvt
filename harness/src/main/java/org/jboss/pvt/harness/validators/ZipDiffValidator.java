@@ -23,6 +23,8 @@ public class ZipDiffValidator extends AbstractValidator<DiffValidation> {
     public static final String PARAM_EXPECT_CHANGES = "expectChanges";
     public static final String PARAM_EXPECT_UNCHANGES = "expectUnchanges";
 
+    public static final String PARAM_DIFF_VERSION = "diffVersion";
+
     @Override
     public DiffValidation validate(List<String> resources, List<String> filters, Map<String, String> params) throws Exception {
         long startTime = System.currentTimeMillis();
@@ -56,9 +58,9 @@ public class ZipDiffValidator extends AbstractValidator<DiffValidation> {
         final List<File> unchanged = new ArrayList<>();
 
 
-        String[] stringLeftDirs = resources.get(0).split(",");
-        String[] stringRightDirs = resources.get(1).split(",");
-        if(stringLeftDirs.length != stringRightDirs.length){
+        String[] leftLinks = resources.get(0).split(",");
+        String[] rightLinks = resources.get(1).split(",");
+        if(leftLinks.length != rightLinks.length){
             throw new IllegalArgumentException("left resources size is not equal to right resources size.");
         }
 
@@ -67,17 +69,17 @@ public class ZipDiffValidator extends AbstractValidator<DiffValidation> {
         Map<String, File> leftFilesMap = new HashMap<>();
         Map<String, File> rightFilesMap = new HashMap<>();
 
-        File[] leftDirs = new File[stringLeftDirs.length];
-        for(int i=0; i<stringLeftDirs.length; i++){
-            leftDirs[i] = ResourceUtils.downloadZipExplored(stringLeftDirs[i]);
+        File[] leftDirs = new File[leftLinks.length];
+        for(int i=0; i<leftLinks.length; i++){
+            leftDirs[i] = ResourceUtils.downloadZipExplored(leftLinks[i]);
             Collection<File> files = FileUtils.listFiles(leftDirs[i], null, true);
             leftFiles.addAll(files);
             leftFilesMap.putAll(collectionToMap(leftDirs[i], files));
         }
 
-        File[] rightDirs = new File[stringRightDirs.length];
-        for(int i=0; i<stringLeftDirs.length; i++){
-            rightDirs[i] = ResourceUtils.downloadZipExplored(stringRightDirs[i]);
+        File[] rightDirs = new File[rightLinks.length];
+        for(int i=0; i<leftLinks.length; i++){
+            rightDirs[i] = ResourceUtils.downloadZipExplored(rightLinks[i]);
             Collection<File> files = FileUtils.listFiles(rightDirs[i], null, true);
             rightFiles.addAll(files);
             rightFilesMap.putAll(collectionToMap(rightDirs[i], files));
