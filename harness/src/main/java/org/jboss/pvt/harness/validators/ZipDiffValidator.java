@@ -190,7 +190,7 @@ public class ZipDiffValidator extends AbstractValidator<DiffValidation> {
     }
 
     private boolean meetExpectCount(int min, int max, int length){
-        if(length > min && (max > -1 && length < max)) {
+        if(length >= min && (max <= -1 || (max > -1 && length <= max))) {
             return true;
         }
         else {
