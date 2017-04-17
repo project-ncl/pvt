@@ -104,6 +104,8 @@
                             <span style="padding-left: 100px">filters: ${testReport.testConfig.filters}</span>  <br/>
                             <span style="padding-left: 100px">params: ${testReport.testConfig.params}</span>  <br/>
                         </p>
+                        <p><b>Exception:</b> <#if testReport.validation.throwable?has_content>${testReport.validation.throwable}</#if></p>
+                        <#if !testReport.validation.throwable?has_content>
                         <div class="table-responsive">
                         <#if testReport.validation.class.simpleName == "JarsValidation" >
                             <table class="table table-hover table-condensed table-bordered table-striped" style="table-layout: fixed">
@@ -297,6 +299,7 @@
                                 </table>
                         </#if>
                         </div>
+                        </#if>
                     </div>
                 </#list>
             </div>

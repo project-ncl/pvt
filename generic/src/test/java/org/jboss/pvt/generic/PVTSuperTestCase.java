@@ -51,7 +51,15 @@ public abstract class PVTSuperTestCase {
 
         List<String> filters = testConfig.getFilters();
         Map<String, String> params = testConfig.getParams();
-        Validation validation = getValidatorClass().newInstance().validate(testConfig.getParsedResources(), filters, params);
+        // cache exception and set to validation
+        Validation validation = null;
+        try {
+            validation = getValidatorClass().newInstance().validate(testConfig.getParsedResources(), filters, params);
+        }
+        catch (Exception e) {
+            validation = new Validation(false) {};
+            validation.setThrowable(e);
+        }
         validation.setTestcase(this);
         PVTTestSuite.getTestReport(this.getClass()).setValidation(validation);
         logger.info("isValid = " + validation.isValid() + ", during: " + validation.getDuring() + "ms");
