@@ -25,6 +25,11 @@ public class ZipDiffValidator extends AbstractValidator<DiffValidation> {
 
     public static final String PARAM_DIFF_VERSION = "diffVersion";
 
+    public static final String PARAM_EXPECT_ADDS_COUNT = "expectAddCount";
+    public static final String PARAM_EXPECT_REMOVE_COUNT = "expectRemoveCount";
+    public static final String PARAM_EXPECT_CHANGE_COUNT = "expectChangeCount";
+    public static final String PARAM_EXPECT_UNCHANGE_COUNT = "expectUnchangeCount";
+
     @Override
     public DiffValidation validate(List<String> resources, List<String> filters, Map<String, String> params) throws Exception {
         long startTime = System.currentTimeMillis();
@@ -50,6 +55,37 @@ public class ZipDiffValidator extends AbstractValidator<DiffValidation> {
         if(params.containsKey(PARAM_EXPECT_UNCHANGES)){
             expectUnchanges = params.get(PARAM_EXPECT_UNCHANGES).split(",");
         }
+
+        int expectAddCountMin = -1;
+        int expectAddCountMax = -1;
+        int expectRemoveCountMin = -1;
+        int expectRemoveCountMax = -1;
+        int expectChangeCountMin = -1;
+        int expectChangeCountMax = -1;
+        int expectUnchangeCountMin = -1;
+        int expectUnchangeCountMax = -1;
+        if(params.containsKey(PARAM_EXPECT_ADDS_COUNT)){
+            String[] count = params.get(PARAM_EXPECT_ADDS_COUNT).trim().split(",");
+            expectAddCountMin = Integer.parseInt(count[0].trim());
+            expectAddCountMax = Integer.parseInt(count[1].trim());
+        }
+        if(params.containsKey(PARAM_EXPECT_REMOVE_COUNT)){
+            String[] count = params.get(PARAM_EXPECT_REMOVE_COUNT).trim().split(",");
+            expectRemoveCountMin = Integer.parseInt(count[0].trim());
+            expectRemoveCountMax = Integer.parseInt(count[1].trim());
+
+        }
+        if(params.containsKey(PARAM_EXPECT_CHANGE_COUNT)){
+            String[] count = params.get(PARAM_EXPECT_CHANGE_COUNT).trim().split(",");
+            expectChangeCountMin = Integer.parseInt(count[0].trim());
+            expectChangeCountMax = Integer.parseInt(count[1].trim());
+        }
+        if(params.containsKey(PARAM_EXPECT_UNCHANGE_COUNT)){
+            String[] count = params.get(PARAM_EXPECT_UNCHANGE_COUNT).trim().split(",");
+            expectUnchangeCountMin = Integer.parseInt(count[0].trim());
+            expectUnchangeCountMax = Integer.parseInt(count[1].trim());
+        }
+
 
         final List<File> filtered = new ArrayList<>();
         final List<File> added = new ArrayList<>();
@@ -144,9 +180,23 @@ public class ZipDiffValidator extends AbstractValidator<DiffValidation> {
                         && meetExpects(allFiles, expectChanges, allChangedFiles, fails), filtered, added, removed, unchanged, changed);
         diffValidation.setDuring(System.currentTimeMillis() - startTime);
         diffValidation.setFailed(fails);
+        if(!meetExpectCount(expectAddCountMin, expectAddCountMax, added.size())
+                || !meetExpectCount(expectRemoveCountMin, expectRemoveCountMax, removed.size())
+                || !meetExpectCount(expectChangeCountMin, expectChangeCountMax, changed.size())
+                || !meetExpectCount(expectUnchangeCountMin, expectUnchangeCountMax, unchanged.size())){
+            diffValidation.setValid(false);
+        }
         return diffValidation;
     }
 
+    private boolean meetExpectCount(int min, int max, int length){
+        if(length >= min && (max <= -1 || (max > -1 && length <= max))) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
     private boolean meetExpects(List<File> allFiles, String[] expects, List<File> done, List<File> fails){
         if(expects == null || expects.length == 0) {
@@ -154,7 +204,6 @@ public class ZipDiffValidator extends AbstractValidator<DiffValidation> {
         }
         for(File file : allFiles){
             for(String expect : expects){
-                boolean meet = false;
                 expect = expect.trim();
                 if(expect.isEmpty()) {
                     continue;

@@ -15,6 +15,13 @@ import java.util.List;
  */
 public class ZipDiffTest extends PVTSuperTestCase {
 
+/* config example
+org.jboss.pvt.generic.ZipDiffTest:
+        resources: ['jboss-brms-%{diffVersion}-deployable-eap6.x.zip, jboss-brms-%{diffVersion}-engine.zip','jboss-brms-6.4.0.GA-deployable-eap6.x.zip, jboss-brms-6.4.0.GA-engine.zip']
+        filters: ['.*class','.*js']
+        params: {diffVersion: '6.4.0.CR1', expectChanges: '', expectAdds : '', expectRemoves : '', expectUnchanges: '', expectChangeCount: '1,100', expectAddCount: '1,300', expectRemoveCount: '1,400', expectUnchangeCount: '3,400', }
+*/
+
     @Test
     public void testZipDiff() throws Exception {
         Assert.assertTrue(test());
