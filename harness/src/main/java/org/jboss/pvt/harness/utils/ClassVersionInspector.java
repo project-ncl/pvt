@@ -1,5 +1,6 @@
 package org.jboss.pvt.harness.utils;
 
+import org.apache.commons.io.FileUtils;
 import org.jboss.pvt.harness.exception.PVTException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -134,6 +135,47 @@ public class ClassVersionInspector
         }
 
         return true;
+    }
+
+    public static ClassVersion checkJarVersion (String filename) throws PVTException
+    {
+        JarFile jar;
+        try
+        {
+            jar = new JarFile( filename );
+
+            Enumeration<JarEntry> entries = jar.entries();
+
+            while ( entries.hasMoreElements() )
+            {
+                JarEntry entry = entries.nextElement();
+                if ( entry.getName().endsWith( ".class" ) )
+                {
+                    ClassVersion cv = checkClassVersion( jar.getInputStream( entry ) );
+                    return cv;
+                }
+            }
+        }
+        catch ( IOException e )
+        {
+            throw new PVTException( "Error processing jar file.", e );
+        }
+
+        return ClassVersion.JAVA_0;
+    }
+
+    public static void main(String[] args) throws Exception{
+        for(File file : FileUtils.listFiles(new File("/home/yyang/Desktop/temp"), new String[]{"class"}, true)) {
+
+            FileInputStream in = new FileInputStream(file);
+            try {
+                System.out.println(checkClassVersion(in) + " -> " + file.toString());
+            }
+            finally {
+                in.close();
+            }
+
+        }
     }
 
 }

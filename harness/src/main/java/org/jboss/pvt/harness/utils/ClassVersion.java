@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public enum ClassVersion
 {
-    JAVA_0(0), JAVA_12( 46 ), JAVA_13( 47 ), JAVA_14( 48 ), JAVA_15( 49 ), JAVA_16( 50 ), JAVA_17( 51 ), JAVA_18( 52 );
+    JAVA_0(0), JAVA_12( 46 ), JAVA_13( 47 ), JAVA_14( 48 ), JAVA_15( 49 ), JAVA_16( 50 ), JAVA_17( 51 ), JAVA_18( 52 ), JAVA_19( 53 );
 
     private static Map<Integer, ClassVersion> map = new HashMap<>();
 
