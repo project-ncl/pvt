@@ -109,7 +109,7 @@
                         <div class="table-responsive">
                         <#if testReport.validation.class.simpleName == "JarsValidation" >
                             <table class="table table-hover table-condensed table-bordered table-striped" style="table-layout: fixed">
-                                <caption>Not Passed: (${testReport.validation.failed.size()})</caption>
+                                <caption>Not Passed: (${testReport.validation.groupedFailed.size()})</caption>
                                 <thead>
                                 <tr style="font-weight: bold" class="danger">
                                     <td>File name</td>
@@ -146,7 +146,7 @@
                                 </#list>
                             </table>
                             <table class="table table-hover table-condensed table-bordered table-striped" style="table-layout: fixed">
-                                <caption>Filtered Out: (${testReport.validation.filtered.size()})</caption>
+                                <caption>Filtered Out: (${testReport.validation.groupedFiltered.size()})</caption>
                                 <thead>
                                 <tr style="font-weight: bold" class="active">
                                     <td>File name</td>
@@ -169,7 +169,7 @@
                             </table>
                             <#elseif testReport.validation.class.simpleName == "DiffValidation">
                             <table class="table table-hover table-condensed table-bordered table-striped" style="table-layout: fixed">
-                                <caption>Not Passed: (${testReport.validation.failed.size()})</caption>
+                                <caption>Not Passed: (${testReport.validation.groupedFailed.size()})</caption>
                                 <thead>
                                 <tr style="font-weight: bold" class="danger">
                                     <td>File name</td>
@@ -191,7 +191,7 @@
                                 </#list>
                             </table>
                             <table class="table table-hover table-condensed table-bordered table-striped" style="table-layout: fixed">
-                                <caption>Added: (${testReport.validation.added.size()})</caption>
+                                <caption>Added: (${testReport.validation.groupedAdded.size()})</caption>
                                 <thead>
                                 <tr style="font-weight: bold" class="danger">
                                     <td>File name</td>
@@ -213,7 +213,7 @@
                                 </#list>
                             </table>
                             <table class="table table-hover table-condensed table-bordered table-striped" style="table-layout: fixed">
-                                <caption>Removed: (${testReport.validation.removed.size()})</caption>
+                                <caption>Removed: (${testReport.validation.groupedRemoved.size()})</caption>
                                 <thead>
                                 <tr style="font-weight: bold" class="danger">
                                     <td>File name</td>
@@ -254,7 +254,7 @@
                                 </#list>
                             </table>
                             <table class="table table-hover table-condensed table-bordered table-striped" style="table-layout: fixed">
-                                <caption>Unchanged: (${testReport.validation.unchanged.size()})</caption>
+                                <caption>Unchanged: (${testReport.validation.groupedUnchanged.size()})</caption>
                                 <thead>
                                 <tr style="font-weight: bold" class="danger">
                                     <td>File name</td>
@@ -276,7 +276,7 @@
                                 </#list>
                             </table>
                             <table class="table table-hover table-condensed table-bordered table-striped" style="table-layout: fixed">
-                                    <caption>Filtered Out: (${testReport.validation.filtered.size()})</caption>
+                                    <caption>Filtered Out: (${testReport.validation.groupedFiltered.size()})</caption>
                                     <thead>
                                     <tr style="font-weight: bold" class="active">
                                         <td>File name</td>
