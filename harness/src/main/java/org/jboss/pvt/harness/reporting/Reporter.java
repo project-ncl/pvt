@@ -43,6 +43,7 @@ public abstract class Reporter {
     public String getOutFile(Report report) {
         String out = outFile.replace("%{product}", report.getConfiguration().getProduct())
                 .replace("%{version}",report.getConfiguration().getVersion())
+                .replace("%{target}",report.getConfiguration().getTarget())
                 .replace("%{date}", new SimpleDateFormat("yyMMdd").format(new Date()));
         return out;
     }
@@ -56,6 +57,7 @@ public abstract class Reporter {
     public void renderHandoverSummary(Report report) throws Exception{
         String out = DEFAULT_HANDOVER_SUMMARY_OUTPUT_PATH.replace("%{product}", report.getConfiguration().getProduct())
                 .replace("%{version}",report.getConfiguration().getVersion())
+                .replace("%{target}",report.getConfiguration().getTarget())
                 .replace("%{date}", new SimpleDateFormat("yyMMdd").format(new Date()));
         logger.info("Generating handover summary doc to " + out);
         render(report, DEFAULT_HANDOVER_SUMMARY_TEMPLATE, new File(out));

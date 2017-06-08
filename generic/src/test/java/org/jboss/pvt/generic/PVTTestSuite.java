@@ -54,6 +54,8 @@ public class PVTTestSuite implements TestClassFilter
     // use this property to specify config file, instead of default pvt.yaml, support http://
     private static final String PROPERTY_CONFIG = "product.config";
     private static final String PROPERTY_VERSION = "product.version";
+    private static final String PROPERTY_TARGET = "product.target";
+
 
     public static String configFile = "pvt.yaml";
 
@@ -92,6 +94,11 @@ public class PVTTestSuite implements TestClassFilter
         if(System.getProperty(PROPERTY_VERSION) != null && !System.getProperty(PROPERTY_VERSION).trim().isEmpty()) {
             // override the version defined in config file
             configuration.setVersion(System.getProperty(PROPERTY_VERSION).trim());
+        }
+
+        if(System.getProperty(PROPERTY_TARGET) != null && !System.getProperty(PROPERTY_TARGET).trim().isEmpty()) {
+            // override the version defined in config file
+            configuration.setTarget(System.getProperty(PROPERTY_TARGET).trim());
         }
 
         // init report
