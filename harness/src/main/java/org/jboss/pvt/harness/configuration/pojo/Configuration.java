@@ -28,6 +28,8 @@ public class Configuration
 
     private String version;
 
+    private String target;
+
     /**
      * The path the dist store
      */
@@ -51,12 +53,21 @@ public class Configuration
         this.version = version;
     }
 
+    public String getTarget() {
+        return target != null ? target : getVersion();
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
+    }
+
     public String getDistrepo() {
         return distrepo;
     }
 
     public String getParsedDistrepo() {
-        return distrepo.replace("%{version}", getVersion());
+        return distrepo.replace("%{version}", getVersion()).replace("%{target}", getTarget());
+
     }
 
     public void setDistrepo(String distrepo) {

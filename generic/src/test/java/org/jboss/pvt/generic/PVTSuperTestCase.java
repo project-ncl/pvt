@@ -82,6 +82,7 @@ public abstract class PVTSuperTestCase {
                 fullpath = configuration.getDistrepo() + (configuration.getDistrepo().endsWith("/") ? "" : "/") + resource;
             }
             fullpath = fullpath.replace("%{version}", configuration.getVersion());
+            fullpath = fullpath.replace("%{target}", configuration.getTarget());
             parsedResources.add(fullpath);
         }
         testConfig.setParsedResources(parsedResources);
