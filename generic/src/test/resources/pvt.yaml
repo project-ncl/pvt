@@ -4,6 +4,7 @@
 
 product: JBOSSAS
 version: 6.1.0.Final
+target: 6.1.0.GA
 distrepo: http://central.maven.org/maven2/org/jboss/jbossas/jboss-as-distribution/%{version}/
 tests:
   org.jboss.pvt.generic.NoSignatureCheckTest:
@@ -18,6 +19,6 @@ tests:
     filters: ['.*jboss-modules.jar.*', '.*/client/.*', '.*/bin/.*']
     params: {'format':'.*\d+.*'}
   org.jboss.pvt.generic.ZipDiffTest:
-      resources: ['http://central.maven.org/maven2/org/jboss/jbossas/jboss-as-distribution/6.0.0.Final/jboss-as-distribution-6.0.0.Final.zip','jboss-as-distribution-%{version}.zip']
-      filters: ['.*jboss-modules.jar.*', '.*/client/.*', '.*/bin/.*']
-      params: {'expectChanges':'', 'expectAdds': '.*/scannotation-1.0.3.jar,.*/README.txt', 'expectRemoves': '.*/jyaml-1.3.jar', 'expectUnchanges': '.*/jboss.jar'}
+    resources: ['http://central.maven.org/maven2/org/jboss/jbossas/jboss-as-distribution/6.0.0.Final/jboss-as-distribution-6.0.0.Final.zip,jboss-as-distribution-%{version}.zip']
+    filters: ['.*jboss-modules.jar.*', '.*/client/.*', '.*/bin/.*']
+    params: {'expectChanges':'', 'expectAdds': '.*/scannotation-1.0.3.jar,.*/README.txt', 'expectRemoves': '.*/jyaml-1.3.jar', 'expectUnchanges': '.*/jboss.jar'}

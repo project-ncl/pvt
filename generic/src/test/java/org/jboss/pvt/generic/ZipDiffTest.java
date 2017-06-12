@@ -42,41 +42,59 @@ org.jboss.pvt.generic.ZipDiffTest:
             throw new IllegalArgumentException("resources");
         }
 
-        String diffVersion = guessDiffVersion(configuration);
-        // previous resources
-        parsedResource.add(0, parseZipsFullPath(resources.get(0),configuration.getDistrepo(), diffVersion));
-        // current resources
-        parsedResource.add(1, parseZipsFullPath(resources.get(resources.size()-1),configuration.getDistrepo(), configuration.getVersion()));
+        String compareVersion = parseCompareVersion(configuration);
+        for(String resource : resources) {
+            String pairResource = parsePairResourceFullPath(resource, configuration.getDistrepo(), configuration.getVersion(), compareVersion);
+            parsedResource.add(pairResource);
+        }
 
         testConfig.setParsedResources(parsedResource);
         return testConfig;
     }
 
-    private String parseZipsFullPath(String resources, String distRepo, String version){
-        String[] zips = resources.split(",");
-        String[] fullPathZips = new String[zips.length];
-        distRepo = distRepo.replace("%{version}", version);
-        for(int i=0; i<zips.length; i++){
-            String fullpath = zips[i].trim();
-            if(!fullpath.contains("://")) { // relative path
-                fullpath = distRepo + (distRepo.endsWith("/") ? "" : "/") + fullpath;
-            }
-            fullpath = fullpath.replace("%{version}", version);
-            fullpath = fullpath.replace("%{diffVersion}", version);
-            fullPathZips[i] = fullpath;
-        }
-        return String.join(",", fullPathZips);
-    }
-
-    private String guessDiffVersion(Configuration configuration) {
-        TestConfig testConfig = configuration.getTestConfig(this.getClass());
-        String diffVersion = testConfig.getParams().get(ZipDiffValidator.PARAM_DIFF_VERSION);
-        if(diffVersion != null && !diffVersion.trim().isEmpty()) {
-            return diffVersion;
+    private String parsePairResourceFullPath(String resource, String distRepo, String version, String compareVersion){
+        String thisResource;
+        String compareResource;
+        if(!resource.contains(",")) { //
+            thisResource = resource;
+            compareResource = resource;
         }
         else {
-            //TODO: auto detect the diffVersion
-            throw new IllegalArgumentException("No diffVersion defined");
+            thisResource = resource.split(",")[0];
+            compareResource = resource.split(",")[1];
+        }
+
+        thisResource = getFullPathResource(thisResource, distRepo, version);
+        compareResource = getFullPathResource(compareResource, distRepo, compareVersion);
+
+        return String.join(", ", thisResource, compareResource);
+    }
+
+    private String getFullPathResource(String resource, String distRepo, String version){
+        distRepo = distRepo.replace("%{version}", version);
+        String fullpath = resource;
+        if(!fullpath.contains("://")) { // relative path
+            fullpath = distRepo + (distRepo.endsWith("/") ? "" : "/") + fullpath;
+        }
+        fullpath = fullpath.replace("%{version}", version).replace("%{target}", PVTTestSuite.getConfiguration().getTarget());
+        return fullpath;
+    }
+
+    private String parseCompareVersion(Configuration configuration) {
+        TestConfig testConfig = configuration.getTestConfig(this.getClass());
+        String compareVersion = System.getProperty(ZipDiffTest.class.getName() + "." + ZipDiffValidator.PARAM_DIFF_VERSION);
+        if(compareVersion != null && !compareVersion.trim().isEmpty()) {
+            return compareVersion;
+        }
+        else {
+
+            compareVersion = testConfig.getParams().get(ZipDiffValidator.PARAM_DIFF_VERSION);
+            if (compareVersion != null && !compareVersion.trim().isEmpty()) {
+                return compareVersion;
+            } else {
+                //TODO: auto detect the diffVersion
+                throw new IllegalArgumentException("No compare defined.");
+            }
         }
     }
 
