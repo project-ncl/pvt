@@ -55,7 +55,9 @@ public class PVTTestSuite implements TestClassFilter
     private static final String PROPERTY_CONFIG = "product.config";
     private static final String PROPERTY_VERSION = "product.version";
     private static final String PROPERTY_TARGET = "product.target";
+    private static final String REPORT_LOCATION = "report.filepath";
 
+    public static final String DEFAULT_OUTPUT_DIRECTORY = "../target/";
 
     public static String configFile = "pvt.yaml";
 
@@ -148,8 +150,53 @@ public class PVTTestSuite implements TestClassFilter
         logger.info("TestSuite tearing down");
         try {
             logger.info("Report rendering");
+            if(System.getProperty(REPORT_LOCATION) != null && !System.getProperty(REPORT_LOCATION).trim().isEmpty()) {
+                String location = System.getProperty(REPORT_LOCATION).trim();
+                File directory = new File(location);
+
+                //if the last char is '/' clear it for convenience
+                if(location.charAt(location.length()-1)=='/'){
+                    location = location.substring(0,location.length()-1);
+                    directory = new File(location);
+                    if(!directory.isDirectory()){
+                        logger.info("failed to access given directory");
+                        throw new Exception();
+                    }
+                }
+                
+                // check if directory is provided. If the case, we use given directory+ default name
+                if(directory.isDirectory()){
+                    Reporter.getFreemarkerReporter().render(report,location,false);
+                    Reporter.getFreemarkerReporter().renderHandoverSummary(report,location,false);
+                }
+                else{
+                     //check if the case: directory and name are both provided
+                     if(location.indexOf('/')>=0){
+                        String sub_location = location.substring(0,location.lastIndexOf('/'));
+                        if(new File(sub_location).isDirectory()){
+                            Reporter.getFreemarkerReporter().render(report,location,true);
+                            Reporter.getFreemarkerReporter().renderHandoverSummary(report,location,true);
+                        }
+                        else{
+                            logger.info("failed to access given directory");
+                            throw new Exception();
+                        }
+                     }
+                     //if the case:name only or no '/' given, we use default directory + given name
+                     else 
+                     {
+                        //Add in default directory
+                        location = DEFAULT_OUTPUT_DIRECTORY.concat(location);
+                        Reporter.getFreemarkerReporter().render(report,location,true);
+                        Reporter.getFreemarkerReporter().renderHandoverSummary(report,location,true);
+                     }                   
+                }
+            }
+            //if nothing is provided, use default directory + default name
+            else{
             Reporter.getFreemarkerReporter().render(report);
             Reporter.getFreemarkerReporter().renderHandoverSummary(report);
+            }
         }
         catch (Exception e) {
             e.printStackTrace();
