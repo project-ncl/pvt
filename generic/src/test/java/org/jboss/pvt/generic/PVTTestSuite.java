@@ -55,9 +55,13 @@ public class PVTTestSuite implements TestClassFilter
     private static final String PROPERTY_CONFIG = "product.config";
     private static final String PROPERTY_VERSION = "product.version";
     private static final String PROPERTY_TARGET = "product.target";
-    private static final String REPORT_LOCATION = "report.filepath";
+    private static final String REPORT_FILEPATH = "report.filepath";
 
-    public static final String DEFAULT_OUTPUT_DIRECTORY = "../target/";
+    public static final String DEFAULT_OUTPUT_PATH = "../target/pvt_report_%{product}_%{version}";
+    public static final String DEFAULT_OUTPUT_DIRECTORY = "../target";
+    public static final String DEFAULT_OUTPUT_NAME = "/pvt_report_%{product}_%{version}";
+
+   
 
     public static String configFile = "pvt.yaml";
 
@@ -148,34 +152,36 @@ public class PVTTestSuite implements TestClassFilter
     @AfterClass
     public static void tearDown() {
         logger.info("TestSuite tearing down");
+        String out_file;
         try {
             logger.info("Report rendering");
-            if(System.getProperty(REPORT_LOCATION) != null && !System.getProperty(REPORT_LOCATION).trim().isEmpty()) {
-                String location = System.getProperty(REPORT_LOCATION).trim();
-                File directory = new File(location);
-
-                //if the last char is '/' clear it for convenience
-                if(location.charAt(location.length()-1)=='/'){
-                    location = location.substring(0,location.length()-1);
-                    directory = new File(location);
+            if(System.getProperty(REPORT_FILEPATH) != null && !System.getProperty(REPORT_FILEPATH).trim().isEmpty()) {
+                String file_path = System.getProperty(REPORT_FILEPATH).trim();
+                File directory = new File(file_path);
+                
+                //special case for ending with the char '/'. if it is a directory,clear it for convenience
+                //if not, report error
+                if(file_path.charAt(file_path.length()-1)=='/'){
+                    file_path = file_path.substring(0,file_path.length()-1);
+                    directory = new File(file_path);
+                    // if not a directory
                     if(!directory.isDirectory()){
                         logger.info("failed to access given directory");
                         throw new Exception();
                     }
                 }
                 
-                // check if directory is provided. If the case, we use given directory+ default name
+                // check if directory is provided. If the case, we use given directory + default name
                 if(directory.isDirectory()){
-                    Reporter.getFreemarkerReporter().render(report,location,false);
-                    Reporter.getFreemarkerReporter().renderHandoverSummary(report,location,false);
+                    out_file = file_path.concat(DEFAULT_OUTPUT_NAME);
+                    out_file = replace_property(report, out_file);                   
                 }
                 else{
                      //check if the case: directory and name are both provided
-                     if(location.indexOf('/')>=0){
-                        String sub_location = location.substring(0,location.lastIndexOf('/'));
+                     if(file_path.indexOf('/')>=0){
+                        String sub_location = file_path.substring(0,file_path.lastIndexOf('/'));
                         if(new File(sub_location).isDirectory()){
-                            Reporter.getFreemarkerReporter().render(report,location,true);
-                            Reporter.getFreemarkerReporter().renderHandoverSummary(report,location,true);
+                            out_file = file_path;
                         }
                         else{
                             logger.info("failed to access given directory");
@@ -186,21 +192,28 @@ public class PVTTestSuite implements TestClassFilter
                      else 
                      {
                         //Add in default directory
-                        location = DEFAULT_OUTPUT_DIRECTORY.concat(location);
-                        Reporter.getFreemarkerReporter().render(report,location,true);
-                        Reporter.getFreemarkerReporter().renderHandoverSummary(report,location,true);
+                        out_file = DEFAULT_OUTPUT_DIRECTORY.concat(file_path);
                      }                   
                 }
             }
             //if nothing is provided, use default directory + default name
             else{
-            Reporter.getFreemarkerReporter().render(report);
-            Reporter.getFreemarkerReporter().renderHandoverSummary(report);
+                out_file= DEFAULT_OUTPUT_PATH;
+                out_file=replace_property(report, out_file);
             }
+            Reporter.getFreemarkerReporter().render(report,out_file);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static String replace_property(Report report, String name) {
+        name = name.replace("%{product}", report.getConfiguration().getProduct())
+                .replace("%{version}",report.getConfiguration().getVersion())
+                .replace("%{target}",report.getConfiguration().getTarget());
+                //.replace("%{date}", new SimpleDateFormat("yyMMdd").format(new Date()));
+        return name;
     }
 
     public static TestReport getTestReport(Class testClass) {
