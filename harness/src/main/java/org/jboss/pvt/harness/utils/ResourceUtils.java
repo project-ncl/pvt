@@ -25,6 +25,8 @@ import org.zeroturnaround.zip.ZipUtil;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collection;
+import java.util.HashSet;
 
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
@@ -111,7 +113,6 @@ public class ResourceUtils
                     {
                         logger.info( "Copying URL {} to {}", zip, result );
                         org.apache.commons.io.FileUtils.copyURLToFile( new URL( zip ), result );
-                        ZipUtil.explode( result );
                     }
                 }
                 // Local file path
@@ -126,9 +127,25 @@ public class ResourceUtils
                     else
                     {
                         org.apache.commons.io.FileUtils.copyFile( new File( zip ), result );
-                        ZipUtil.explode( result );
                     }
                 }
+
+                Collection<File> zipFiles;
+                if (result.isFile()) {
+                    zipFiles = new HashSet<>();
+                    zipFiles.add(result);
+                } else {
+                    zipFiles = DirUtils.listFilesRecursively(result,  pathname -> pathname.isFile() && pathname.getName().endsWith(".zip"));
+                }
+                while(!zipFiles.isEmpty()) {
+                    // Unzip them all
+                    for (File zipFile : zipFiles) {
+                        ZipUtil.explode(zipFile);
+                    }
+                    // Update zip files list and set for next recursion
+                    zipFiles = DirUtils.listFilesRecursively(result, pathname -> pathname.isFile() && pathname.getName().endsWith(".zip"));
+                }
+
                 logger.debug( "Create distribution {} ", result );
             }
         }
